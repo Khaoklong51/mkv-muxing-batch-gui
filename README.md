@@ -98,9 +98,9 @@ https://github.com/yaser01/mkv-muxing-batch-gui/assets/52576632/33f8bf3e-600c-4e
 ## 📁Supported Extensions
 |     Type    |                                        Extensions                                       |
 |:-----------:|:---------------------------------------------------------------------------------------:|
-|   Video     | AVI, MKV, MP4, M4V, MOV, MPEG, TS, OGG, OGM, H264, H265, WEBM, WMV                       |
+|   Video     | AVI, MKV, MP4, M4V, MOV, MPEG, TS, OGG, OGM, H264, H265, WEBM, WMV, IVF                 |
 |  Subtitle   | ASS, SRT, SSA, SUP, PGS, MKS, VTT                                                       |
-|   Audio     | AAC, AC3, FLAC, EAC3, MKA, M4A, MP3, DTS, DTSMA, THD, WAV, OGG, OPUS                      |
+|   Audio     | AAC, AC3, FLAC, EAC3, MKA, M4A, MP3, DTS, DTSMA, THD, WAV, OGG, OPUS                    |
 |   Chapter   | XML                                                                                     |
 
 ## ⬇Downloads
