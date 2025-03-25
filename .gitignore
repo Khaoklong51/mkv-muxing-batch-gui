@@ -10,3 +10,5 @@
 /Testing/
 *.pyc
 test.py
+audio.py
+.venv
