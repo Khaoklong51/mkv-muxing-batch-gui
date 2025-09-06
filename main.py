@@ -18,7 +18,9 @@ if sys.platform == "win32":
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("myappid")
     from packages.MainWindow import MainWindow
 else:
-    from packages.MainWindowNonWindowsSystem import MainWindowNonWindowsSystem as MainWindow
+    from packages.MainWindowNonWindowsSystem import (
+        MainWindowNonWindowsSystem as MainWindow,
+    )
 
 # faulthandler.enable()
 window: MainWindow
@@ -31,10 +33,12 @@ def setup_application_font():
         font_name = QFontDatabase.applicationFontFamilies(font_id)[0]
         font = QFont(font_name, 10)
         app.setFont(font)
-    except Exception as e:
-        warning_dialog = WarningDialog(window_title="Missing Fonts", info_message="Can't find 'OpenSans' font at "
-                                                                                  "../Resources/Fonts/OpenSans.ttf\n" +
-                                                                                  "application will use default font")
+    except Exception:
+        warning_dialog = WarningDialog(
+            window_title="Missing Fonts",
+            info_message="Can't find 'OpenSans' font at "
+            "../Resources/Fonts/OpenSans.ttf\n" + "application will use default font",
+        )
         warning_dialog.execute()
 
 
@@ -69,14 +73,15 @@ def logger_exception(exception_type, exception_value, exception_trace_back):
 
 def setup_logger():
     logging.basicConfig(
-        format='(%(asctime)s): %(name)s [%(levelname)s]: %(message)s',
-        datefmt='%m/%d/%Y %I:%M:%S %p',
+        format="(%(asctime)s): %(name)s [%(levelname)s]: %(message)s",
+        datefmt="%m/%d/%Y %I:%M:%S %p",
         level=logging.DEBUG,
         handlers=[
-            logging.FileHandler(filename=GlobalFiles.AppLogFilePath,
-                                encoding='utf-8', mode='a+'),
-            logging.StreamHandler()
-        ]
+            logging.FileHandler(
+                filename=GlobalFiles.AppLogFilePath, encoding="utf-8", mode="a+"
+            ),
+            logging.StreamHandler(),
+        ],
     )
     sys.excepthook = logger_exception
 

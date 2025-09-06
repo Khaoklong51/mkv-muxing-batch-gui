@@ -1,6 +1,6 @@
 from PySide6.QtCore import Signal, Qt, QSize, QEvent
 from PySide6.QtGui import QFontMetrics
-from PySide6.QtWidgets import QComboBox, QStyledItemDelegate
+from PySide6.QtWidgets import QComboBox
 
 from packages.Startup import GlobalIcons
 from packages.Startup.Options import Options
@@ -74,7 +74,7 @@ class PresetTabComboBox(QComboBox):
                             self.showPopup()
                         return True
                     return False
-        except Exception as e:
+        except Exception:
             return False
 
     def hidePopup(self):
@@ -125,7 +125,9 @@ class PresetTabComboBox(QComboBox):
         text = new_text
         # Compute elided text (with "...")
         metrics = QFontMetrics(self.lineEdit().font())
-        elided_text = metrics.elidedText(text, Qt.TextElideMode.ElideRight, self.lineEdit().width())
+        elided_text = metrics.elidedText(
+            text, Qt.TextElideMode.ElideRight, self.lineEdit().width()
+        )
         if elided_text != "":
             self.lineEdit().setText(elided_text)
             if self.activated_preset_id == self.currentIndex():

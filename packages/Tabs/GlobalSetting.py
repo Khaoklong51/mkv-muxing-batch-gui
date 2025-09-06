@@ -31,8 +31,13 @@ def get_attribute(data, attribute, default_value):
 
 
 def sort_names_like_windows(names_list):
-    convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
+    def convert(text: str):
+        return int(text) if text.isdigit() else text.lower()
+
+    def alphanum_key(key: str):
+        # Split into parts: text and numbers
+        return [convert(c) for c in re.split(r"([0-9]+)", key)]
+
     return sorted(names_list, key=alphanum_key)
 
 
@@ -43,18 +48,20 @@ def generate_track_ids(ids_list):
     return res
 
 
-def get_readable_filesize(size_bytes, suffix='B'):
-    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+def get_readable_filesize(size_bytes, suffix="B"):
+    for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(size_bytes) < 1024.0:
             return "%3.2f %s%s" % (size_bytes, unit, suffix)
         size_bytes /= 1024.0
-    return "%.2f %s%s" % (size_bytes, 'Y', suffix)
+    return "%.2f %s%s" % (size_bytes, "Y", suffix)
 
 
 def get_files_names_absolute_list(files_names, folder_path):
     result = []
     for i in range(len(files_names)):
-        result.append(get_file_name_absolute_path(file_name=files_names[i], folder_path=folder_path))
+        result.append(
+            get_file_name_absolute_path(file_name=files_names[i], folder_path=folder_path)
+        )
     return result
 
 
@@ -96,20 +103,34 @@ def refresh_tracks(track_type):
     audios_track_languages = []
     audios_track_names = []
     for video_name in videos:
-        string_name_hash = hashlib.sha1((str(video_name)).encode('utf-8')).hexdigest()
-        media_info_file_path = os.path.join(GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json")
-        with open(media_info_file_path, 'r', encoding="UTF-8") as media_info_file:
+        string_name_hash = hashlib.sha1((str(video_name)).encode("utf-8")).hexdigest()
+        media_info_file_path = os.path.join(
+            GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
+        )
+        with open(media_info_file_path, "r", encoding="UTF-8") as media_info_file:
             json_info = json.load(media_info_file)
         tracks_json_info = json_info["tracks"]
         for track in tracks_json_info:
             if track["type"] == track_type:
                 audios_track_ids.append(str(track["id"]))
                 language = str(
-                    get_attribute(data=track["properties"], attribute="language", default_value="UND"))
+                    get_attribute(
+                        data=track["properties"],
+                        attribute="language",
+                        default_value="UND",
+                    )
+                )
                 language_symbol = language.lower()
-                audios_track_languages.append(ISO_639_2_SYMBOLS.get(language_symbol, "Undetermined"))
-                name = str(get_attribute(data=track["properties"], attribute="track_name",
-                                         default_value="UnNamedTrackBeBo"))
+                audios_track_languages.append(
+                    ISO_639_2_SYMBOLS.get(language_symbol, "Undetermined")
+                )
+                name = str(
+                    get_attribute(
+                        data=track["properties"],
+                        attribute="track_name",
+                        default_value="UnNamedTrackBeBo",
+                    )
+                )
                 if name != "UnNamedTrackBeBo":
                     audios_track_names.append(name)
 
@@ -117,7 +138,9 @@ def refresh_tracks(track_type):
     audios_track_languages = list(dict.fromkeys(audios_track_languages))
     audios_track_names = list(dict.fromkeys(audios_track_names))
     for i in range(len(audios_track_ids)):
-        audios_track_ids[i] = convert_string_integer_to_two_digit_string(audios_track_ids[i])
+        audios_track_ids[i] = convert_string_integer_to_two_digit_string(
+            audios_track_ids[i]
+        )
     audios_track_ids.sort()
     audios_track_languages.sort()
     audios_track_names.sort()
@@ -157,15 +180,30 @@ def refresh_old_tracks_info_as_bulk(tracks_info: List[List[SingleOldTrackData]])
             if temp_old_track_data.id == "":
                 temp_old_track_data = track_dict[track_id][video_id]
             else:
-                if temp_old_track_data.track_name != track_dict[track_id][video_id].track_name:
+                if (
+                    temp_old_track_data.track_name
+                    != track_dict[track_id][video_id].track_name
+                ):
                     temp_old_track_data.track_name = "[Old]"
-                if temp_old_track_data.language != track_dict[track_id][video_id].language:
+                if (
+                    temp_old_track_data.language
+                    != track_dict[track_id][video_id].language
+                ):
                     temp_old_track_data.language = "[Old]"
-                if temp_old_track_data.is_enabled != track_dict[track_id][video_id].is_enabled:
+                if (
+                    temp_old_track_data.is_enabled
+                    != track_dict[track_id][video_id].is_enabled
+                ):
                     temp_old_track_data.is_enabled = None
-                if temp_old_track_data.is_default != track_dict[track_id][video_id].is_default:
+                if (
+                    temp_old_track_data.is_default
+                    != track_dict[track_id][video_id].is_default
+                ):
                     temp_old_track_data.is_default = None
-                if temp_old_track_data.is_forced != track_dict[track_id][video_id].is_forced:
+                if (
+                    temp_old_track_data.is_forced
+                    != track_dict[track_id][video_id].is_forced
+                ):
                     temp_old_track_data.is_forced = None
         if all_same:
             tracks_bulk_data[track_id] = temp_old_track_data
@@ -173,9 +211,15 @@ def refresh_old_tracks_info_as_bulk(tracks_info: List[List[SingleOldTrackData]])
             temp_old_track_data.track_name = "[Old]"
             temp_old_track_data.language = "[Old]"
             tracks_bulk_data[track_id] = temp_old_track_data
-        tracks_bulk_data[track_id].is_enabled = convert_boolean_to_checked_value(tracks_bulk_data[track_id].is_enabled)
-        tracks_bulk_data[track_id].is_default = convert_boolean_to_checked_value(tracks_bulk_data[track_id].is_default)
-        tracks_bulk_data[track_id].is_forced = convert_boolean_to_checked_value(tracks_bulk_data[track_id].is_forced)
+        tracks_bulk_data[track_id].is_enabled = convert_boolean_to_checked_value(
+            tracks_bulk_data[track_id].is_enabled
+        )
+        tracks_bulk_data[track_id].is_default = convert_boolean_to_checked_value(
+            tracks_bulk_data[track_id].is_default
+        )
+        tracks_bulk_data[track_id].is_forced = convert_boolean_to_checked_value(
+            tracks_bulk_data[track_id].is_forced
+        )
         tracks_bulk_data[track_id].order = order_id
     return tracks_bulk_data
 
@@ -185,9 +229,11 @@ def refresh_old_tracks_info(track_type):
     new_list: List[List[SingleOldTrackData]] = []
     for video_name in videos:
         video_tracks: List[SingleOldTrackData] = []
-        string_name_hash = hashlib.sha1((str(video_name)).encode('utf-8')).hexdigest()
-        media_info_file_path = os.path.join(GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json")
-        with open(media_info_file_path, 'r', encoding="UTF-8") as media_info_file:
+        string_name_hash = hashlib.sha1((str(video_name)).encode("utf-8")).hexdigest()
+        media_info_file_path = os.path.join(
+            GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
+        )
+        with open(media_info_file_path, "r", encoding="UTF-8") as media_info_file:
             json_info = json.load(media_info_file)
         tracks_json_info = json_info["tracks"]
         for track in tracks_json_info:
@@ -195,40 +241,73 @@ def refresh_old_tracks_info(track_type):
             if track["type"] == track_type:
                 new_track.id = str(track["id"])
                 language = str(
-                    get_attribute(data=track["properties"], attribute="language", default_value="UND"))
+                    get_attribute(
+                        data=track["properties"],
+                        attribute="language",
+                        default_value="UND",
+                    )
+                )
                 language_symbol = language.lower()
-                new_track.language = ISO_639_2_SYMBOLS.get(language_symbol, "Undetermined")
-                name = str(get_attribute(data=track["properties"], attribute="track_name",
-                                         default_value="UnNamedTrackBeBo"))
+                new_track.language = ISO_639_2_SYMBOLS.get(
+                    language_symbol, "Undetermined"
+                )
+                name = str(
+                    get_attribute(
+                        data=track["properties"],
+                        attribute="track_name",
+                        default_value="UnNamedTrackBeBo",
+                    )
+                )
                 if name != "UnNamedTrackBeBo":
                     new_track.track_name = name
-                new_track.is_default = get_attribute(data=track["properties"], attribute="default_track",
-                                                     default_value=False)
-                new_track.is_forced = get_attribute(data=track["properties"], attribute="forced_track",
-                                                    default_value=False)
+                new_track.is_default = get_attribute(
+                    data=track["properties"],
+                    attribute="default_track",
+                    default_value=False,
+                )
+                new_track.is_forced = get_attribute(
+                    data=track["properties"],
+                    attribute="forced_track",
+                    default_value=False,
+                )
                 new_track.is_enabled = True
                 new_track.uid = str(
-                    get_attribute(data=track["properties"], attribute="uid", default_value="-1"))
+                    get_attribute(
+                        data=track["properties"], attribute="uid", default_value="-1"
+                    )
+                )
                 video_tracks.append(new_track)
         new_list.append(video_tracks)
     if track_type == "audio":
         GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_INFO = new_list
-        GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING_ORIGINAL = refresh_old_tracks_info_as_bulk(
-            tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_INFO)
+        GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING_ORIGINAL = (
+            refresh_old_tracks_info_as_bulk(
+                tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_INFO
+            )
+        )
         GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING = copy.deepcopy(
-            GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING_ORIGINAL)
+            GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING_ORIGINAL
+        )
     elif track_type == "subtitles":
         GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO = new_list
-        GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING_ORIGINAL = refresh_old_tracks_info_as_bulk(
-            tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO)
+        GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING_ORIGINAL = (
+            refresh_old_tracks_info_as_bulk(
+                tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO
+            )
+        )
         GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING = copy.deepcopy(
-            GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING_ORIGINAL)
+            GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING_ORIGINAL
+        )
     elif track_type == "video":
         GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO = new_list
-        GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING_ORIGINAL = refresh_old_tracks_info_as_bulk(
-            tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO)
+        GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING_ORIGINAL = (
+            refresh_old_tracks_info_as_bulk(
+                tracks_info=GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO
+            )
+        )
         GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING = copy.deepcopy(
-            GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING_ORIGINAL)
+            GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING_ORIGINAL
+        )
 
 
 class GlobalSetting(QWidget):
@@ -334,5 +413,6 @@ class GlobalSetting(QWidget):
     MUXING_ON = False
     LogFilePath = ""
     DISABLE_TOOLTIP = "<b>[Disabled]</b> because job queue has unfinished job(s)"
+
     def __init__(self):
         super().__init__()

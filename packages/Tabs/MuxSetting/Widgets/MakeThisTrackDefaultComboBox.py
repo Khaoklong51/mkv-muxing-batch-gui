@@ -16,8 +16,10 @@ class MakeThisTrackDefaultComboBox(QComboBox):
         self.current_list = []
         self.current_text = ""
         self.empty_selection_string = "None"
-        self.empty_selection_hint_string = "The selected flag [default/forced/both] will be removed from all " \
-                                           "corresponding tracks"
+        self.empty_selection_hint_string = (
+            "The selected flag [default/forced/both] will be removed from all "
+            "corresponding tracks"
+        )
         self.addItems(AllAudiosTracks)
         self.setMinimumWidth(screen_size.width() // 12)
         self.setMaximumWidth(screen_size.width() // 4)
@@ -56,7 +58,7 @@ class MakeThisTrackDefaultComboBox(QComboBox):
                         return True
                     return False
             return False
-        except Exception as e:
+        except Exception:
             return False
 
     def showPopup(self):
@@ -103,7 +105,12 @@ class MakeThisTrackDefaultComboBox(QComboBox):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -113,7 +120,12 @@ class MakeThisTrackDefaultComboBox(QComboBox):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -128,7 +140,11 @@ class MakeThisTrackDefaultComboBox(QComboBox):
         self.clear()
         super().addItems(texts)
         for i in range(len(texts)):
-            if texts[i] != "---Track Id---" and texts[i] != "---Language---" and texts[i] != "---Track Name---":
+            if (
+                texts[i] != "---Track Id---"
+                and texts[i] != "---Language---"
+                and texts[i] != "---Track Name---"
+            ):
                 self.setItemData(i, texts[i], Qt.ItemDataRole.ToolTipRole)
         self.current_list = texts.copy()
         self.setCurrentIndex(-1)
@@ -220,7 +236,9 @@ class MakeThisTrackDefaultComboBox(QComboBox):
             non_italic_font = self.lineEdit().font()
             non_italic_font.setItalic(False)
             self.lineEdit().setFont(non_italic_font)
-            elided_text = metrics.elidedText(self.current_text, Qt.TextElideMode.ElideRight, self.lineEdit().width())
+            elided_text = metrics.elidedText(
+                self.current_text, Qt.TextElideMode.ElideRight, self.lineEdit().width()
+            )
             self.lineEdit().setText(elided_text)
         else:
             italic_font = self.lineEdit().font()

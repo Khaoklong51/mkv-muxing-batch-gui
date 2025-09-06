@@ -1,5 +1,3 @@
-import time
-
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QGridLayout, QLabel
 
@@ -27,10 +25,13 @@ class JobQueueLayout(QGridLayout):
         self.table.update_total_progress_signal.connect(self.update_total_progress)
         self.table.paused_done_signal.connect(self.paused_done)
         self.table.cancel_done_signal.connect(self.cancel_done)
-        self.table.pause_from_error_occurred_signal.connect(self.pause_from_error_occurred)
+        self.table.pause_from_error_occurred_signal.connect(
+            self.pause_from_error_occurred
+        )
         self.table.finished_all_jobs_signal.connect(self.finished_all_jobs)
         self.table.increase_number_of_done_jobs_signal.connect(
-            self.increase_completed_jobs)
+            self.increase_completed_jobs
+        )
         self.table.set_number_of_jobs_signal.connect(self.set_number_of_jobs)
 
     def setup_layout(self):
