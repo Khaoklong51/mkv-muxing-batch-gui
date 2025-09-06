@@ -9,6 +9,5 @@
 /Testing/test.py
 /Testing/
 *.pyc
-test.py
-audio.py
+test*.*
 .venv
