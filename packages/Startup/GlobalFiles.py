@@ -112,8 +112,14 @@ def get_program_from_path_and_tool(program: str) -> Path:
     program_path = which(program)
 
     if program_path is None:
-        logging.warning("Could not find system mkvmerge. Trying portable version...")
-        program_path = ToolsFolderPath.resolve() / program
+        if sys.platform == "win32":
+            path1 = Path(os.environ.get("SystemDrive", "C:"))
+            program_path = (
+                path1.resolve() / "Program Files" / "MKVToolNix" / (program + ".exe")
+            )
+        else:
+            logging.warning("Could not find system mkvmerge. Trying portable version...")
+            program_path = ToolsFolderPath.resolve() / program
     else:
         program_path = Path(program_path)
 

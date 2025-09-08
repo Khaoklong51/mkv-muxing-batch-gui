@@ -64,6 +64,7 @@ class GenerateMediaInfoFilesWorker(QObject):
                     stdout=subprocess.PIPE,
                     env=GlobalFiles.ENVIRONMENT,
                     text=True,
+                    encoding="utf-8",  # Force utf-8 # windows thing
                 )
                 with open(
                     media_info_file_path, "w+", encoding="utf-8"

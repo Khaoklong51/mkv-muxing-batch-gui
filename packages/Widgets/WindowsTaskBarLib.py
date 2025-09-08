@@ -106,7 +106,7 @@ ITaskbarList3._methods_ = [
         cty.HRESULT,
         "SetProgressState",
         (["in"], cty.c_int, "hwnd"),
-        (["in"], cty.TBPFLAG, "tbpFlags"),
+        (["in"], TBPFLAG, "tbpFlags"),
     ),
     COMMETHOD(
         [],
@@ -167,7 +167,7 @@ ITaskbarList3._methods_ = [
         cty.HRESULT,
         "SetThumbnailTooltip",
         (["in"], cty.c_int, "hwnd"),
-        (["in"], cty.WSTRING, "pszTip"),
+        (["in"], WSTRING, "pszTip"),
     ),
     COMMETHOD(
         [],
