@@ -3,11 +3,9 @@ import copy
 import hashlib
 import json
 import logging
-import os
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import List
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget
@@ -30,13 +28,13 @@ def get_attribute(data, attribute, default_value):
     return data.get(attribute) or default_value
 
 
-def sort_names_like_windows(names_list):
-    def convert(text: str):
-        return int(text) if text.isdigit() else text.lower()
+def sort_names_like_windows(names_list: list[Path]):
+    def convert(text: Path):
+        return int(text) if str(text).isdigit() else str(text).lower()
 
-    def alphanum_key(key: str):
+    def alphanum_key(key: Path):
         # Split into parts: text and numbers
-        return [convert(c) for c in re.split(r"([0-9]+)", key)]
+        return [convert(c) for c in re.split(r"([0-9]+)", str(key))]
 
     return sorted(names_list, key=alphanum_key)
 
@@ -48,7 +46,7 @@ def generate_track_ids(ids_list):
     return res
 
 
-def get_readable_filesize(size_bytes, suffix="B"):
+def get_readable_filesize(size_bytes: float | int, suffix="B"):
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(size_bytes) < 1024.0:
             return "%3.2f %s%s" % (size_bytes, unit, suffix)
@@ -65,8 +63,8 @@ def get_files_names_absolute_list(files_names, folder_path):
     return result
 
 
-def get_file_name_absolute_path(file_name, folder_path):
-    return os.path.join(Path(folder_path), file_name)
+def get_file_name_absolute_path(file_name: str, folder_path: Path):
+    return Path(folder_path) / file_name
 
 
 def convert_string_to_boolean(string):
@@ -104,8 +102,8 @@ def refresh_tracks(track_type):
     audios_track_names = []
     for video_name in videos:
         string_name_hash = hashlib.sha1((str(video_name)).encode("utf-8")).hexdigest()
-        media_info_file_path = os.path.join(
-            GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
+        media_info_file_path = GlobalFiles.MediaInfoFolderPath / (
+            string_name_hash + ".json"
         )
         with open(media_info_file_path, "r", encoding="UTF-8") as media_info_file:
             json_info = json.load(media_info_file)
@@ -156,7 +154,7 @@ def refresh_tracks(track_type):
     return new_list
 
 
-def refresh_old_tracks_info_as_bulk(tracks_info: List[List[SingleOldTrackData]]):
+def refresh_old_tracks_info_as_bulk(tracks_info: list[list[SingleOldTrackData]]):
     tracks_bulk_data = defaultdict(SingleOldTrackData)
     track_dict = {}
     for video_id, tracks_list in enumerate(tracks_info, start=1):
@@ -226,12 +224,12 @@ def refresh_old_tracks_info_as_bulk(tracks_info: List[List[SingleOldTrackData]])
 
 def refresh_old_tracks_info(track_type):
     videos = GlobalSetting.VIDEO_FILES_ABSOLUTE_PATH_LIST.copy()
-    new_list: List[List[SingleOldTrackData]] = []
+    new_list: list[list[SingleOldTrackData]] = []
     for video_name in videos:
-        video_tracks: List[SingleOldTrackData] = []
+        video_tracks: list[SingleOldTrackData] = []
         string_name_hash = hashlib.sha1((str(video_name)).encode("utf-8")).hexdigest()
-        media_info_file_path = os.path.join(
-            GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
+        media_info_file_path = GlobalFiles.MediaInfoFolderPath / (
+            string_name_hash + ".json"
         )
         with open(media_info_file_path, "r", encoding="UTF-8") as media_info_file:
             json_info = json.load(media_info_file)
@@ -313,14 +311,14 @@ def refresh_old_tracks_info(track_type):
 class GlobalSetting(QWidget):
     LAST_DIRECTORY_PATH = ""
     VIDEO_SOURCE_PATHS = []
-    VIDEO_FILES_LIST = []
-    VIDEO_FILES_SIZE_LIST = []
-    VIDEO_FILES_ABSOLUTE_PATH_LIST = []
+    VIDEO_FILES_LIST: list[Path] = []
+    VIDEO_FILES_SIZE_LIST: list[str] = []
+    VIDEO_FILES_ABSOLUTE_PATH_LIST: list[Path] = []
     VIDEO_SOURCE_MKV_ONLY = False
     VIDEO_DEFAULT_DURATION_FPS = ""
-    VIDEO_OLD_TRACKS_VIDEOS_INFO: List[List[SingleOldTrackData]] = []
-    VIDEO_OLD_TRACKS_AUDIOS_INFO: List[List[SingleOldTrackData]] = []
-    VIDEO_OLD_TRACKS_SUBTITLES_INFO: List[List[SingleOldTrackData]] = []
+    VIDEO_OLD_TRACKS_VIDEOS_INFO: list[list[SingleOldTrackData]] = []
+    VIDEO_OLD_TRACKS_AUDIOS_INFO: list[list[SingleOldTrackData]] = []
+    VIDEO_OLD_TRACKS_SUBTITLES_INFO: list[list[SingleOldTrackData]] = []
     VIDEO_OLD_TRACKS_VIDEOS_BULK_SETTING_ORIGINAL = defaultdict(SingleOldTrackData)
     VIDEO_OLD_TRACKS_AUDIOS_BULK_SETTING_ORIGINAL = defaultdict(SingleOldTrackData)
     VIDEO_OLD_TRACKS_SUBTITLES_BULK_SETTING_ORIGINAL = defaultdict(SingleOldTrackData)
@@ -371,7 +369,7 @@ class GlobalSetting(QWidget):
     ATTACHMENT_ALLOW_DUPLICATE = False
 
     ATTACHMENT_EXPERT_MODE = False
-    ATTACHMENT_PATH_DATA_LIST: List[PathData] = []
+    ATTACHMENT_PATH_DATA_LIST: list[PathData] = []
 
     CHAPTER_ENABLED = False
     CHAPTER_FILES_LIST = []

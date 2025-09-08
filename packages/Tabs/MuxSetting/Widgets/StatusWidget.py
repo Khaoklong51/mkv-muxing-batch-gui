@@ -24,7 +24,7 @@ class StatusWidget(QWidget):
         self.setLayout(self.layout)
 
     def update_progress(self, new_progress):
-        self.status_label.setText("  "+str(new_progress) + "%")
+        self.status_label.setText("  " + str(new_progress) + "%")
 
     def start_loading(self):
         self.load_icon_movie.start()

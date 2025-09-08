@@ -1,9 +1,9 @@
 import hashlib
 import json
-import os
 import subprocess
 import time
 import traceback
+from pathlib import Path
 
 from PySide6.QtCore import QObject, Signal
 
@@ -23,12 +23,10 @@ def get_attribute(data, attribute, default_value):
     return data.get(attribute) or default_value
 
 
-def check_if_valid_video_input(file_name):
+def check_if_valid_video_input(file_name: Path):
     string_name_hash = hashlib.sha1((str(file_name)).encode("utf-8")).hexdigest()
-    media_info_file_path = os.path.join(
-        GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
-    )
-    with open(media_info_file_path, "r", encoding="UTF-8") as media_info_file:
+    media_info_file_path = GlobalFiles.MediaInfoFolderPath / (string_name_hash + ".json")
+    with open(media_info_file_path, "r", encoding="utf-8") as media_info_file:
         json_info = json.load(media_info_file)
     tracks_json_info = get_attribute(json_info, "tracks", False)
     if not tracks_json_info:
@@ -46,7 +44,7 @@ class GenerateMediaInfoFilesWorker(QObject):
     job_unsupported_file_signal = Signal(str)
     finished_all_jobs_signal = Signal()
 
-    def __init__(self, video_list):
+    def __init__(self, video_list: list[Path]):
         super().__init__()
         self.video_list = video_list
 
@@ -56,23 +54,21 @@ class GenerateMediaInfoFilesWorker(QObject):
                 string_name_hash = hashlib.sha1(
                     (str(file_name)).encode("utf-8")
                 ).hexdigest()
-                media_info_file_path = os.path.join(
-                    GlobalFiles.MediaInfoFolderPath, string_name_hash + ".json"
+                media_info_file_path = GlobalFiles.MediaInfoFolderPath / (
+                    string_name_hash + ".json"
+                )
+                command = [GlobalFiles.MKVMERGE_PATH, "-J", file_name]
+                command = [str(i) for i in command]
+                p1 = subprocess.run(
+                    command,
+                    stdout=subprocess.PIPE,
+                    env=GlobalFiles.ENVIRONMENT,
+                    text=True,
                 )
                 with open(
-                    media_info_file_path, "w+", encoding="UTF-8"
+                    media_info_file_path, "w+", encoding="utf-8"
                 ) as media_info_file:
-                    command = (
-                        add_double_quotation(GlobalFiles.MKVMERGE_PATH)
-                        + " -J "
-                        + add_double_quotation(file_name)
-                    )
-                    subprocess.run(
-                        command,
-                        shell=True,
-                        stdout=media_info_file,
-                        env=GlobalFiles.ENVIRONMENT,
-                    )
+                    media_info_file.write(p1.stdout.strip())
                 time.sleep(0.05)
                 if not check_if_valid_video_input(file_name):
                     self.job_unsupported_file_signal.emit(file_name)

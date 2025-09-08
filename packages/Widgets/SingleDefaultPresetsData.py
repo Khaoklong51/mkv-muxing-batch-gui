@@ -12,6 +12,6 @@ class SingleDefaultPresetsData:
         self.Default_Audio_Directory = ""
         self.Default_Attachment_Directory = ""
         self.Default_Destination_Directory = ""
-        self.Default_Favorite_Subtitle_Languages = ['English', 'Arabic']
-        self.Default_Favorite_Audio_Languages = ['English', 'Arabic']
+        self.Default_Favorite_Subtitle_Languages = ["English", "Arabic"]
+        self.Default_Favorite_Audio_Languages = ["English", "Arabic"]
         self.Preset_Name = "Preset #1"

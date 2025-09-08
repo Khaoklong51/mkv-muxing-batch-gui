@@ -15,8 +15,13 @@ class ControlQueueButton(QPushButton):
         self.state = ""
         self.set_state_add_to_queue()
         self.clicked.connect(self.button_clicked)
-        self.states = [" Add To Queue", " Start Multiplexing", " Pause Multiplexing", " Waiting Current Job", " Resume "
-                                                                                                              "Multiplexing"]
+        self.states = [
+            " Add To Queue",
+            " Start Multiplexing",
+            " Pause Multiplexing",
+            " Waiting Current Job",
+            " Resume " "Multiplexing",
+        ]
 
     def set_state_add_to_queue(self):
         self.state = "ADD"

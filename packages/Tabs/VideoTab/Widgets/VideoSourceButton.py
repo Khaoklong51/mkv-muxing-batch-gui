@@ -27,12 +27,16 @@ class VideoSourceButton(QPushButton):
             reload_dialog = ReloadVideoFilesDialog(parent=self)
             reload_dialog.execute()
             if reload_dialog.result == "Yes":
-                temp_folder_path = QFileDialog.getExistingDirectory(self, caption="Choose Video Folder",
-                                                                    dir=GlobalSetting.LAST_DIRECTORY_PATH)
+                temp_folder_path = QFileDialog.getExistingDirectory(
+                    self,
+                    caption="Choose Video Folder",
+                    dir=GlobalSetting.LAST_DIRECTORY_PATH,
+                )
                 new_folder_path = temp_folder_path
         else:
-            temp_folder_path = QFileDialog.getExistingDirectory(self, caption="Choose Video Folder",
-                                                                dir=GlobalSetting.LAST_DIRECTORY_PATH)
+            temp_folder_path = QFileDialog.getExistingDirectory(
+                self, caption="Choose Video Folder", dir=GlobalSetting.LAST_DIRECTORY_PATH
+            )
             new_folder_path = temp_folder_path
 
         if new_folder_path == "" or new_folder_path.isspace():
@@ -46,7 +50,12 @@ class VideoSourceButton(QPushButton):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -56,7 +65,12 @@ class VideoSourceButton(QPushButton):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:

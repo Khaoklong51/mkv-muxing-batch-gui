@@ -1,6 +1,8 @@
 from PySide6.QtWidgets import QHBoxLayout, QLabel
 
-from packages.Tabs.SettingTab.Widgets.ExtensionsCheckableComboBox import ExtensionsCheckableComboBox
+from packages.Tabs.SettingTab.Widgets.ExtensionsCheckableComboBox import (
+    ExtensionsCheckableComboBox,
+)
 
 
 class DefaultExtensionsLayout(QHBoxLayout):
@@ -9,8 +11,9 @@ class DefaultExtensionsLayout(QHBoxLayout):
         self.all_labels_first_column_list = []
         self.all_labels_second_column_list = []
         self.label = QLabel(label_name)
-        self.extensions_checkable_comboBox = ExtensionsCheckableComboBox(items_list=extensions_list,
-                                                                         default_items_list=default_extensions_list.copy())
+        self.extensions_checkable_comboBox = ExtensionsCheckableComboBox(
+            items_list=extensions_list, default_items_list=default_extensions_list.copy()
+        )
         self.setup_all_labels_list()
         self.setup_layout()
         if self.label.text().find("Audio") != -1 or self.label.text().find("Video") != -1:
@@ -31,13 +34,21 @@ class DefaultExtensionsLayout(QHBoxLayout):
     def setup_label_width_first_column(self):
         width_to_be_fixed = 0
         for i in range(len(self.all_labels_first_column_list)):
-            width_to_be_fixed = max(width_to_be_fixed, self.label.fontMetrics().boundingRect(
-                self.all_labels_first_column_list[i]).width())
+            width_to_be_fixed = max(
+                width_to_be_fixed,
+                self.label.fontMetrics()
+                .boundingRect(self.all_labels_first_column_list[i])
+                .width(),
+            )
         self.label.setFixedWidth(width_to_be_fixed + 3)
 
     def setup_label_width_second_column(self):
         width_to_be_fixed = 0
         for i in range(len(self.all_labels_second_column_list)):
-            width_to_be_fixed = max(width_to_be_fixed, self.label.fontMetrics().boundingRect(
-                self.all_labels_second_column_list[i]).width())
+            width_to_be_fixed = max(
+                width_to_be_fixed,
+                self.label.fontMetrics()
+                .boundingRect(self.all_labels_second_column_list[i])
+                .width(),
+            )
         self.label.setFixedWidth(width_to_be_fixed + 3)

@@ -7,17 +7,17 @@ from packages.Tabs.GlobalSetting import GlobalSetting
 def append_int(num):
     if num > 9:
         secondToLastDigit = str(num)[-2]
-        if secondToLastDigit == '1':
-            return 'th'
+        if secondToLastDigit == "1":
+            return "th"
     lastDigit = num % 10
     if lastDigit == 1:
-        return 'st'
+        return "st"
     elif lastDigit == 2:
-        return 'nd'
+        return "nd"
     elif lastDigit == 3:
-        return 'rd'
+        return "rd"
     else:
-        return 'th'
+        return "th"
 
 
 def num_to_ith(num):
@@ -49,7 +49,12 @@ class SubtitleMuxAfterTracksComboBox(QComboBox):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -59,7 +64,12 @@ class SubtitleMuxAfterTracksComboBox(QComboBox):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:

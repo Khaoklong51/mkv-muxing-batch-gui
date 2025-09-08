@@ -1,8 +1,13 @@
 import PySide6
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFontMetrics, QPaintEvent
-from PySide6.QtWidgets import QGridLayout, QTableWidgetItem, \
-    QHeaderView, QAbstractItemView, QTableWidget
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QTableWidgetItem,
+    QHeaderView,
+    QAbstractItemView,
+    QTableWidget,
+)
 
 from packages.Widgets.TableNoSelection import TableWidgetNoSelection
 
@@ -24,9 +29,15 @@ class TableFixedHeaderWidget(QTableWidget):
         self.column1.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.tableHeader.setColumnCount(numberofcolumn)
         self.tableHeader.setHorizontalHeaderItem(0, self.column1)
-        self.tableHeader.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.tableHeader.setHorizontalScrollMode(QAbstractItemView.ScrollMode.ScrollPerPixel)
-        self.tableHeader.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.tableHeader.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Stretch
+        )
+        self.tableHeader.setHorizontalScrollMode(
+            QAbstractItemView.ScrollMode.ScrollPerPixel
+        )
+        self.tableHeader.setHorizontalScrollBarPolicy(
+            Qt.ScrollBarPolicy.ScrollBarAlwaysOff
+        )
         self.tableHeader.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.tableHeader.horizontalHeader().setHighlightSections(False)
 
@@ -54,12 +65,16 @@ class TableFixedHeaderWidget(QTableWidget):
 
     def update_row_size(self):
         new_column_width = self.tableHeader.width()
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
+        self.table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.Interactive
+        )
         for i in range(self.table.rowCount()):
             column_font = self.table.item(i, 0).font()
             column_font_metrics = QFontMetrics(column_font)
-            new_column_width = max(new_column_width, column_font_metrics.horizontalAdvance(
-                self.table.item(i, 0).text()))
+            new_column_width = max(
+                new_column_width,
+                column_font_metrics.horizontalAdvance(self.table.item(i, 0).text()),
+            )
         new_column_width += 15
         self.table.setColumnWidth(0, new_column_width)
 

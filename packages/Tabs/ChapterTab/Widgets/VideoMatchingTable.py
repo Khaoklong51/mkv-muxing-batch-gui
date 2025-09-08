@@ -26,7 +26,9 @@ class VideoMatchingTable(TableFixedHeaderWidget):
     def show_files(self):
         video_file_list = GlobalSetting.VIDEO_FILES_LIST
         self.table.setRowCount(len(video_file_list))
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        self.table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         for i in range(len(video_file_list)):
             item = QTableWidgetItem(video_file_list[i])
             item.setToolTip(video_file_list[i])

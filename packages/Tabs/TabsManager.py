@@ -30,7 +30,8 @@ class TabsManager(QTabWidget):
     update_task_bar_progress_signal = Signal(int)
     update_task_bar_paused_signal = Signal()
     update_task_bar_clear_signal = Signal()
-    theme_changed_signal=Signal()
+    theme_changed_signal = Signal()
+
     def __init__(self):
         super().__init__()
         self.video_tab = VideoSelectionSetting()
@@ -74,14 +75,22 @@ class TabsManager(QTabWidget):
         self.tabBar().setTabTextColor(tab_index, QColor(*color_string))
 
     def connect_signals(self):
-        self.attachment_tab.activation_signal.connect(self.change_attachment_activated_state)
+        self.attachment_tab.activation_signal.connect(
+            self.change_attachment_activated_state
+        )
         self.subtitle_tab.activation_signal.connect(self.change_subtitle_activated_state)
         self.audio_tab.activation_signal.connect(self.change_audio_activated_state)
         self.chapter_tab.activation_signal.connect(self.change_chapter_activated_state)
         self.mux_setting_tab.start_muxing_signal.connect(self.start_muxing)
-        self.mux_setting_tab.update_task_bar_progress_signal.connect(self.update_task_bar_progress_signal.emit)
-        self.mux_setting_tab.update_task_bar_paused_signal.connect(self.update_task_bar_paused_signal.emit)
-        self.mux_setting_tab.update_task_bar_clear_signal.connect(self.update_task_bar_clear_signal.emit)
+        self.mux_setting_tab.update_task_bar_progress_signal.connect(
+            self.update_task_bar_progress_signal.emit
+        )
+        self.mux_setting_tab.update_task_bar_paused_signal.connect(
+            self.update_task_bar_paused_signal.emit
+        )
+        self.mux_setting_tab.update_task_bar_clear_signal.connect(
+            self.update_task_bar_clear_signal.emit
+        )
         self.currentChanged.connect(self.current_tab_changed)
         self.theme_button.dark_mode_updated_signal.connect(self.update_theme_mode_state)
 
@@ -89,44 +98,78 @@ class TabsManager(QTabWidget):
         self.task_bar_start_muxing_signal.emit()
 
     def setup_tabs_theme(self):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         self.set_tab_color(tab_index=self.tabs_ids["Video"], color_string=activate_color)
-        self.set_tab_color(tab_index=self.tabs_ids["Subtitle"], color_string=activate_color)
+        self.set_tab_color(
+            tab_index=self.tabs_ids["Subtitle"], color_string=activate_color
+        )
         self.set_tab_color(tab_index=self.tabs_ids["Audio"], color_string=disabled_color)
-        self.set_tab_color(tab_index=self.tabs_ids["Attachment"], color_string=disabled_color)
-        self.set_tab_color(tab_index=self.tabs_ids["Chapter"], color_string=disabled_color)
-        self.set_tab_color(tab_index=self.tabs_ids["Mux Setting"], color_string=activate_color)
+        self.set_tab_color(
+            tab_index=self.tabs_ids["Attachment"], color_string=disabled_color
+        )
+        self.set_tab_color(
+            tab_index=self.tabs_ids["Chapter"], color_string=disabled_color
+        )
+        self.set_tab_color(
+            tab_index=self.tabs_ids["Mux Setting"], color_string=activate_color
+        )
 
     def change_attachment_activated_state(self, new_state):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         if new_state:
-            self.set_tab_color(tab_index=self.tabs_ids["Attachment"], color_string=activate_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Attachment"], color_string=activate_color
+            )
         else:
-            self.set_tab_color(tab_index=self.tabs_ids["Attachment"], color_string=disabled_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Attachment"], color_string=disabled_color
+            )
         self.tabs_status[self.tabs_ids["Attachment"]] = new_state
 
     def change_subtitle_activated_state(self, new_state):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         if new_state:
-            self.set_tab_color(tab_index=self.tabs_ids["Subtitle"], color_string=activate_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Subtitle"], color_string=activate_color
+            )
         else:
-            self.set_tab_color(tab_index=self.tabs_ids["Subtitle"], color_string=disabled_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Subtitle"], color_string=disabled_color
+            )
         self.tabs_status[self.tabs_ids["Subtitle"]] = new_state
 
     def change_audio_activated_state(self, new_state):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         if new_state:
-            self.set_tab_color(tab_index=self.tabs_ids["Audio"], color_string=activate_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Audio"], color_string=activate_color
+            )
         else:
-            self.set_tab_color(tab_index=self.tabs_ids["Audio"], color_string=disabled_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Audio"], color_string=disabled_color
+            )
         self.tabs_status[self.tabs_ids["Audio"]] = new_state
 
     def change_chapter_activated_state(self, new_state):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         if new_state:
-            self.set_tab_color(tab_index=self.tabs_ids["Chapter"], color_string=activate_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Chapter"], color_string=activate_color
+            )
         else:
-            self.set_tab_color(tab_index=self.tabs_ids["Chapter"], color_string=disabled_color)
+            self.set_tab_color(
+                tab_index=self.tabs_ids["Chapter"], color_string=disabled_color
+            )
         self.tabs_status[self.tabs_ids["Chapter"]] = new_state
 
     def update_theme_mode_state(self):
@@ -143,7 +186,9 @@ class TabsManager(QTabWidget):
             self.setPalette(get_light_palette())
 
     def update_tabs_name_theme_mode_state(self):
-        activate_color, disabled_color = get_activate_and_disabled_color_according_to_current_theme()
+        activate_color, disabled_color = (
+            get_activate_and_disabled_color_according_to_current_theme()
+        )
         for tab_id in range(len(self.tabs_status)):
             tab_status = self.tabs_status[tab_id]
             if tab_status:

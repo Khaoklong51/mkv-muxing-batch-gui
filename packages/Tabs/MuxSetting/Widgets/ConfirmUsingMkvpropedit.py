@@ -1,6 +1,12 @@
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QGridLayout, QLabel, \
-     QApplication, QStyle, QPushButton, QHBoxLayout
+from PySide6.QtWidgets import (
+    QGridLayout,
+    QLabel,
+    QApplication,
+    QStyle,
+    QPushButton,
+    QHBoxLayout,
+)
 
 from packages.Widgets.MyDialog import MyDialog
 
@@ -33,8 +39,10 @@ class ConfirmUsingMkvpropedit(MyDialog):
         self.cancel_button = QPushButton("Cancel")
         self.usual_muxing_button = QPushButton("Usual Muxing")
         self.setWindowTitle("We can make it faster")
-        self.message = QLabel("<nobr>We can fast your muxing by editing the source files directly <br>This will "
-                              "<b>overwrite</b> your video files and can't be undone")
+        self.message = QLabel(
+            "<nobr>We can fast your muxing by editing the source files directly <br>This will "
+            "<b>overwrite</b> your video files and can't be undone"
+        )
         self.messageIcon = QLabel()
 
         self.buttons_layout = QHBoxLayout()

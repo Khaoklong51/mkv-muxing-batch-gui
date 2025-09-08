@@ -1,6 +1,5 @@
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QGridLayout, QLabel, \
-     QPushButton, QHBoxLayout, QFormLayout
+from PySide6.QtWidgets import QGridLayout, QLabel, QPushButton, QHBoxLayout, QFormLayout
 
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
@@ -23,8 +22,12 @@ class ChapterInfoDialog(MyDialog):
         self.buttons_layout.addStretch(stretch=4)
         self.chapter_setting_layout = QGridLayout()
         self.chapter_editable_setting_layout = QFormLayout()
-        self.chapter_editable_setting_layout.addRow(self.chapter_name_label, self.chapter_name_value)
-        self.chapter_setting_layout.addLayout(self.chapter_editable_setting_layout, 1, 0, 4, 2)
+        self.chapter_editable_setting_layout.addRow(
+            self.chapter_name_label, self.chapter_name_value
+        )
+        self.chapter_setting_layout.addLayout(
+            self.chapter_editable_setting_layout, 1, 0, 4, 2
+        )
         self.chapter_setting_layout.addWidget(self.messageIcon, 0, 3, 5, -1)
 
         self.main_layout = QGridLayout()
@@ -38,7 +41,9 @@ class ChapterInfoDialog(MyDialog):
 
     def setup_ui(self):
         self.disable_question_mark_window()
-        self.messageIcon.setPixmap(QtGui.QPixmap(GlobalFiles.ChapterIconPath).scaledToHeight(60))
+        self.messageIcon.setPixmap(
+            QtGui.QPixmap(GlobalFiles.ChapterIconPath).scaledToHeight(60)
+        )
         self.set_dialog_values()
         # self.increase_message_font_size(1)
         self.set_default_buttons()

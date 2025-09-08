@@ -25,8 +25,12 @@ class VideoInfoDialog(MyDialog):
     def setup_window_dimension(self):
         self.setMinimumWidth(screen_size.width() // 2)
         self.setMinimumHeight(screen_size.height() // 2)
-        self.setContentsMargins(screen_size.width() // 500, screen_size.width() // 500, screen_size.width() // 500,
-                                screen_size.width() // 500)
+        self.setContentsMargins(
+            screen_size.width() // 500,
+            screen_size.width() // 500,
+            screen_size.width() // 500,
+            screen_size.width() // 500,
+        )
 
     def setup_main_layout(self):
         self.main_layout.addLayout(self.button_layout)
@@ -34,8 +38,12 @@ class VideoInfoDialog(MyDialog):
 
     def setup_button_layout(self):
         self.button_layout.addStretch(5)
-        self.button_layout.addWidget(self.expand_all_button, alignment=Qt.AlignmentFlag.AlignRight, stretch=0)
-        self.button_layout.addWidget(self.collapse_all_button, alignment=Qt.AlignmentFlag.AlignRight, stretch=0)
+        self.button_layout.addWidget(
+            self.expand_all_button, alignment=Qt.AlignmentFlag.AlignRight, stretch=0
+        )
+        self.button_layout.addWidget(
+            self.collapse_all_button, alignment=Qt.AlignmentFlag.AlignRight, stretch=0
+        )
 
     def disable_question_mark_window(self):
         self.setWindowFlag(Qt.WindowType.WindowContextHelpButtonHint, on=False)

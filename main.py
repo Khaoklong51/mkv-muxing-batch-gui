@@ -29,7 +29,7 @@ app: QApplication
 
 def setup_application_font():
     try:
-        font_id = QFontDatabase.addApplicationFont(GlobalFiles.MyFontPath)
+        font_id = QFontDatabase.addApplicationFont(str(GlobalFiles.MyFontPath))
         font_name = QFontDatabase.applicationFontFamilies(font_id)[0]
         font = QFont(font_name, 10)
         app.setFont(font)

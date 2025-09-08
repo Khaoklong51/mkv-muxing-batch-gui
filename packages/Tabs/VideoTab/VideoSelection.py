@@ -1,6 +1,5 @@
 from PySide6.QtCore import Signal, Qt
 from PySide6.QtWidgets import QLabel, QHBoxLayout, QGridLayout
-import os
 from pathlib import Path
 
 from packages.Startup.Options import Options
@@ -13,7 +12,6 @@ from packages.Tabs.GlobalSetting import (
     sort_names_like_windows,
     get_readable_filesize,
     get_files_names_absolute_list,
-    get_file_name_absolute_path,
 )
 from packages.Tabs.VideoTab.Widgets.LoadingVideosInfoDialog import LoadingVideosInfoDialog
 from packages.Widgets.RefreshFilesButton import RefreshFilesButton
@@ -38,22 +36,20 @@ from packages.Widgets.InvalidPathDialog import InvalidPathDialog
 from packages.Widgets.WarningDialog import WarningDialog
 
 
-def get_files_size_list(files_list, folder_path):
+def get_files_size_list(files_list: list[Path]):
     files_size_list = []
-    for i in range(len(files_list)):
-        file_name_absolute = get_file_name_absolute_path(
-            file_name=files_list[i], folder_path=folder_path
-        )
-        file_size_bytes = os.path.getsize(file_name_absolute)
-        files_size_list.append(get_readable_filesize(size_bytes=file_size_bytes))
+
+    for files in files_list:
+        file_size_bytes = files.stat().st_size
+        files_size_list.append(get_readable_filesize(file_size_bytes))
     return files_size_list
 
 
-def get_files_size_with_absolute_path_list(files_name_absolute_path):
+def get_files_size_with_absolute_path_list(files_name_absolute_path: list[Path]):
     files_size_list = []
     for i in range(len(files_name_absolute_path)):
         file_name_absolute = files_name_absolute_path[i]
-        file_size_bytes = os.path.getsize(file_name_absolute)
+        file_size_bytes = file_name_absolute.stat().st_size
         files_size_list.append(get_readable_filesize(size_bytes=file_size_bytes))
     return files_size_list
 
@@ -99,7 +95,7 @@ class VideoSelectionSetting(GlobalSetting):
         self.folders_paths = []
         self.files_names_list = []
         self.files_names_absolute_list = []
-        self.files_size_list = []
+        self.files_size_list: list[str] = []
         self.files_names_checked_list = []
         self.files_names_absolute_list_with_dropped_files = []
         self.unsupported_files_list = []
@@ -136,7 +132,7 @@ class VideoSelectionSetting(GlobalSetting):
                     self.drag_and_dropped_text
                 )
 
-    def update_files_lists(self, folder_path):
+    def update_files_lists(self, folder_path: str):
         if folder_path == "" or folder_path.isspace():
             self.folder_path = ""
             if self.is_drag_and_drop:
@@ -148,11 +144,12 @@ class VideoSelectionSetting(GlobalSetting):
                 for (
                     file_absolute_path
                 ) in self.files_names_absolute_list_with_dropped_files:
-                    if os.path.isdir(file_absolute_path):
+                    file_absolute_path = Path(file_absolute_path)
+                    if file_absolute_path.is_dir():
                         continue
-                    if os.path.getsize(file_absolute_path) == 0:
+                    if file_absolute_path.stat().st_size == 0:
                         continue
-                    temp_file_name = os.path.basename(file_absolute_path)
+                    temp_file_name = file_absolute_path.stem
                     for j in range(len(current_extensions)):
                         temp_file_extension_start_index = temp_file_name.rfind(".")
                         if temp_file_extension_start_index == -1:
@@ -160,18 +157,14 @@ class VideoSelectionSetting(GlobalSetting):
                         temp_file_extension = temp_file_name[
                             temp_file_extension_start_index + 1 :
                         ]
-                        if temp_file_extension.lower() == current_extensions[j].lower():
+                        if (
+                            temp_file_extension.lower()
+                            == str(current_extensions[j]).lower()
+                        ):
                             new_files_absolute_path_list.append(file_absolute_path)
-                            self.files_names_list.append(
-                                os.path.basename(file_absolute_path)
-                            )
-                            if (
-                                os.path.dirname(file_absolute_path)
-                                not in self.folders_paths
-                            ):
-                                self.folders_paths.append(
-                                    Path(os.path.dirname(file_absolute_path))
-                                )
+                            self.files_names_list.append(file_absolute_path.stem)
+                            if file_absolute_path.is_dir() not in self.folders_paths:
+                                self.folders_paths.append(file_absolute_path.parent)
                             break
                 self.video_source_lineEdit.stop_check_path = True
                 self.video_source_lineEdit.setText(self.drag_and_dropped_text)
@@ -195,18 +188,12 @@ class VideoSelectionSetting(GlobalSetting):
                         self.files_names_list = []
                         self.folders_paths = []
                         for file_absolute_path in new_files_absolute_path_list:
+                            file_absolute_path = Path(file_absolute_path)
                             if file_absolute_path not in self.unsupported_files_list:
                                 new_files_absolute_path_list.append(file_absolute_path)
-                                self.files_names_list.append(
-                                    os.path.basename(file_absolute_path)
-                                )
-                                if (
-                                    os.path.dirname(file_absolute_path)
-                                    not in self.folders_paths
-                                ):
-                                    self.folders_paths.append(
-                                        Path(os.path.dirname(file_absolute_path))
-                                    )
+                                self.files_names_list.append(file_absolute_path.stem)
+                                if file_absolute_path.is_dir() not in self.folders_paths:
+                                    self.folders_paths.append(file_absolute_path.parent)
                         self.files_names_absolute_list = (
                             new_files_absolute_path_list.copy()
                         )
@@ -223,7 +210,7 @@ class VideoSelectionSetting(GlobalSetting):
                             "One or more files couldn't be recognised as video:"
                         )
                         for file_name_absolute in self.unsupported_files_list:
-                            error_message += "\n" + os.path.basename(file_name_absolute)
+                            error_message += "\n" + Path(file_name_absolute).stem
                         error_dialog = ErrorDialog(
                             window_title="Unrecognised files",
                             error_message=error_message,
@@ -236,18 +223,14 @@ class VideoSelectionSetting(GlobalSetting):
             return
         try:
             self.is_drag_and_drop = False
-            self.folder_path = folder_path
+            self.folder_path = Path(folder_path)
             self.folders_paths = [Path(folder_path)]
-            self.files_names_list = self.get_files_list(self.folder_path)
-            self.files_names_absolute_list = get_files_names_absolute_list(
-                self.files_names_list, self.folder_path
-            )
+            self.files_names_absolute_list = self.get_files_list(self.folder_path)
+            self.files_names_list = [x.name for x in self.files_names_absolute_list]
             self.files_names_absolute_list_with_dropped_files = (
                 self.files_names_absolute_list.copy()
             )
-            self.files_size_list = get_files_size_list(
-                files_list=self.files_names_list, folder_path=self.folder_path
-            )
+            self.files_size_list = get_files_size_list(self.files_names_absolute_list)
             self.files_names_checked_list = [True] * len(self.files_names_absolute_list)
             self.unsupported_files_list = []
             if len(self.files_names_absolute_list) > 0:
@@ -255,22 +238,16 @@ class VideoSelectionSetting(GlobalSetting):
                     self.files_names_absolute_list
                 )
                 if len(self.unsupported_files_list) > 0:
-                    new_files_absolute_path_list = []
+                    new_files_absolute_path_list: list[Path] = []
                     self.files_names_list = []
                     self.folders_paths = []
                     for file_absolute_path in self.files_names_absolute_list:
+                        file_absolute_path = Path(file_absolute_path)
                         if file_absolute_path not in self.unsupported_files_list:
                             new_files_absolute_path_list.append(file_absolute_path)
-                            self.files_names_list.append(
-                                os.path.basename(file_absolute_path)
-                            )
-                            if (
-                                os.path.dirname(file_absolute_path)
-                                not in self.folders_paths
-                            ):
-                                self.folders_paths.append(
-                                    Path(os.path.dirname(file_absolute_path))
-                                )
+                            self.files_names_list.append(file_absolute_path.stem)
+                            if file_absolute_path.is_dir() not in self.folders_paths:
+                                self.folders_paths.append(file_absolute_path.parent)
                     self.files_names_absolute_list = new_files_absolute_path_list.copy()
                     self.files_size_list = get_files_size_with_absolute_path_list(
                         new_files_absolute_path_list
@@ -283,7 +260,7 @@ class VideoSelectionSetting(GlobalSetting):
                     )
                     error_message = "One or more files couldn't be recognised as video:"
                     for file_name_absolute in self.unsupported_files_list:
-                        error_message += "\n" + os.path.basename(file_name_absolute)
+                        error_message += "\n" + Path(file_name_absolute).stem
                     error_dialog = ErrorDialog(
                         window_title="Unrecognised files",
                         error_message=error_message,
@@ -298,27 +275,20 @@ class VideoSelectionSetting(GlobalSetting):
         self.video_refresh_files_button.setEnabled(False)
         self.video_refresh_files_button.setToolTip("Disabled due to Drag/Drop mode")
 
-    def get_files_list(self, folder_path):
-        temp_files_names = sort_names_like_windows(names_list=os.listdir(folder_path))
-        temp_files_names_absolute = get_files_names_absolute_list(
-            temp_files_names, folder_path
-        )
-        current_extensions = self.video_extensions_comboBox.currentData()
-        result = []
-        for i in range(len(temp_files_names)):
-            if os.path.isdir(temp_files_names_absolute[i]):
-                continue
-            if os.path.getsize(temp_files_names_absolute[i]) == 0:
-                continue
-            for j in range(len(current_extensions)):
-                temp_file_extension_start_index = temp_files_names[i].rfind(".")
-                if temp_file_extension_start_index == -1:
-                    continue
-                temp_file_extension = temp_files_names[i][
-                    temp_file_extension_start_index + 1 :
-                ]
-                if temp_file_extension.lower() == current_extensions[j].lower():
-                    result.append(temp_files_names[i])
+    def get_files_list(self, folder_path: Path) -> list[Path]:
+        folder_path: list[Path] = [x for x in folder_path.iterdir() if x.is_file()]
+        temp_files_names = [
+            x
+            for x in sort_names_like_windows(folder_path)
+            if x.is_file() and x.stat().st_size != 0
+        ]
+        current_extensions: list[str] = self.video_extensions_comboBox.currentData()
+        result: list[Path] = []
+        for files in temp_files_names:
+            for ext in current_extensions:
+                temp_file_extension = files.suffix.removeprefix(".")
+                if temp_file_extension.lower() == ext.lower():
+                    result.append(files)  # so that ui show file name not full path
                     break
         return result
 
@@ -377,9 +347,9 @@ class VideoSelectionSetting(GlobalSetting):
     def show_files_list(self):
         self.table.checking_row_updates = False
         self.table.show_files_list(
-            files_names_list=self.files_names_list,
-            files_names_checked_list=self.files_names_checked_list,
-            files_size_list=self.files_size_list,
+            self.files_names_list,
+            self.files_names_checked_list,
+            self.files_size_list,
         )
         self.table.checking_row_updates = True
         self.update_other_classes_variables()
@@ -417,7 +387,7 @@ class VideoSelectionSetting(GlobalSetting):
         self.files_size_list = []
         self.video_source_lineEdit.set_text_safe_change("")
         self.is_drag_and_drop = False
-        self.files_names_checked_list = []
+        self.files_names_checked_list: list[bool] = []
         self.show_files_list()
 
     def setup_video_source_label(self):
@@ -446,8 +416,8 @@ class VideoSelectionSetting(GlobalSetting):
 
     def change_global_last_path_directory(self):
         if (
-            self.folder_path != ""
-            and not self.folder_path.isspace()
+            str(self.folder_path) != ""
+            and not str(self.folder_path).isspace()
             and not self.is_drag_and_drop
         ):
             GlobalSetting.LAST_DIRECTORY_PATH = self.folder_path
@@ -465,12 +435,13 @@ class VideoSelectionSetting(GlobalSetting):
                     self.files_names_absolute_list[i]
                 )
                 if (
-                    Path(os.path.dirname(self.files_names_absolute_list[i]))
+                    self.files_names_absolute_list[i].parent
                     not in GlobalSetting.VIDEO_SOURCE_PATHS
                 ):
                     GlobalSetting.VIDEO_SOURCE_PATHS.append(
-                        Path(os.path.dirname(self.files_names_absolute_list[i]))
+                        self.files_names_absolute_list[i].parent
                     )
+
         update_global_videos_tracks_info()
 
     def update_checked_video(self, video_index):
@@ -480,7 +451,7 @@ class VideoSelectionSetting(GlobalSetting):
         self.change_global_video_list()
         self.update_global_video_source_mkv_only()
 
-    def update_unchecked_video(self, video_index):
+    def update_unchecked_video(self, video_index: int):
         if not self.files_names_checked_list[video_index]:
             return
         self.files_names_checked_list[video_index] = False
@@ -490,6 +461,7 @@ class VideoSelectionSetting(GlobalSetting):
     def update_global_video_source_mkv_only(self):
         All_MKV = True
         for file_name in GlobalSetting.VIDEO_FILES_LIST:
+            file_name = str(file_name)
             file_extension_start_index = file_name.rfind(".")
             file_extension = file_name[file_extension_start_index + 1 :]
             if file_extension.lower() != "mkv":
@@ -524,19 +496,19 @@ class VideoSelectionSetting(GlobalSetting):
         else:
             self.enable_editable_widgets()
 
-    def update_files_with_drag_and_drop(self, paths_list):
+    def update_files_with_drag_and_drop(self, paths_list: list[Path]):
         self.disable_video_refresh_button_cause_drag_and_drop()
         duplicate_flag = False
-        not_duplicate_files_absolute_path_list = []
+        not_duplicate_files_absolute_path_list: list[Path] = []
         not_duplicate_files_list = []
         duplicate_files_list = []
-        new_files_absolute_path_list = []
+        new_files_absolute_path_list: list[Path] = []
         current_extensions = self.video_extensions_comboBox.currentData()
         for path in paths_list:
-            if os.path.isfile(path):
-                if os.path.getsize(path) == 0:
+            if path.is_file():
+                if path.stat().st_size == 0:
                     continue
-                temp_file_name = os.path.basename(path)
+                temp_file_name = path.stem
                 for j in range(len(current_extensions)):
                     temp_file_extension_start_index = temp_file_name.rfind(".")
                     if temp_file_extension_start_index == -1:
@@ -548,8 +520,8 @@ class VideoSelectionSetting(GlobalSetting):
                         new_files_absolute_path_list.append(path)
                         break
             else:
-                if os.path.dirname(path) not in self.folders_paths:
-                    self.folders_paths.append(Path(os.path.dirname(path)))
+                if path.parent not in self.folders_paths:
+                    self.folders_paths.append(path.parent)
                 new_files_absolute_path_list.extend(
                     sort_names_like_windows(
                         get_files_names_absolute_list(self.get_files_list(path), path)
@@ -557,14 +529,12 @@ class VideoSelectionSetting(GlobalSetting):
                 )
 
         for new_file_name in new_files_absolute_path_list:
-            if os.path.basename(new_file_name).lower() in map(
-                str.lower, self.files_names_list
-            ):
+            if new_file_name.stem.lower() in map(str.lower, self.files_names_list):
                 duplicate_flag = True
-                duplicate_files_list.append(os.path.basename(new_file_name))
+                duplicate_files_list.append(new_file_name.stem)
             else:
                 not_duplicate_files_absolute_path_list.append(new_file_name)
-                not_duplicate_files_list.append(os.path.basename(new_file_name))
+                not_duplicate_files_list.append(new_file_name.stem)
         self.video_source_lineEdit.stop_check_path = True
         self.video_source_lineEdit.setText(self.drag_and_dropped_text)
         self.is_drag_and_drop = True
@@ -581,14 +551,13 @@ class VideoSelectionSetting(GlobalSetting):
                         not_duplicate_files_and_supported_absolute_path_list.append(
                             new_file_name
                         )
-                        self.files_names_list.append(os.path.basename(new_file_name))
-                        if os.path.dirname(new_file_name) not in self.folders_paths:
-                            self.folders_paths.append(
-                                Path(os.path.dirname(new_file_name))
-                            )
+                        self.files_names_list.append(new_file_name.stem)
+                        if new_file_name.parent not in self.folders_paths:
+                            self.folders_paths.append(new_file_name.parent)
                 error_message = "One or more files couldn't be recognised as video:"
                 for file_name_absolute in self.unsupported_files_list:
-                    error_message += "\n" + os.path.basename(file_name_absolute)
+                    file_name_absolute = Path(file_name_absolute)
+                    error_message += "\n" + file_name_absolute.stem
                 error_dialog = ErrorDialog(
                     window_title="Unrecognised files",
                     error_message=error_message,
@@ -611,9 +580,9 @@ class VideoSelectionSetting(GlobalSetting):
                 )
             else:
                 for file_name in not_duplicate_files_absolute_path_list:
-                    self.files_names_list.append(os.path.basename(file_name))
-                    if os.path.dirname(file_name) not in self.folders_paths:
-                        self.folders_paths.append(Path(os.path.dirname(file_name)))
+                    self.files_names_list.append(file_name.stem)
+                    if file_name.parent not in self.folders_paths:
+                        self.folders_paths.append(file_name.parent)
                 self.files_names_absolute_list_with_dropped_files.extend(
                     not_duplicate_files_absolute_path_list
                 )
@@ -644,7 +613,7 @@ class VideoSelectionSetting(GlobalSetting):
             )
             warning_dialog.execute_wth_no_block()
 
-    def start_loading_new_videos_dialog(self, new_videos_list):
+    def start_loading_new_videos_dialog(self, new_videos_list: list[Path]) -> list[Path]:
         loading_videos_info_dialog = LoadingVideosInfoDialog(
             new_videos_list, parent=self.window()
         )

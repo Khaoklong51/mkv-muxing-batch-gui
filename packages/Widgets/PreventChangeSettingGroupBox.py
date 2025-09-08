@@ -19,7 +19,8 @@ class PreventChangeSettingGroupBox(QGroupBox):
         self.prevent_change_setting_layout.setContentsMargins(0, 0, 0, 5)
         self.prevent_change_setting_layout.addWidget(self.prevent_change_setting_icon)
         self.prevent_change_setting_layout.addWidget(self.prevent_change_setting_text)
-        self.setToolTip("You can't change global settings while job queue has unfinished job(s)")
+        self.setToolTip(
+            "You can't change global settings while job queue has unfinished job(s)"
+        )
         self.setToolTipDuration(12000)
-        self.setLayout(
-            self.prevent_change_setting_layout)
+        self.setLayout(self.prevent_change_setting_layout)

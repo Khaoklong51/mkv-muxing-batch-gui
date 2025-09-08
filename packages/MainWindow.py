@@ -9,7 +9,9 @@ from packages.Startup.Version import Version
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.TabsManager import TabsManager
 from packages.Widgets.ChoosePresetDialog import ChoosePresetDialog
-from packages.Widgets.CloseDialogWhileAtLeastOneOptionSelected import CloseDialogWhileAtLeastOneOptionSelected
+from packages.Widgets.CloseDialogWhileAtLeastOneOptionSelected import (
+    CloseDialogWhileAtLeastOneOptionSelected,
+)
 from packages.Widgets.CloseDialogWhileMuxingOn import CloseDialogWhileMuxingOn
 from packages.Widgets.MyMainWindow import MyMainWindow
 from packages.Widgets.TaskBarProgress import TaskBarProgress
@@ -58,10 +60,18 @@ class MainWindow(MyMainWindow):
 
     def connect_signals(self):
         self.tabs.currentChanged.connect(self.update_minimum_size)
-        self.tabs.task_bar_start_muxing_signal.connect(self.task_bar_progress.start_muxing)
-        self.tabs.update_task_bar_progress_signal.connect(self.task_bar_progress.update_progress)
-        self.tabs.update_task_bar_paused_signal.connect(self.task_bar_progress.pause_progress)
-        self.tabs.update_task_bar_clear_signal.connect(self.task_bar_progress.hide_progress)
+        self.tabs.task_bar_start_muxing_signal.connect(
+            self.task_bar_progress.start_muxing
+        )
+        self.tabs.update_task_bar_progress_signal.connect(
+            self.task_bar_progress.update_progress
+        )
+        self.tabs.update_task_bar_paused_signal.connect(
+            self.task_bar_progress.pause_progress
+        )
+        self.tabs.update_task_bar_clear_signal.connect(
+            self.task_bar_progress.hide_progress
+        )
         self.tabs.theme_changed_signal.connect(self.update_theme)
 
     def update_theme(self):
@@ -90,7 +100,10 @@ class MainWindow(MyMainWindow):
             else:
                 event.ignore()
             return
-        option_selected = len(GlobalSetting.VIDEO_FILES_LIST) > 0 and not GlobalSetting.JOB_QUEUE_FINISHED
+        option_selected = (
+            len(GlobalSetting.VIDEO_FILES_LIST) > 0
+            and not GlobalSetting.JOB_QUEUE_FINISHED
+        )
         if option_selected:
             want_to_exit = check_if_exit_while_selected_one_option()
             if want_to_exit:
@@ -103,8 +116,11 @@ class MainWindow(MyMainWindow):
     @staticmethod
     def check_if_need_to_show_choose_preset_dialog(parent):
         if Options.Choose_Preset_On_Startup:
-            choose_preset_dialog = ChoosePresetDialog(preset_list=get_names_list_of_presets(),
-                                                      favorite_preset_id=Options.FavoritePresetId, parent=parent)
+            choose_preset_dialog = ChoosePresetDialog(
+                preset_list=get_names_list_of_presets(),
+                favorite_preset_id=Options.FavoritePresetId,
+                parent=parent,
+            )
             choose_preset_dialog.execute()
             selected_preset_id = Options.FavoritePresetId
             if choose_preset_dialog.chosen_index != -1:

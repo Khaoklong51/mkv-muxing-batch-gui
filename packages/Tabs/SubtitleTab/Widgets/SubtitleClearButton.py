@@ -3,7 +3,9 @@ from PySide6.QtWidgets import QPushButton
 
 from packages.Startup import GlobalIcons
 from packages.Tabs.GlobalSetting import GlobalSetting
-from packages.Tabs.SubtitleTab.Widgets.ClearSubtitleFilesDialog import ClearSubtitleFilesDialog
+from packages.Tabs.SubtitleTab.Widgets.ClearSubtitleFilesDialog import (
+    ClearSubtitleFilesDialog,
+)
 
 
 class SubtitleClearButton(QPushButton):
@@ -31,7 +33,12 @@ class SubtitleClearButton(QPushButton):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -41,7 +48,12 @@ class SubtitleClearButton(QPushButton):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:

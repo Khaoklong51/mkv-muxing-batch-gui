@@ -22,8 +22,9 @@ class MoveSubtitleToButton(QPushButton):
     def clicked_button(self):
         current_index = self.current_index
         if current_index != -1:
-            move_subtitle_to_dialog = MoveSubtitleToDialog(max_index=self.max_index, current_index=current_index,
-                                                           parent=self)
+            move_subtitle_to_dialog = MoveSubtitleToDialog(
+                max_index=self.max_index, current_index=current_index, parent=self
+            )
             move_subtitle_to_dialog.execute()
             if move_subtitle_to_dialog.result == "Yes":
                 new_index = move_subtitle_to_dialog.position - 1
@@ -39,7 +40,12 @@ class MoveSubtitleToButton(QPushButton):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -49,7 +55,12 @@ class MoveSubtitleToButton(QPushButton):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:

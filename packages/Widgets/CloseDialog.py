@@ -1,6 +1,5 @@
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QGridLayout, QLabel, \
-     QPushButton, QHBoxLayout
+from PySide6.QtWidgets import QGridLayout, QLabel, QPushButton, QHBoxLayout
 
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
@@ -13,7 +12,10 @@ class CloseDialog(MyDialog):
     You can check for result after calling `CloseDialog.execute()`
     By checking of value `CloseDialog.result` which can be either [Cancel/Exit]
     """
-    def __init__(self, parent=None, info_message="Close Dialog", close_button_name="Close"):
+
+    def __init__(
+        self, parent=None, info_message="Close Dialog", close_button_name="Close"
+    ):
         super().__init__(parent)
         self.info_message = info_message
         self.window_title = "Confirm Exit"

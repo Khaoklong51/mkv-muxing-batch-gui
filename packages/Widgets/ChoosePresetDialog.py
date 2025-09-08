@@ -1,6 +1,13 @@
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt, QSize
-from PySide6.QtWidgets import QHBoxLayout,QGridLayout, QLabel, QPushButton, QComboBox, QCheckBox
+from PySide6.QtWidgets import (
+    QHBoxLayout,
+    QGridLayout,
+    QLabel,
+    QPushButton,
+    QComboBox,
+    QCheckBox,
+)
 
 from packages.Startup import GlobalIcons
 from packages.Startup.InitializeScreenResolution import screen_size
@@ -39,10 +46,18 @@ class ChoosePresetDialog(MyDialog):
         self.preset_layout.addWidget(self.preset_comboBox, stretch=3)
         self.main_layout = QGridLayout()
         self.main_layout.addLayout(self.preset_layout, 0, 0, 1, -1)
-        self.main_layout.addWidget(self.remember_my_choice_checkbox, 2, 0, 1, -1,
-                                   alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addWidget(
+            self.remember_my_choice_checkbox,
+            2,
+            0,
+            1,
+            -1,
+            alignment=Qt.AlignmentFlag.AlignCenter,
+        )
         # self.main_layout.addWidget(self.extra_message, 1, 0, 1, 2)
-        self.main_layout.addLayout(self.buttonLayout, 3, 0, -1, -1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addLayout(
+            self.buttonLayout, 3, 0, -1, -1, alignment=Qt.AlignmentFlag.AlignCenter
+        )
         self.main_layout.setContentsMargins(13, 13, 13, 13)
         self.setLayout(self.main_layout)
 
@@ -62,9 +77,13 @@ class ChoosePresetDialog(MyDialog):
         self.preset_comboBox.setIconSize(QSize(16, 16))
         for item_index in range(len(items)):
             if self.favorite_preset_id == item_index:
-                self.preset_comboBox.addItem(GlobalIcons.SelectedItemIcon, items[item_index])
+                self.preset_comboBox.addItem(
+                    GlobalIcons.SelectedItemIcon, items[item_index]
+                )
             else:
-                self.preset_comboBox.addItem(GlobalIcons.UnSelectedItemIcon, items[item_index])
+                self.preset_comboBox.addItem(
+                    GlobalIcons.UnSelectedItemIcon, items[item_index]
+                )
 
     def setup_ui(self):
         self.disable_question_mark_window()
@@ -91,7 +110,7 @@ class ChoosePresetDialog(MyDialog):
 
     def disable_question_mark_window(self):
         self.setWindowFlag(QtCore.Qt.WindowType.WindowContextHelpButtonHint, on=False)
-        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint,on=False)
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, on=False)
 
     def increase_message_font_size(self, value):
         message_font = self.message.font()

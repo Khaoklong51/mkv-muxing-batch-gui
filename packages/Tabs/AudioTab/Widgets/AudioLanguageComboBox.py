@@ -14,8 +14,12 @@ class AudioLanguageComboBox(QComboBox):
         self.setMinimumWidth(screen_size.width() // 13)
         self.initialize()
         self.set_current_index()
-        self.setToolTip("Audio Language: " + Options.CurrentPreset.Default_Audio_Language + "\nYou can add/remove "
-                                                                                            "languages in options")
+        self.setToolTip(
+            "Audio Language: "
+            + Options.CurrentPreset.Default_Audio_Language
+            + "\nYou can add/remove "
+            "languages in options"
+        )
         self.setMaxVisibleItems(8)
         self.setStyleSheet("QComboBox { combobox-popup: 0; }")
         self.currentTextChanged.connect(self.change_global_audio_language)
@@ -26,17 +30,29 @@ class AudioLanguageComboBox(QComboBox):
 
     def set_current_index(self):
         self.setCurrentIndex(
-            Options.CurrentPreset.Default_Favorite_Audio_Languages.index(Options.CurrentPreset.Default_Audio_Language))
+            Options.CurrentPreset.Default_Favorite_Audio_Languages.index(
+                Options.CurrentPreset.Default_Audio_Language
+            )
+        )
 
     def change_global_audio_language(self):
-        self.setToolTip("Audio Language: " + self.currentText() + "\nYou can add/remove languages in options")
+        self.setToolTip(
+            "Audio Language: "
+            + self.currentText()
+            + "\nYou can add/remove languages in options"
+        )
         GlobalSetting.AUDIO_LANGUAGE[self.tab_index] = self.currentText()
 
     def setEnabled(self, new_state: bool):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -46,7 +62,12 @@ class AudioLanguageComboBox(QComboBox):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:

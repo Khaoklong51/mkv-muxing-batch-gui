@@ -1,6 +1,5 @@
 from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QGridLayout, QLabel, \
-     QPushButton, QHBoxLayout
+from PySide6.QtWidgets import QGridLayout, QLabel, QPushButton, QHBoxLayout
 
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons

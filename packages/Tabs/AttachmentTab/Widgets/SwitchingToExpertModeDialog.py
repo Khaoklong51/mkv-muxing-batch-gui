@@ -1,7 +1,6 @@
 from PySide6 import QtGui, QtCore
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QGridLayout, QLabel, \
-    QPushButton, QHBoxLayout, QCheckBox
+from PySide6.QtWidgets import QGridLayout, QLabel, QPushButton, QHBoxLayout, QCheckBox
 
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
@@ -18,7 +17,9 @@ class SwitchingToExpertModeDialog(MyDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.info_message = "In this mode you can attach file/folder for each video separately"
+        self.info_message = (
+            "In this mode you can attach file/folder for each video separately"
+        )
         self.window_title = "Switching To Expert Mode"
         self.result = "Cancel"
         self.show_message_result = "Yes"
@@ -33,11 +34,15 @@ class SwitchingToExpertModeDialog(MyDialog):
         self.buttons_layout.setSpacing(7)
         self.main_layout = QGridLayout()
         self.main_layout_spacer_item = QLabel()
-        self.main_layout.addWidget(self.messageIcon, 0, 0, 3, 1, alignment=Qt.AlignmentFlag.AlignVCenter)
+        self.main_layout.addWidget(
+            self.messageIcon, 0, 0, 3, 1, alignment=Qt.AlignmentFlag.AlignVCenter
+        )
         self.main_layout.addWidget(self.main_layout_spacer_item, 0, 1, 1, 1)  # add space
         self.main_layout.addWidget(self.message, 0, 2, 2, 3)
         self.main_layout.addWidget(self.show_message_again, 1, 2, 2, 3)
-        self.main_layout.addLayout(self.buttons_layout, 3, 0, 1, -1, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.main_layout.addLayout(
+            self.buttons_layout, 3, 0, 1, -1, alignment=Qt.AlignmentFlag.AlignCenter
+        )
         self.main_layout.setContentsMargins(10, 10, 10, 10)
         self.main_layout.setVerticalSpacing(12)
         self.setLayout(self.main_layout)

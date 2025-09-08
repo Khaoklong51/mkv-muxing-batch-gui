@@ -9,7 +9,9 @@ from packages.Startup.Version import Version
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.TabsManager import TabsManager
 from packages.Widgets.ChoosePresetDialog import ChoosePresetDialog
-from packages.Widgets.CloseDialogWhileAtLeastOneOptionSelected import CloseDialogWhileAtLeastOneOptionSelected
+from packages.Widgets.CloseDialogWhileAtLeastOneOptionSelected import (
+    CloseDialogWhileAtLeastOneOptionSelected,
+)
 from packages.Widgets.CloseDialogWhileMuxingOn import CloseDialogWhileMuxingOn
 from packages.Widgets.MyMainWindow import MyMainWindow
 
@@ -17,13 +19,13 @@ from packages.Widgets.MyMainWindow import MyMainWindow
 def check_if_exit_when_muxing_on():
     close_dialog = CloseDialogWhileMuxingOn()
     close_dialog.execute()
-    return close_dialog.result == 'Exit'
+    return close_dialog.result == "Exit"
 
 
 def check_if_exit_while_selected_one_option():
     close_dialog = CloseDialogWhileAtLeastOneOptionSelected()
     close_dialog.execute()
-    return close_dialog.result == 'Exit'
+    return close_dialog.result == "Exit"
 
 
 class MainWindowNonWindowsSystem(MyMainWindow):
@@ -69,7 +71,10 @@ class MainWindowNonWindowsSystem(MyMainWindow):
             else:
                 event.ignore()
             return
-        option_selected = len(GlobalSetting.VIDEO_FILES_LIST) > 0 and not GlobalSetting.JOB_QUEUE_FINISHED
+        option_selected = (
+            len(GlobalSetting.VIDEO_FILES_LIST) > 0
+            and not GlobalSetting.JOB_QUEUE_FINISHED
+        )
         if option_selected:
             want_to_exit = check_if_exit_while_selected_one_option()
             if want_to_exit:
@@ -78,11 +83,15 @@ class MainWindowNonWindowsSystem(MyMainWindow):
                 event.ignore()
             return
         super().closeEvent(event)
+
     @staticmethod
     def check_if_need_to_show_choose_preset_dialog(parent):
         if Options.Choose_Preset_On_Startup:
-            choose_preset_dialog = ChoosePresetDialog(preset_list=get_names_list_of_presets(),
-                                                      favorite_preset_id=Options.FavoritePresetId,parent=parent)
+            choose_preset_dialog = ChoosePresetDialog(
+                preset_list=get_names_list_of_presets(),
+                favorite_preset_id=Options.FavoritePresetId,
+                parent=parent,
+            )
             choose_preset_dialog.execute()
             selected_preset_id = Options.FavoritePresetId
             if choose_preset_dialog.chosen_index != -1:

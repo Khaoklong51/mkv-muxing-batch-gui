@@ -10,9 +10,11 @@ from packages.Tabs.GlobalSetting import GlobalSetting
 class VideoDefaultDurationFPSComboBox(QComboBox):
     def __init__(self):
         super().__init__()
-        self.hint_when_enabled = "<nobr>Force the default duration or number of frames per second for a video " \
-                                 "<br>Only change " \
-                                 "it if you really know what you are doing"
+        self.hint_when_enabled = (
+            "<nobr>Force the default duration or number of frames per second for a video "
+            "<br>Only change "
+            "it if you really know what you are doing"
+        )
         self.setMinimumWidth(screen_size.width() // 11)
         self.addItems(AllVideoDefaultDurationFPSLanguages)
         self.setCurrentIndex(0)
@@ -31,7 +33,12 @@ class VideoDefaultDurationFPSComboBox(QComboBox):
         super().setEnabled(new_state)
         if not new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -41,7 +48,12 @@ class VideoDefaultDurationFPSComboBox(QComboBox):
         super().setDisabled(new_state)
         if new_state and not GlobalSetting.JOB_QUEUE_EMPTY:
             if self.hint_when_enabled != "":
-                self.setToolTip("<nobr>" + self.hint_when_enabled + "<br>" + GlobalSetting.DISABLE_TOOLTIP)
+                self.setToolTip(
+                    "<nobr>"
+                    + self.hint_when_enabled
+                    + "<br>"
+                    + GlobalSetting.DISABLE_TOOLTIP
+                )
             else:
                 self.setToolTip("<nobr>" + GlobalSetting.DISABLE_TOOLTIP)
         else:
@@ -58,4 +70,3 @@ class VideoDefaultDurationFPSComboBox(QComboBox):
         else:
             self.setPalette(get_light_palette())
         self.setStyleSheet("QComboBox { combobox-popup: 0; }")
-
