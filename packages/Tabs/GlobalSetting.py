@@ -29,7 +29,7 @@ def get_attribute(data, attribute, default_value):
 
 
 def sort_names_like_windows(names_list: list[Path]):
-    def convert(text: Path):
+    def convert(text: str):
         return int(text) if str(text).isdigit() else str(text).lower()
 
     def alphanum_key(key: Path):
@@ -192,17 +192,17 @@ def refresh_old_tracks_info_as_bulk(tracks_info: list[list[SingleOldTrackData]])
                     temp_old_track_data.is_enabled
                     != track_dict[track_id][video_id].is_enabled
                 ):
-                    temp_old_track_data.is_enabled = None
+                    temp_old_track_data.is_enabled = False
                 if (
                     temp_old_track_data.is_default
                     != track_dict[track_id][video_id].is_default
                 ):
-                    temp_old_track_data.is_default = None
+                    temp_old_track_data.is_default = False
                 if (
                     temp_old_track_data.is_forced
                     != track_dict[track_id][video_id].is_forced
                 ):
-                    temp_old_track_data.is_forced = None
+                    temp_old_track_data.is_forced = False
         if all_same:
             tracks_bulk_data[track_id] = temp_old_track_data
         else:
@@ -309,7 +309,7 @@ def refresh_old_tracks_info(track_type):
 
 
 class GlobalSetting(QWidget):
-    LAST_DIRECTORY_PATH = ""
+    LAST_DIRECTORY_PATH: str
     VIDEO_SOURCE_PATHS = []
     VIDEO_FILES_LIST: list[Path] = []
     VIDEO_FILES_SIZE_LIST: list[str] = []

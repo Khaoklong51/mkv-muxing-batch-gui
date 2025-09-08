@@ -25,6 +25,9 @@ class YesNoDialog(MyDialog):
         self.main_layout.setContentsMargins(20, 20, 20, 20)
         self.setLayout(self.main_layout)
 
+        # The fuck is this
+        # assign string to fucntion return int
+        # do not change this, it break
         self.result = "No"
         self.setup_ui()
         self.signal_connect()

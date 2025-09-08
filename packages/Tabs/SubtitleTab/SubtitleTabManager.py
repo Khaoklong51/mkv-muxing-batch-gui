@@ -15,7 +15,7 @@ class SubtitleTabManager(GlobalSetting):
 
     def __init__(self):
         super().__init__()
-        self.subtitle_tabs = []
+        self.subtitle_tabs: list[SubtitleSelectionSetting] = []
         self.subtitle_tabs_indices = []
         self.current_index_counter = 0
         self.current_tab_index = 0
@@ -27,7 +27,7 @@ class SubtitleTabManager(GlobalSetting):
         self.subtitle_tabs.append(SubtitleSelectionSetting(self.current_index_counter))
         self.subtitle_tabs_indices.append(self.current_index_counter)
         self.current_index_counter += 1
-        self.current_subtitle_tab = self.subtitle_tabs[-1]
+        self.current_subtitle_tab: SubtitleSelectionSetting = self.subtitle_tabs[-1]
         self.current_subtitle_tab.is_there_old_files_signal.connect(
             self.update_is_there_old_files
         )
@@ -51,7 +51,7 @@ class SubtitleTabManager(GlobalSetting):
         self.subtitle_tab_delete_button.remove_tab_signal.connect(self.delete_current_tab)
         self.tab_clicked_signal.connect(self.tab_clicked)
 
-    def change_current_tab(self, tab_index):
+    def change_current_tab(self, tab_index: int):
         real_index = self.subtitle_tabs_indices[tab_index]
         self.MainLayout.replaceWidget(
             self.current_subtitle_tab, self.subtitle_tabs[tab_index]

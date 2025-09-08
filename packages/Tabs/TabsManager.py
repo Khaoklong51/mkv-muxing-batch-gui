@@ -59,7 +59,7 @@ class TabsManager(QTabWidget):
         self.button_layout.addWidget(self.setting_button)
         self.buttons_widget.setLayout(self.button_layout)
         self.button_layout.setContentsMargins(0, 0, 0, 0)
-        self.setCornerWidget(self.buttons_widget, Qt.TopRightCorner)
+        self.setCornerWidget(self.buttons_widget, Qt.Corner.TopRightCorner)
         self.connect_signals()
         self.setup_tabs_theme()
 
@@ -103,7 +103,7 @@ class TabsManager(QTabWidget):
         )
         self.set_tab_color(tab_index=self.tabs_ids["Video"], color_string=activate_color)
         self.set_tab_color(
-            tab_index=self.tabs_ids["Subtitle"], color_string=activate_color
+            tab_index=self.tabs_ids["Subtitle"], color_string=disabled_color
         )
         self.set_tab_color(tab_index=self.tabs_ids["Audio"], color_string=disabled_color)
         self.set_tab_color(
@@ -196,7 +196,7 @@ class TabsManager(QTabWidget):
             else:
                 self.set_tab_color(tab_index=tab_id, color_string=disabled_color)
 
-    def current_tab_changed(self, index):
+    def current_tab_changed(self, index: int):
         if index == self.tabs_ids["Video"]:
             self.video_tab.tab_clicked_signal.emit()
         elif index == self.tabs_ids["Subtitle"]:

@@ -1,7 +1,7 @@
 from PySide6.QtCore import Signal, Qt
 from PySide6.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QGridLayout, QWidget
 import os
-from PySide6 import QtGui
+from PySide6.QtGui import QMouseEvent, QShowEvent
 
 from packages.Startup.Options import Options
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
@@ -265,10 +265,10 @@ class SubtitleSelectionSetting(QGroupBox):
             if os.path.getsize(temp_files_names_absolute[i]) == 0:
                 continue
             for j in range(len(current_extensions)):
-                temp_file_extension_start_index = temp_files_names[i].rfind(".")
+                temp_file_extension_start_index = str(temp_files_names[i]).rfind(".")
                 if temp_file_extension_start_index == -1:
                     continue
-                temp_file_extension = temp_files_names[i][
+                temp_file_extension = str(temp_files_names[i])[
                     temp_file_extension_start_index + 1 :
                 ]
                 if temp_file_extension.lower() == current_extensions[j].lower():
@@ -349,17 +349,17 @@ class SubtitleSelectionSetting(QGroupBox):
             GlobalSetting.SUBTITLE_TAB_ENABLED[self.tab_index] = False
             GlobalSetting.SUBTITLE_LANGUAGE[self.tab_index] = ""
 
-    def mousePressEvent(self, QMouseEvent):
-        if QMouseEvent.buttons() == Qt.RightButton:
+    def mousePressEvent(self, Qmouseevent: QMouseEvent):
+        if Qmouseevent.buttons() == Qt.MouseButton.RightButton:
             self.subtitle_match_layout.clear_subtitle_selection()
         if (
-            QMouseEvent.buttons() == Qt.RightButton
-            or QMouseEvent.buttons() == Qt.LeftButton
+            Qmouseevent.buttons() == Qt.MouseButton.RightButton
+            or Qmouseevent.buttons() == Qt.MouseButton.LeftButton
         ) and (self.subtitle_source_lineEdit.text() == ""):
             self.subtitle_source_lineEdit.set_text_safe_change(self.folder_path)
-        return QWidget.mousePressEvent(self, QMouseEvent)
+        return QWidget.mousePressEvent(self, Qmouseevent)
 
-    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+    def showEvent(self, a0: QShowEvent) -> None:
         super().showEvent(a0)
         self.show_video_files_list()
 

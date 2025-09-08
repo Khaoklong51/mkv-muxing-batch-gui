@@ -13,7 +13,7 @@ class AudioTabManager(GlobalSetting):
 
     def __init__(self):
         super().__init__()
-        self.audio_tabs = []
+        self.audio_tabs: list[AudioSelectionSetting] = []
         self.audio_tabs_indices = []
         self.current_index_counter = 0
         self.current_tab_index = 0
@@ -49,7 +49,7 @@ class AudioTabManager(GlobalSetting):
         self.audio_tab_delete_button.remove_tab_signal.connect(self.delete_current_tab)
         self.tab_clicked_signal.connect(self.tab_clicked)
 
-    def change_current_tab(self, tab_index):
+    def change_current_tab(self, tab_index: int):
         real_index = self.audio_tabs_indices[tab_index]
         self.MainLayout.replaceWidget(self.current_audio_tab, self.audio_tabs[tab_index])
         self.current_audio_tab.hide()

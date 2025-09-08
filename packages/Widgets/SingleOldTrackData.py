@@ -1,13 +1,14 @@
 from packages.Widgets.SingleTrackData import SingleTrackData
+import typing as typ
 
 
 class SingleOldTrackData(SingleTrackData):
     def __int__(self):
         super().__init__()
-        self.is_enabled = ""
+        self.is_enabled: bool | int = False
         self.order = -1
 
-    def __eq__(self, other):
+    def __eq__(self, other: typ.Any):
         if not isinstance(other, SingleOldTrackData):
             # don't attempt to compare against unrelated types
             return NotImplemented

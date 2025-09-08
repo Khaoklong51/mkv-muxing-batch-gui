@@ -1,6 +1,5 @@
-import PySide6
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFontMetrics, QPaintEvent
+from PySide6.QtGui import QFontMetrics, QPaintEvent, QResizeEvent
 from PySide6.QtWidgets import (
     QGridLayout,
     QTableWidgetItem,
@@ -69,11 +68,14 @@ class TableFixedHeaderWidget(QTableWidget):
             QHeaderView.ResizeMode.Interactive
         )
         for i in range(self.table.rowCount()):
-            column_font = self.table.item(i, 0).font()
-            column_font_metrics = QFontMetrics(column_font)
+            item = self.table.item(i, 0)
+            if item is None:
+                continue
+            font = item.font() if item is not None else self.table.font()
+            font_metrics = QFontMetrics(font)
             new_column_width = max(
                 new_column_width,
-                column_font_metrics.horizontalAdvance(self.table.item(i, 0).text()),
+                font_metrics.horizontalAdvance(item.text()),
             )
         new_column_width += 15
         self.table.setColumnWidth(0, new_column_width)
@@ -85,7 +87,7 @@ class TableFixedHeaderWidget(QTableWidget):
         self.update_row_size()
         self.takeupdate()
 
-    def resizeEvent(self, event: PySide6.QtGui.QResizeEvent):
+    def resizeEvent(self, event: QResizeEvent):
         self.takeupdate()
         super().resizeEvent(event)
         self.takeupdate()
