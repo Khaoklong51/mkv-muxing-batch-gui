@@ -108,6 +108,7 @@ def update_enviro_if_not_windows():
         )
 
 
+# TODO: refactor this
 def get_program_from_path_and_tool(program: str) -> Path:
     program_path = which(program)
 
