@@ -42,6 +42,9 @@ class ModifyOldTracksDialog(MyDialog):
         self.setLayout(self.main_layout)
         self.connect_signals()
         self.reset_button.setEnabled(GlobalSetting.JOB_QUEUE_EMPTY)
+        self.update_showed_track_info(
+            ("subtitle", GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO[0][0].id)
+        )  # ensure subtitle track is shown when open dialog first time
 
     def setup_layouts(self):
         self.setup_info_layout()
@@ -71,7 +74,7 @@ class ModifyOldTracksDialog(MyDialog):
         self.main_layout.addLayout(self.buttons_layout)
 
     def setup_instructions_label(self):
-        self.instructions_label.setTextFormat(Qt.RichText)
+        self.instructions_label.setTextFormat(Qt.TextFormat.RichText)
         instructions_text = (
             "Here you can modify/disable old tracks even reorder tracks by using [Ctrl+Up/Down Arrow] "
             "to move track up/down."
@@ -123,6 +126,19 @@ class ModifyOldTracksDialog(MyDialog):
 
     def restore_defaults(self):
         self.old_tracks_tabs.restore_defaults()
+        # ensure track info show when restore default
+        # not sure if there a better way to do this
+        if self.old_tracks_tabs.currentIndex() == 1:
+            track_type = "subtitle"
+            track_id = GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO[0][0].id
+        elif self.old_tracks_tabs.currentIndex() == 2:
+            track_type = "audio"
+            track_id = GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_INFO[0][0].id
+        elif self.old_tracks_tabs.currentIndex() == 0:
+            track_type = "video"
+            track_id = GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO[0][0].id
+
+        self.update_showed_track_info((track_type, track_id))
 
     def save_settings(self):
         self.old_tracks_tabs.save_settings()
@@ -138,7 +154,6 @@ class ModifyOldTracksDialog(MyDialog):
                 f"Information About Subtitle Track [{convert_string_integer_to_two_digit_string(track_id)}] Across "
                 f"Videos:"
             )
-            self.track_info_table.setup_info(track_id=track_id)
         elif track_type == "audio" and self.old_tracks_tabs.currentIndex() == 2:
             self.track_info_table.update_tracks_info(
                 new_tracks_info_list=GlobalSetting.VIDEO_OLD_TRACKS_AUDIOS_INFO.copy()
@@ -146,7 +161,6 @@ class ModifyOldTracksDialog(MyDialog):
             self.track_info_label.setText(
                 f"Information About Audio Track [{convert_string_integer_to_two_digit_string(track_id)}] Across Videos:"
             )
-            self.track_info_table.setup_info(track_id=track_id)
         elif track_type == "video" and self.old_tracks_tabs.currentIndex() == 0:
             self.track_info_table.update_tracks_info(
                 new_tracks_info_list=GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO.copy()
@@ -154,7 +168,7 @@ class ModifyOldTracksDialog(MyDialog):
             self.track_info_label.setText(
                 f"Information About Video Track [{convert_string_integer_to_two_digit_string(track_id)}] Across Videos:"
             )
-            self.track_info_table.setup_info(track_id=track_id)
+        self.track_info_table.setup_info(track_id=track_id)
 
     def update_current_tab(self, tab_id):
         if tab_id == 0:
