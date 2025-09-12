@@ -9,7 +9,7 @@ class StatusWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.status_label = QLabel("  0%")
-        self.load_icon_movie = QMovie(SpinnerIconPath)
+        self.load_icon_movie = QMovie(str(SpinnerIconPath))
         self.load_icon_movie.setScaledSize(QSize(26, 26))
         self.load_icon_label = QLabel()
         self.load_icon_label.setMovie(self.load_icon_movie)

@@ -33,7 +33,9 @@ class StartMuxingProcessWorker(QObject):
                     self.finished_job_signal.emit(mux_process.returncode)
                     self.wait = True
                 else:
-                    QThread.msleep(50)
+                    QThread.msleep(
+                        1000
+                    )  # try to avoid race condition that stop muxing from finish
             self.all_finished.emit()
         except Exception:
             write_to_log_file(traceback.format_exc())
