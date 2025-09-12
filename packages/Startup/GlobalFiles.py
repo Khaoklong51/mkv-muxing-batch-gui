@@ -200,6 +200,9 @@ try:
     SettingJsonInfoFilePath = AppDataFolderPath.resolve() / "setting.json"
 
     TaskBarLibFilePath = DLLFolderPath.resolve() / "TaskbarLib.tlb"
+    # not sure why logging set in main not work in here
+    # this use to check mkvtoolnix tool
+    logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
     MKVPROPEDIT_PATH = get_program_from_path_and_tool("mkvpropedit")
     MKVMERGE_PATH = get_program_from_path_and_tool("mkvmerge")
     ENVIRONMENT = os.environ.copy()
