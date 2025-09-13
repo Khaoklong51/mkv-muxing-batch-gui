@@ -11,3 +11,6 @@
 *.pyc
 test*.*
 .venv
+pyinstaller/dist
+pyinstaller/build
+pyinstaller/*.spec
