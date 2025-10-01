@@ -66,7 +66,7 @@ DLLFolderPath = resources_folder.resolve() / "DLL"
 GlobalToolsFolderPath = resources_folder.resolve() / "Tools"
 ToolsFolderPath = GlobalToolsFolderPath.resolve() / "Windowsx64"
 LanguagesFolderPath = resources_folder.resolve() / "Languages"
-LibFolderPath = ""
+LibFolderPath = Path()
 if sys.platform == "win32":
     if struct.calcsize("P") * 8 == 32:
         ToolsFolderPath = GlobalToolsFolderPath.resolve() / "Windows32"
@@ -87,16 +87,76 @@ MediaInfoFolderPath.mkdir(exist_ok=True, parents=True)
 delete_old_media_files()
 
 
-def get_mkvmerge_version():
-    command = [MKVMERGE_PATH, "-V"]
-    result = subprocess.run(command, stdout=subprocess.PIPE, env=ENVIRONMENT, text=True)
-    return result.stdout.strip()
+def get_program_version(program_path: Path) -> str:
+    def run_version(path: Path) -> str | None:
+        try:
+            result = subprocess.run(
+                [path, "-V"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                env=ENVIRONMENT,
+                text=True,
+                check=True,
+            )
+            output = result.stdout.strip()
+            if path.stem in output:
+                return output
+        except subprocess.CalledProcessError:
+            return None
+        return None
+
+    # Try system path
+    version = run_version(program_path)
+    if version:
+        logging.info(f"{program_path.stem} OK")
+        return version
+
+    # Try portable fallback
+    logging.warning(
+        f"Could not use system {program_path.stem}. Trying portable version..."
+    )
+    suffix = ".exe" if sys.platform == "win32" else ""
+    fallback = ToolsFolderPath.resolve() / f"{program_path.stem}{suffix}"
+
+    version = run_version(fallback)
+    if version:
+        logging.info(f"{fallback.stem} OK")
+        return version
+
+    # If both fail
+    msg = f"Cannot use {program_path.stem} from system or portable path"
+    logging.error(msg)
+    raise subprocess.CalledProcessError(msg)
 
 
-def get_mkvpropedit_version():
-    command = [MKVPROPEDIT_PATH, "-V"]
-    result = subprocess.run(command, stdout=subprocess.PIPE, env=ENVIRONMENT, text=True)
-    return result.stdout.strip()
+def get_program_path(program: str) -> Path:
+    found = which(program)
+    if found:
+        return Path(found).resolve()
+
+    # Decide suffix
+    suffix = ".exe" if sys.platform == "win32" else ""
+    candidate = None
+
+    if sys.platform == "win32":
+        system_drive = Path(os.environ.get("SystemDrive", "C:"))
+        pf_candidate = (
+            system_drive / "Program Files" / "MKVToolNix" / f"{program}{suffix}"
+        )
+        if pf_candidate.exists():
+            candidate = pf_candidate
+
+    if not candidate:
+        logging.warning(f"Could not find system {program}. Trying portable version...")
+        candidate = ToolsFolderPath.resolve() / f"{program}{suffix}"
+
+    candidate = candidate.resolve()
+
+    if not candidate.exists():
+        logging.error(f"{program} not found in path, Program Files, or Tools folder!")
+        raise FileNotFoundError(f"{program} not found!")
+
+    return candidate
 
 
 def update_enviro_if_not_windows():
@@ -104,32 +164,8 @@ def update_enviro_if_not_windows():
         ENVIRONMENT["LD_LIBRARY_PATH"] = ""
     if sys.platform != "win32":
         ENVIRONMENT["LD_LIBRARY_PATH"] = (
-            f"{Path(LibFolderPath).resolve()}:{ENVIRONMENT['LD_LIBRARY_PATH']}"
+            f"{LibFolderPath.resolve()}:{ENVIRONMENT['LD_LIBRARY_PATH']}"
         )
-
-
-# TODO: refactor this
-def get_program_from_path_and_tool(program: str) -> Path:
-    program_path = which(program)
-
-    if program_path is None:
-        if sys.platform == "win32":
-            system_drive = Path(os.environ.get("SystemDrive", "C:"))
-            candidate = system_drive / "Program Files" / "MKVToolNix" / f"{program}.exe"
-
-            if candidate.exists():
-                program_path = candidate
-            else:
-                logging.warning(
-                    "Could not find system mkvmerge. Trying portable version..."
-                )
-                program_path = ToolsFolderPath.resolve() / program
-        else:
-            program_path = ToolsFolderPath.resolve() / program
-    else:
-        program_path = Path(program_path)
-
-    return program_path.resolve()
 
 
 try:
@@ -203,44 +239,12 @@ try:
     # not sure why logging set in main not work in here
     # this use to check mkvtoolnix tool
     logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
-    MKVPROPEDIT_PATH = get_program_from_path_and_tool("mkvpropedit")
-    MKVMERGE_PATH = get_program_from_path_and_tool("mkvmerge")
+    MKVPROPEDIT_PATH = get_program_path("mkvpropedit")
+    MKVMERGE_PATH = get_program_path("mkvmerge")
     ENVIRONMENT = os.environ.copy()
     update_enviro_if_not_windows()
-    MKVPROPEDIT_VERSION = get_mkvpropedit_version()
-    MKVMERGE_VERSION = get_mkvmerge_version()
-    if "mkvmerge" not in MKVMERGE_VERSION:
-        logging.warning("Could not use system mkvmerge. Trying portable version...")
-        if sys.platform == "win32":
-            suffix = ".exe"
-        else:
-            suffix = ""
-        mkvmerge = f"mkvmerge{suffix}"
-        MKVMERGE_PATH = ToolsFolderPath.resolve() / mkvmerge
-        MKVMERGE_VERSION = get_mkvmerge_version()
-        if "mkvmerge" not in MKVMERGE_VERSION:
-            MKVMERGE_VERSION = "mkvmerge: not found!"
-            raise Exception("mkvmerge file! ")
-        else:
-            logging.info("mkvmerge OK")
-    else:
-        logging.info("mkvmerge OK")
-    if "mkvpropedit" not in MKVPROPEDIT_VERSION:
-        logging.warning("Could not use system mkvpropedit. Trying portable version...")
-        if sys.platform == "win32":
-            suffix = ".exe"
-        else:
-            suffix = ""
-        mkvpropedit = f"mkvpropedit{suffix}"
-        MKVPROPEDIT_PATH = ToolsFolderPath.resolve() / mkvpropedit
-        MKVPROPEDIT_VERSION = get_mkvpropedit_version()
-        if "mkvpropedit" not in MKVPROPEDIT_VERSION:
-            MKVPROPEDIT_VERSION = "mkvpropedit: not found!"
-            raise Exception("mkvpropedit file! ")
-        else:
-            logging.info("mkvpropedit OK")
-    else:
-        logging.info("mkvpropedit OK")
+    MKVPROPEDIT_VERSION = get_program_version(MKVPROPEDIT_PATH)
+    MKVMERGE_VERSION = get_program_version(MKVMERGE_PATH)
 except Exception as e:
     logging.error(e)
     missing_files_message = MissingFilesMessage(error_message=str(e))
