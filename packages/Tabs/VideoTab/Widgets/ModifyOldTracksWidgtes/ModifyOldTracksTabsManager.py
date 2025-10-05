@@ -47,7 +47,6 @@ class ModifyOldTracksTabsManager(QTabWidget):
         self.audio_tab.selected_track_changed.connect(
             self.update_current_selected_audio_track
         )
-        self.setCurrentIndex(1)  # current is subtitle tab
 
     def update_current_selected_video_track(self, new_track_id):
         self.current_selected_track_changed.emit(["video", new_track_id])

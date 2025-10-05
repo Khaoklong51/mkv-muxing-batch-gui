@@ -42,9 +42,19 @@ class ModifyOldTracksDialog(MyDialog):
         self.setLayout(self.main_layout)
         self.connect_signals()
         self.reset_button.setEnabled(GlobalSetting.JOB_QUEUE_EMPTY)
-        self.update_showed_track_info(
-            ("subtitle", GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO[0][0].id)
-        )  # ensure subtitle track is shown when open dialog first time
+        try:
+            self.old_tracks_tabs.setCurrentIndex(1)
+            self.update_showed_track_info(
+                ("subtitle", GlobalSetting.VIDEO_OLD_TRACKS_SUBTITLES_INFO[0][0].id)
+            )  # ensure subtitle track is shown when open dialog first time
+        except IndexError:
+            try:
+                self.old_tracks_tabs.setCurrentIndex(0)
+                self.update_showed_track_info(
+                    ("video", GlobalSetting.VIDEO_OLD_TRACKS_VIDEOS_INFO[0][0].id)
+                )  # ensure video track is shown when open dialog first time if not have subtitle
+            except IndexError:
+                pass
 
     def setup_layouts(self):
         self.setup_info_layout()

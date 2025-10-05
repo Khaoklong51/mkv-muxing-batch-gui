@@ -1,8 +1,7 @@
 from pathlib import Path
 
-import PySide6
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFontMetrics
+from PySide6.QtGui import QFontMetrics, QResizeEvent
 from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem, QLabel
 
 from packages.Tabs.VideoTab.Widgets.ModifyOldTracksWidgtes.TrackInfoTableColumnsID import (
@@ -201,7 +200,7 @@ class TrackInfoTable(TableWidget):
         if new_column_width >= self.columnWidth(self.column_ids.Track_Name):
             self.setColumnWidth(self.column_ids.Track_Name, new_column_width)
 
-    def resizeEvent(self, event: PySide6.QtGui.QResizeEvent):
+    def resizeEvent(self, event: QResizeEvent):
         super().resizeEvent(event)
         self.check_if_video_name_need_resize_column_to_fit_content()
         self.check_if_track_name_need_resize_column_to_fit_content()
