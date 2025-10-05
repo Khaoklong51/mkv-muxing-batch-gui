@@ -65,6 +65,7 @@ class GenerateMediaInfoFilesWorker(QObject):
                 command = [str(i) for i in command]
                 p1 = subprocess.run(
                     " ".join(command),
+                    # shell mode for windows
                     shell=True,
                     stdout=subprocess.PIPE,
                     env=GlobalFiles.ENVIRONMENT,

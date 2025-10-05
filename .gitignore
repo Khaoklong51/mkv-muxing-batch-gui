@@ -11,6 +11,11 @@
 *.pyc
 test*.*
 .venv
-pyinstaller/dist
-pyinstaller/build
-pyinstaller/*.spec
+build
+dist
+Resources/Tools/Windows64/mkvmerge.exe
+Resources/Tools/Windows64/mkvpropedit.exe
+Resources/Tools/Linux/mkvmerge
+Resources/Tools/Linux/mkvpropedit
+Resources/Tools/Other Systems/mkvmerge
+Resources/Tools/Other Systems/mkvpropedit
