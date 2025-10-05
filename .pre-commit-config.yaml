@@ -16,3 +16,9 @@ repos:
       # Don't use ruff format since we use black
       # Run the formatter.
       # - id: ruff-format
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.8.23
+    hooks:
+      # Update the uv lockfile
+      - id: uv-lock

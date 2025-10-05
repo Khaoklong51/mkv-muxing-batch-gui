@@ -57,10 +57,15 @@ class GenerateMediaInfoFilesWorker(QObject):
                 media_info_file_path = GlobalFiles.MediaInfoFolderPath / (
                     string_name_hash + ".json"
                 )
-                command = [GlobalFiles.MKVMERGE_PATH, "-J", file_name]
+                command = [
+                    add_double_quotation(GlobalFiles.MKVMERGE_PATH),
+                    "-J",
+                    add_double_quotation(file_name),
+                ]
                 command = [str(i) for i in command]
                 p1 = subprocess.run(
-                    command,
+                    " ".join(command),
+                    shell=True,
                     stdout=subprocess.PIPE,
                     env=GlobalFiles.ENVIRONMENT,
                     text=True,
