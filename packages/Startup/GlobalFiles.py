@@ -89,14 +89,16 @@ delete_old_media_files()
 
 def get_program_version(program_path: Path) -> str:
     def run_version(path: Path) -> str | None:
+        command = add_double_quotation(path) + " -V"
         try:
             result = subprocess.run(
-                [path, "-V"],
+                command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
                 env=ENVIRONMENT,
                 text=True,
                 check=True,
+                shell=True,
             )
             output = result.stdout.strip()
             if path.stem in output:

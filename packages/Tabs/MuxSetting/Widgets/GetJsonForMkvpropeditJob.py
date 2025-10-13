@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 from packages.Startup import GlobalFiles
 from packages.Startup.PreDefined import ISO_639_2_LANGUAGES
@@ -11,27 +12,27 @@ from packages.Widgets.SingleAttachmentData import SingleAttachmentData
 from packages.Widgets.SingleTrackData import SingleTrackData
 
 
-def add_two_spaces():
+def add_two_spaces() -> str:
     return "  "
 
 
-def add_double_quotation(string):
+def add_double_quotation(string) -> str:
     return add_two_spaces() + '"' + str(string) + '"'
 
 
-def add_json_line(string):
+def add_json_line(string) -> str:
     return "\n" + add_double_quotation(string) + ","
 
 
-def delete_trailing_zero_string(string):
+def delete_trailing_zero_string(string) -> str:
     return str(int(str(string)))
 
 
-def check_for_system_backslash_path(string):
-    if sys.platform == "win32":  # Windows
-        return string.replace("\\", "\\\\")
-    else:
-        return string
+def check_for_system_backslash_path(string: str | Path) -> str:
+    if sys.platform == "win32":
+        s = str(string)
+        return s.replace("\\", "\\\\")
+    return str(string)
 
 
 def increase_id_by_one(string):

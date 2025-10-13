@@ -11,13 +11,13 @@ from packages.Widgets.MyDialog import MyDialog
 
 def click_show_log_file():
     if sys.platform not in ["linux", "linux2"]:
-        webbrowser.open(GlobalFiles.MuxingLogFilePath)
+        webbrowser.open(str(GlobalFiles.MuxingLogFilePath))
     else:
         try:
-            subprocess.Popen(["gedit", GlobalFiles.MuxingLogFilePath])
+            subprocess.Popen(["gedit", str(GlobalFiles.MuxingLogFilePath)])
         except Exception as e:
             logging.error(e)
-            webbrowser.open(GlobalFiles.MuxingLogFilePath)
+            webbrowser.open(str(GlobalFiles.MuxingLogFilePath))
 
 
 class ErrorMuxingDialog(MyDialog):
