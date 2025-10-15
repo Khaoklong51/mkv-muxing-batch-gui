@@ -7,6 +7,7 @@ import os
 from shutil import which
 
 from packages.Widgets.MissingFilesMessage import MissingFilesMessage
+from packages.Startup.Debug import USE_PG_PORTABLE
 
 
 def create_app_data_folder():
@@ -94,13 +95,14 @@ def get_program_version(program_path: Path) -> str:
             result = subprocess.run(
                 command,
                 stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
+                stderr=subprocess.DEVNULL,
                 env=ENVIRONMENT,
                 text=True,
                 check=True,
                 shell=True,
             )
             output = result.stdout.strip()
+            logging.debug(output)
             if path.stem in output:
                 return output
         except subprocess.CalledProcessError:
@@ -133,14 +135,16 @@ def get_program_version(program_path: Path) -> str:
 
 def get_program_path(program: str) -> Path:
     found = which(program)
-    if found:
+    if found and not USE_PG_PORTABLE:
+        global Use_System_PG
+        Use_System_PG = True
         return Path(found).resolve()
 
     # Decide suffix
     suffix = ".exe" if sys.platform == "win32" else ""
     candidate = None
 
-    if sys.platform == "win32":
+    if sys.platform == "win32" and not USE_PG_PORTABLE:
         system_drive = Path(os.environ.get("SystemDrive", "C:"))
         pf_candidate = (
             system_drive / "Program Files" / "MKVToolNix" / f"{program}{suffix}"
@@ -148,8 +152,13 @@ def get_program_path(program: str) -> Path:
         if pf_candidate.exists():
             candidate = pf_candidate
 
-    if not candidate:
-        logging.warning(f"Could not find system {program}. Trying portable version...")
+    if not candidate or USE_PG_PORTABLE:
+        if not USE_PG_PORTABLE:
+            logging.warning(
+                f"Could not find system {program}. Trying portable version..."
+            )
+        else:
+            logging.warning("Force Use portable version")
         candidate = ToolsFolderPath.resolve() / f"{program}{suffix}"
 
     candidate = candidate.resolve()
@@ -164,7 +173,7 @@ def get_program_path(program: str) -> Path:
 def update_enviro_if_not_windows():
     if "LD_LIBRARY_PATH" not in ENVIRONMENT.keys():
         ENVIRONMENT["LD_LIBRARY_PATH"] = ""
-    if sys.platform != "win32":
+    if sys.platform != "win32" and not Use_System_PG:
         ENVIRONMENT["LD_LIBRARY_PATH"] = (
             f"{LibFolderPath.resolve()}:{ENVIRONMENT['LD_LIBRARY_PATH']}"
         )
@@ -241,6 +250,7 @@ try:
     # not sure why logging set in main not work in here
     # this use to check mkvtoolnix tool
     logging.basicConfig(encoding="utf-8", level=logging.DEBUG)
+    Use_System_PG = False
     MKVPROPEDIT_PATH = get_program_path("mkvpropedit")
     MKVMERGE_PATH = get_program_path("mkvmerge")
     ENVIRONMENT = os.environ.copy()

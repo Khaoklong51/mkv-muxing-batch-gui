@@ -1,7 +1,9 @@
 import cx_Freeze
-from packages.Startup.Version import Version
+from packages.Startup.Version import VERSION, RELEASE_SUFFIX
 import sys
 from pathlib import Path
+
+FINAL_VERSION = f"{VERSION}{RELEASE_SUFFIX}"
 
 icon_suffix = ".png"
 program_suffix = ""
@@ -14,7 +16,6 @@ elif sys.platform == "linux":
 else:
     system = "Other Systems"
 
-# --- Included Files Configuration ---
 include_files = [
     [
         "Resources/Languages/iso639_language_list.json",
@@ -24,27 +25,25 @@ include_files = [
     ["Resources/Fonts/OpenSans.ttf", "Resources/Fonts/OpenSans.ttf"],
 ]
 
-# Dynamically include mkvtoolnix binaries if they exist for the target system
 for tool in ["mkvmerge", "mkvpropedit"]:
     src = f"Resources/Tools/{system}/{tool}{program_suffix}"
-    dst = f"Tools/{system}/{tool}{program_suffix}"
-    if Path(src).exists():
+    dst = f"Resources/Tools/{system}/{tool}{program_suffix}"
+    lib = f"Resources/Tools/{system}/lib"
+    lib_dst = f"Resources/Tools/{system}/lib"
+    if Path(src).resolve().exists():
         include_files.append([src, dst])
+    if Path(lib).resolve().exists():
+        include_files.append([lib, lib_dst])
 
 build_exe_options = {
     "include_files": include_files,
-    "zip_include_packages": [
-        "PySide6",
-        "psutil",
-        "comtypes",
-    ],
+    "zip_include_packages": ["PySide6", "psutil", "comtypes"],
     "optimize": 2,
 }
 
-
 cx_Freeze.setup(
     name="mkv-muxing-batch-gui",
-    version=Version,
+    version=FINAL_VERSION,
     description="Batch gui program to mux mkv files",
     options={
         "build_exe": build_exe_options,
