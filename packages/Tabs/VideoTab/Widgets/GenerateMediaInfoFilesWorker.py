@@ -59,7 +59,7 @@ class GenerateMediaInfoFilesWorker(QObject):
                 )
                 command = [
                     add_double_quotation(GlobalFiles.MKVMERGE_PATH),
-                    "-J",
+                    " -J ",
                     add_double_quotation(file_name),
                 ]
                 command = [str(i) for i in command]
