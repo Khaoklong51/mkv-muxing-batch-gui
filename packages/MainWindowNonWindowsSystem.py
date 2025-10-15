@@ -4,7 +4,7 @@ from PySide6.QtWidgets import QFrame, QVBoxLayout
 from packages.Startup import GlobalIcons
 from packages.Startup.InitializeScreenResolution import width_factor, height_factor
 from packages.Startup.Options import Options, save_options, get_names_list_of_presets
-from packages.Startup.Version import Version
+from packages.Startup.Version import VERSION, RELEASE_SUFFIX
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.TabsManager import TabsManager
 from packages.Widgets.ChoosePresetDialog import ChoosePresetDialog
@@ -31,7 +31,7 @@ class MainWindowNonWindowsSystem(MyMainWindow):
     def __init__(self, args, parent=None):
         super().__init__(args=args, parent=parent)
         self.resize(int(width_factor * 1100), int(height_factor * 635))
-        self.setWindowTitle("MKV Muxing Batch GUI v" + str(Version))
+        self.setWindowTitle("MKV Muxing Batch GUI v" + str(VERSION) + str(RELEASE_SUFFIX))
         self.setWindowIcon(GlobalIcons.AppIcon)
         self.tabs = TabsManager()
         self.tabs_frame = QFrame()

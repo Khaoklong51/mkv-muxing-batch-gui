@@ -10,7 +10,7 @@ from packages.Startup.GlobalFiles import (
 )
 from packages.Startup.GlobalIcons import AboutIcon
 from packages.Startup.PreDefined import GitHubRepoUrlTag, GPLV2UrlTag, GitHubIssuesUrlTag
-from packages.Startup.Version import Version
+from packages.Startup.Version import VERSION, RELEASE_SUFFIX
 from packages.Widgets.MyDialog import MyDialog
 
 
@@ -22,7 +22,9 @@ class AboutDialog(MyDialog):
         self.app_icon_label = QLabel()
         self.app_icon_label.setPixmap(QPixmap(AppIconPath).scaledToHeight(175))
         self.app_name_label = QLabel("MKV Muxing Batch GUI")
-        self.app_current_version = QLabel("Version: " + str(Version))
+        self.app_current_version = QLabel(
+            "Version: " + str(VERSION) + str(RELEASE_SUFFIX)
+        )
         self.app_mkvmerge_current_version = QLabel(str(MKVMERGE_VERSION))
         self.app_mkvpropedit_current_version = QLabel(str(MKVPROPEDIT_VERSION))
         self.app_link_github_label = QLabel("Check for updates on: " + GitHubRepoUrlTag)
