@@ -4,8 +4,7 @@
 
 A robust application for muxing(merging) videos with subtitles, audios, chapters, attachments alongside many customization options.
 
-[![Github All Releases](https://img.shields.io/github/downloads/yaser01/mkv-muxing-batch-gui/total.svg?color=4DC71F&label=Downloads&logo=github")](https://github.com/yaser01/mkv-muxing-batch-gui/releases/latest)
-[![Donate](https://img.shields.io/badge/Donate-Buy_Me_A_Coffe-blueviolet.svg)](https://www.buymeacoffee.com/yaser01)
+[![Github All Releases](https://img.shields.io/github/downloads/Khaoklong51/mkv-muxing-batch-gui/total.svg?color=4DC71F&label=Downloads&logo=github")](https://github.com/Khaoklong51/mkv-muxing-batch-gui/releases/latest)
 
 - [App Preview](#app-preview)
 - [Features](#features)
@@ -103,7 +102,6 @@ _A preview of the application in action:_
 >4. When using `Modify Old Tracks` in video tab, the following options: (make this subtitle/audio default, keep this subtitle/audio only, mux new subtitle/audio in desired position) will be **disabled/limited**.
 >5. When using `mux subtitle/audio` at same position for the same track type, they will be added respecting to the order of all other new subtitles/audio.
 >6. In every tab/dialog you can reorder tracks using shortcuts `Ctrl + Up Arrow / Ctrl + Down Arrow` except for: (Attachment/Muxing Tab).
->
 ## 📁Supported Extensions
 
 |     Type    |                                        Extensions                                       |
@@ -115,12 +113,12 @@ _A preview of the application in action:_
 
 ## ⬇Downloads
 
-The MKV Muxing Batch GUI is compatible with Windows 7/8/8.1/10/11 32-bit/64-bit and most Linux distributions.
-You can download it from the project's [releases&nbsp;page](https://github.com/yaser01/mkv-muxing-batch-gui/releases).
+The MKV Muxing Batch GUI is compatible with Windows 10/11 64-bit and most Linux distributions.
+You can download it from the project's [releases&nbsp;page](https://github.com/Khaoklong51/mkv-muxing-batch-gui/releases/).
 
 ### For Linux Users
 
-The deployed app available in downloads only support glibc 2.35 and above like: Ubuntu 22.04/up , Mint 21.2/up, Fedora 38/up and others [i can't test them all]
+The deployed app available in downloads only support glibc 2.17 and above.
 Before starting the app, install the following libraries [not always needed as most of them included in the app]:
 
 ```bash
@@ -131,19 +129,20 @@ sudo apt install libxcb-cursor0
 
 ### Using Python Code Version
 
-1. Clone the repository :`git clone https://github.com/yaser01/mkv-muxing-batch-gui.git`.
-2. The main branch use ``PySide6`` library on version `6.6.1` which is tested on `python 3.10.8` working good and only supporting x64 systems.
-3. If you want to use on x32 systems you should switch to branch `develop-PySide2`: `git checkout develop-pyside2` which uses `PySide2 v5.14.0` and tested in `python 3.8.10`.
-4. After selecting the branch just make sure to use the mentioned python version as it's guaranteed to work perfect.
-5. Just run `pip install -r requirements.txt`.
-6. Then run `python main.py` and you are all good :D.
-7. You may use `python3/pip3` instead of `python/pip` depending on your system.
-8. For linux users if you want to use another python version from the one that is already on your system it's recommended to use `pyenv`,if you didn't hear about it, you may read [this](https://askubuntu.com/a/1195153).
-9. Also, for linux users: as this app depends on mkvtoolnix it's very recommended to install it on your system before run the app from [here](https://mkvtoolnix.download/downloads.html).
+1. Clone the repository :`git clone https://github.com/Khaoklong51/mkv-muxing-batch-gui.git`.
+2. The main branch use ``PySide6`` library on version `6.10.0` which is tested on `python 3.13.3` working good and only supporting x64 systems.
+3. After selecting the branch just make sure to use the mentioned python version as it's guaranteed to work perfect.
+4. Just run `pip install -r requirements.txt`.
+5. Then run `python main.py` and you are all good :D.
+6. You may use `python3/pip3` instead of `python/pip` depending on your system.
+7. For linux users if you want to use another python version from the one that is already on your system it's recommended to use `uv`,if you didn't hear about it, you may read [this](https://github.com/astral-sh/uv).
+8. Also, for linux users: as this app depends on mkvtoolnix it's very recommended to install it on your system before run the app from your distro repository.
 
 ### Updating The MKVmerge version
 
-You can manually update the mkvmerge version the app uses, but do this only if you're sure of what you're doing, as it may require a reinstallation:
+Program will automatically detect install mkvtoolnix in this order PATH>>Common install location(Windows Only)(C:\\Program Files\\MKVToolNix)>>Portable(Resources\\Tools\\[your operating system])
+
+You can manually update the mkvmerge version for portable version, but do this only if you're sure of what you're doing, as it may require a reinstallation:
 
 ```bash
 # Navigate to the app's installation directory, e.g. on Windows:
@@ -151,17 +150,17 @@ You can manually update the mkvmerge version the app uses, but do this only if y
 # Go to Resources\\Tools\\ [your operating system], and replace mkvmerge.exe and mkvpropedit.exe with the newer version you have
 ```
 
-> For linux users it's recommended to just clear `Resources\\Tools\\ [your operating system]` folder and then install mkvtoolnix on your system from [here](https://mkvtoolnix.download/downloads.html) and the app will automatically detect it.
+> For linux users it's recommended to install mkvtoolnix from your distro repository and the app will automatically detect it.
 
 ## 🙏Attribution
 
-- The application relies heavily on [MKVToolNix](https://gitlab.com/mbunkus/mkvtoolnix), so a big thanks to them.
+- The application relies heavily on [MKVToolNix](https://codeberg.org/mbunkus/mkvtoolnix), so a big thanks to them.
 - Thanks to my friends who helped test the app and offered numerous ideas.
 
 ## 🦟Report a Bug
 
-Any software bugs can be reported on the project's [issues page](https://github.com/yaser01/mkv-muxing-batch-gui/issues). Suggestions for future updates are also welcome.
+Any software bugs can be reported on the project's [issues page](https://github.com/Khaoklong51/mkv-muxing-batch-gui/blob/main/LICENSE). Suggestions for future updates are also welcome.
 
 ## 🏷License
 
-[![GitHub](https://img.shields.io/github/license/yaser01/mkv-muxing-batch-gui?style=for-the-badge)](https://github.com/yaser01/mkv-muxing-batch-gui/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/Khaoklong51/mkv-muxing-batch-gui?style=for-the-badge)](https://github.com/Khaoklong51/mkv-muxing-batch-gui/blob/main/LICENSE)
