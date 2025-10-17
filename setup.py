@@ -37,7 +37,7 @@ for tool in ["mkvmerge", "mkvpropedit"]:
 
 build_exe_options = {
     "include_files": include_files,
-    "zip_include_packages": ["PySide6", "psutil", "comtypes"],
+    "zip_include_packages": ["PySide6", "comtypes"],
     "optimize": 2,
 }
 
