@@ -1,30 +1,30 @@
 # MKV Muxing Batch GUI
 
-## **For anyone who found this repo from this [issue](https://github.com/yaser01/mkv-muxing-batch-gui/issues/170). I will attempt to continue develop this. Not guarantee that development will last or not.**
+**For anyone who found this repo from this [issue](https://github.com/yaser01/mkv-muxing-batch-gui/issues/170). I will attempt to continue develop this. Not guarantee that development will last or not.**
 
 A robust application for muxing(merging) videos with subtitles, audios, chapters, attachments alongside many customization options.
 
 [![Github All Releases](https://img.shields.io/github/downloads/Khaoklong51/mkv-muxing-batch-gui/total.svg?color=4DC71F&label=Downloads&logo=github")](https://github.com/Khaoklong51/mkv-muxing-batch-gui/releases/latest)
 
-- [App Preview](#app-preview)
-- [Features](#features)
-  - [Video Options](#video-options)
-  - [Subtitle Options](#subtitle-options)
-  - [Audio Options](#audio-options)
-  - [Chapter Options](#chapter-options)
-  - [Attachment Options](#attachment-options)
-  - [Source Files Options](#source-files-options)
-  - [Muxing Options](#muxing-options)
-- [Notes](#notes)
-- [Supported Extensions](#supported-extensions)
-- [Downloads](#downloads)
-  - [For Linux Users](#for-linux-users)
-  - [Using Python Code](#using-python-code-version)
-  - [Updating the MKVmerge version](#updating-the-mkvmerge-version)
-- [Attribution](#attribution)
-- [Report a Bug](#report-a-bug)
-
-- [License](#license)
+- [MKV Muxing Batch GUI](#mkv-muxing-batch-gui)
+  - [✨App Preview](#app-preview)
+  - [📖Features](#features)
+    - [Video Options](#video-options)
+    - [Subtitle Options](#subtitle-options)
+    - [Audio Options](#audio-options)
+    - [Chapter Options](#chapter-options)
+    - [Attachment Options](#attachment-options)
+    - [Source Files Options](#source-files-options)
+    - [Muxing Options](#muxing-options)
+  - [📝Notes](#notes)
+  - [📁Supported Extensions](#supported-extensions)
+  - [⬇Downloads](#downloads)
+    - [For Linux Users](#for-linux-users)
+    - [Using Python Code Version](#using-python-code-version)
+    - [Updating The MKVmerge version](#updating-the-mkvmerge-version)
+  - [🙏Attribution](#attribution)
+  - [🦟Report a Bug](#report-a-bug)
+  - [🏷License](#license)
 
 ## ✨App Preview
 
@@ -102,6 +102,7 @@ _A preview of the application in action:_
 >4. When using `Modify Old Tracks` in video tab, the following options: (make this subtitle/audio default, keep this subtitle/audio only, mux new subtitle/audio in desired position) will be **disabled/limited**.
 >5. When using `mux subtitle/audio` at same position for the same track type, they will be added respecting to the order of all other new subtitles/audio.
 >6. In every tab/dialog you can reorder tracks using shortcuts `Ctrl + Up Arrow / Ctrl + Down Arrow` except for: (Attachment/Muxing Tab).
+
 ## 📁Supported Extensions
 
 |     Type    |                                        Extensions                                       |
