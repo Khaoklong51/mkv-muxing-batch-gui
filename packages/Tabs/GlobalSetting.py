@@ -309,7 +309,7 @@ def refresh_old_tracks_info(track_type):
 
 
 class GlobalSetting(QWidget):
-    LAST_DIRECTORY_PATH: str
+    LAST_DIRECTORY_PATH = ""
     VIDEO_SOURCE_PATHS = []
     VIDEO_FILES_LIST: list[Path] = []
     VIDEO_FILES_SIZE_LIST: list[str] = []
