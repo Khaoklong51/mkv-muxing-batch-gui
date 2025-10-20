@@ -141,7 +141,7 @@ sudo apt install libxcb-cursor0
 
 ### Updating The MKVmerge version
 
-Program will automatically detect install mkvtoolnix in this order PATH>>Common install location(Windows Only)(C:\\Program Files\\MKVToolNix)>>Portable(Resources\\Tools\\[your operating system])
+Program will automatically detect install mkvtoolnix in this order PATH >> Common install location (Windows Only) (C:\\Program Files\\MKVToolNix) >> Portable (Resources\\Tools\\[your operating system])
 
 You can manually update the mkvmerge version for portable version, but do this only if you're sure of what you're doing, as it may require a reinstallation:
 
