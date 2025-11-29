@@ -138,6 +138,7 @@ def get_program_path(program: str) -> Path:
     if found and not USE_PG_PORTABLE:
         global Use_System_PG
         Use_System_PG = True
+        logging.debug(found)
         return Path(found).resolve()
 
     # Decide suffix
@@ -167,6 +168,7 @@ def get_program_path(program: str) -> Path:
         logging.error(f"{program} not found in path, Program Files, or Tools folder!")
         raise FileNotFoundError(f"{program} not found!")
 
+    logging.debug(candidate)
     return candidate
 
 
