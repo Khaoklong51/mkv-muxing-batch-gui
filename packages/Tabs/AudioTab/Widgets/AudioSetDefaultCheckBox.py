@@ -16,10 +16,6 @@ class AudioSetDefaultCheckBox(QCheckBox):
         GlobalSetting.AUDIO_SET_DEFAULT[self.tab_index] = (
             self.checkState() == Qt.CheckState.Checked
         )
-        if self.checkState() == Qt.CheckState.Checked:
-            for i in GlobalSetting.AUDIO_SET_DEFAULT.keys():
-                if i != self.tab_index:
-                    GlobalSetting.AUDIO_SET_DEFAULT[i] = False
 
     def update_check_state(self):
         self.setChecked(bool(GlobalSetting.AUDIO_SET_DEFAULT[self.tab_index]))

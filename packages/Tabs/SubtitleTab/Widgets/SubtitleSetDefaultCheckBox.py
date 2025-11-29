@@ -16,11 +16,6 @@ class SubtitleSetDefaultCheckBox(QCheckBox):
         GlobalSetting.SUBTITLE_SET_DEFAULT[self.tab_index] = (
             self.checkState() == Qt.CheckState.Checked
         )
-        if self.checkState() == Qt.CheckState.Checked:
-            for i in GlobalSetting.SUBTITLE_SET_DEFAULT.keys():
-
-                if i != self.tab_index:
-                    GlobalSetting.SUBTITLE_SET_DEFAULT[i] = False
 
     def update_check_state(self):
         self.setChecked(bool(GlobalSetting.SUBTITLE_SET_DEFAULT[self.tab_index]))

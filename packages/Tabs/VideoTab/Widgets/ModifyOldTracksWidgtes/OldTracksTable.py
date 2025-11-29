@@ -274,22 +274,6 @@ class OldTracksTable(TableWidget):
             else:
                 new_state = False
             self.update_state_of_row(row_id, new_state)
-        elif column_id == self.column_ids.Set_Default:
-            if new_state == Qt.CheckState.Checked.value:
-                for i in range(self.rowCount()):
-                    if i == row_id:
-                        continue
-                    self.cellWidget(i, column_id).check_box.setCheckState(
-                        Qt.CheckState.Unchecked
-                    )
-        elif column_id == self.column_ids.Set_Forced:
-            if new_state == Qt.CheckState.Checked.value:
-                for i in range(self.rowCount()):
-                    if i == row_id:
-                        continue
-                    self.cellWidget(i, column_id).check_box.setCheckState(
-                        Qt.CheckState.Unchecked
-                    )
 
     def update_state_of_row(self, row_id, new_state):
         self.cellWidget(row_id, self.column_ids.Set_Default).check_box.setEnabled(
