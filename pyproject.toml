@@ -3,7 +3,7 @@ name = "mkv-muxing-batch-gui"
 version = "v3.0.0"
 description = "Batch gui program to mux mkv files"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "comtypes>=1.4.11",
     "psutil>=7.0.0",
