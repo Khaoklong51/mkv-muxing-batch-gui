@@ -225,7 +225,13 @@ class GetJsonForMkvmergeJob:
     def setup_chapter_options(self):
         if GlobalSetting.CHAPTER_ENABLED:
             if self.job.chapter_found:
-                self.chapter_attach_command = add_json_line("--chapters") + add_json_line(
+                if self.job.chapter_delay != 0.0:
+                    self.chapter_attach_command += add_json_line(
+                        "--chapter-sync"
+                    ) + add_json_line(int(1000 * float(self.job.chapter_delay)))
+                self.chapter_attach_command += add_json_line(
+                    "--chapters"
+                ) + add_json_line(
                     check_for_system_backslash_path(self.job.chapter_name_absolute)
                 )
             elif GlobalSetting.CHAPTER_DISCARD_OLD:

@@ -29,6 +29,7 @@ class SingleJobData:
         self.chapter_found = False
         self.chapter_name = ""
         self.chapter_name_absolute = ""
+        self.chapter_delay = 0.0
 
         self.attachments_absolute_path = []
         self.discard_old_attachments = False

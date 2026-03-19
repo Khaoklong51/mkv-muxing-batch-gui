@@ -18,6 +18,9 @@ from packages.Tabs.ChapterTab.Widgets.ChapterExtensionsCheckableComboBox import 
 )
 from packages.Tabs.ChapterTab.Widgets.ChapterSourceButton import ChapterSourceButton
 from packages.Tabs.ChapterTab.Widgets.ChapterSourceLineEdit import ChapterSourceLineEdit
+from packages.Tabs.ChapterTab.Widgets.ChapterDelayDoubleSpinBox import (
+    ChapterDelayDoubleSpinBox,
+)
 from packages.Tabs.ChapterTab.Widgets.DiscardOldChaptersCheckBox import (
     DiscardOldChaptersCheckBox,
 )
@@ -47,6 +50,7 @@ class ChapterSelectionSetting(GlobalSetting):
     def create_widgets(self):
         self.chapter_source_label = QLabel("Chapter Source Folder:")
         self.chapter_extension_label = QLabel("Chapter Extension:")
+        self.chapter_delay_label = QLabel("Delay:")
         self.chapter_source_lineEdit = ChapterSourceLineEdit()
         self.chapter_source_button = ChapterSourceButton()
         self.chapter_clear_button = ChapterClearButton()
@@ -54,6 +58,7 @@ class ChapterSelectionSetting(GlobalSetting):
         self.discard_old_chapters_checkBox = DiscardOldChaptersCheckBox()
         self.chapter_extensions_comboBox = ChapterExtensionsCheckableComboBox()
         self.chapter_match_layout = MatchChapterLayout(parent=self)
+        self.chapter_delay_spin = ChapterDelayDoubleSpinBox()
         self.chapter_options_layout = QHBoxLayout()
         self.MainLayout = QVBoxLayout()
         self.main_layout = QGridLayout()
@@ -103,7 +108,13 @@ class ChapterSelectionSetting(GlobalSetting):
         self.chapter_options_layout.addWidget(self.chapter_extensions_comboBox)
         self.chapter_options_layout.addStretch()
         self.chapter_options_layout.addWidget(
-            self.discard_old_chapters_checkBox, alignment=Qt.AlignmentFlag.AlignRight
+            self.chapter_delay_label, alignment=Qt.AlignmentFlag.AlignRight
+        )
+        self.chapter_options_layout.addWidget(
+            self.chapter_delay_spin,
+        )
+        self.chapter_options_layout.addWidget(
+            self.discard_old_chapters_checkBox,
         )
 
     def setup_main_layout(self):
@@ -323,7 +334,7 @@ class ChapterSelectionSetting(GlobalSetting):
         self.chapter_clear_button.setEnabled(False)
         self.chapter_refresh_files_button.setEnabled(False)
         self.chapter_main_groupBox.setCheckable(False)
-        self.chapter_match_layout.disable_editable_widgets()
+        self.chapter_delay_spin.setEnabled(False)
 
     def enable_editable_widgets(self):
         self.chapter_source_lineEdit.setEnabled(True)
@@ -331,6 +342,7 @@ class ChapterSelectionSetting(GlobalSetting):
         self.discard_old_chapters_checkBox.setEnabled(True)
         self.chapter_extensions_comboBox.setEnabled(True)
         self.chapter_clear_button.setEnabled(True)
+        self.chapter_delay_spin.setEnabled(True)
         if not self.is_drag_and_drop:
             self.chapter_refresh_files_button.setEnabled(True)
         else:

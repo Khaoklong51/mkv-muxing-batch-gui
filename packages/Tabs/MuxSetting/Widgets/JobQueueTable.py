@@ -32,7 +32,10 @@ from packages.Widgets.WarningDialog import WarningDialog
 
 
 def generate_tool_tip_for_chapter_file(
-    chapter_full_path="C:/Test", chapter_name="Test", show_full_path=True
+    chapter_full_path="C:/Test",
+    chapter_name="Test",
+    chapter_delay: float = 0,
+    show_full_path=True,
 ):
     if show_full_path:
         return (
@@ -40,10 +43,18 @@ def generate_tool_tip_for_chapter_file(
             + str(chapter_full_path)
             + "\nChapter Name: "
             + str(chapter_name)
+            + "\nChapter Delay: "
+            + str(chapter_delay)
             + "\nDouble click for more details"
         )
     else:
-        return "Chapter Name: " + str(chapter_name) + "\nDouble click for more details"
+        return (
+            "Chapter Name: "
+            + str(chapter_name)
+            + "\nChapter Delay: "
+            + str(chapter_delay)
+            + "\nDouble click for more details"
+        )
 
 
 def generate_tool_tip_for_audio_file(
@@ -387,6 +398,7 @@ class JobQueueTable(TableWidget):
             new_job.chapter_name_absolute = (
                 GlobalSetting.CHAPTER_FILES_ABSOLUTE_PATH_LIST[new_row_id]
             )
+            new_job.chapter_delay = GlobalSetting.CHAPTER_DELAY
             self.setCellWidget(
                 new_row_id,
                 self.column_ids["Chapter"],
@@ -394,6 +406,7 @@ class JobQueueTable(TableWidget):
                     tool_tip=generate_tool_tip_for_chapter_file(
                         chapter_full_path=new_job.chapter_name_absolute,
                         chapter_name=new_job.chapter_name,
+                        chapter_delay=new_job.chapter_delay,
                         show_full_path=False,
                     )
                 ),
@@ -766,10 +779,18 @@ class JobQueueTable(TableWidget):
                 warning_dialog.execute()
         elif column_index == self.column_ids["Chapter"]:
             if self.data[row_index].chapter_found:
+                chapter_default_value_delay = GlobalSetting.CHAPTER_DELAY
                 chapter_info_dialog = ChapterInfoDialog(
-                    chapter_name=self.data[row_index].chapter_name, parent=self
+                    chapter_name=self.data[row_index].chapter_name,
+                    chapter_delay=self.data[row_index].chapter_delay,
+                    chapter_default_value_delay=chapter_default_value_delay,
+                    parent=self,
                 )
                 chapter_info_dialog.execute()
+                if chapter_info_dialog.state == "yes":
+                    self.data[row_index].chapter_delay = (
+                        chapter_info_dialog.current_chapter_delay
+                    )
             else:
                 warning_dialog = WarningDialog(
                     window_title="Chapter Info",
