@@ -7,7 +7,7 @@ import os
 from shutil import which
 
 from packages.Widgets.MissingFilesMessage import MissingFilesMessage
-from packages.Startup.Debug import USE_PG_PORTABLE
+from packages.Common.Debug import USE_PG_PORTABLE
 
 
 def create_app_data_folder():

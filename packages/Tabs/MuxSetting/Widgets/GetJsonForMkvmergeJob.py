@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from packages.Startup import GlobalFiles
+from packages.Common.Debug import CHAPTER_UND_LANGUAGE
 from packages.Startup.PreDefined import ISO_639_2_LANGUAGES
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.MuxSetting.Widgets.SingleJobData import SingleJobData
@@ -225,16 +226,22 @@ class GetJsonForMkvmergeJob:
     def setup_chapter_options(self):
         if GlobalSetting.CHAPTER_ENABLED:
             if self.job.chapter_found:
+                if CHAPTER_UND_LANGUAGE:
+                    # force und language for consistentcy with other track type
+                    self.attachments_attach_command += add_json_line(
+                        "--chapter-language"
+                    ) + add_json_line("und")
                 if self.job.chapter_delay != 0.0:
                     self.chapter_attach_command += add_json_line(
                         "--chapter-sync"
                     ) + add_json_line(int(1000 * float(self.job.chapter_delay)))
+                    print(1000 * float(self.job.chapter_delay))
                 self.chapter_attach_command += add_json_line(
                     "--chapters"
                 ) + add_json_line(
                     check_for_system_backslash_path(self.job.chapter_name_absolute)
                 )
-            elif GlobalSetting.CHAPTER_DISCARD_OLD:
+            if GlobalSetting.CHAPTER_DISCARD_OLD:
                 self.discard_old_attachments_command = add_json_line("--no-chapters")
 
     def setup_video_default_duration_fps_command(self):
