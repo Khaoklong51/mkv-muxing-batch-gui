@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QDoubleSpinBox,
 )
 
+from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
 from packages.Widgets.MyDialog import MyDialog
@@ -77,7 +78,7 @@ class ChapterInfoDialog(MyDialog):
         self.chapter_delay_spin.setValue(float(self.current_chapter_delay))
 
     def update_current_chapter_delay(self):
-        self.current_chapter_delay = round(self.chapter_delay_spin.value(), 5)
+        self.current_chapter_delay = normal_round(self.chapter_delay_spin.value(), 5)
 
     def setup_ui(self):
         self.disable_question_mark_window()

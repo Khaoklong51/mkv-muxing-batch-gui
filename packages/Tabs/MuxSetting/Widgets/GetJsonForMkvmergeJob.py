@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
 from packages.Common.Debug import CHAPTER_UND_LANGUAGE
 from packages.Startup.PreDefined import ISO_639_2_LANGUAGES
@@ -234,8 +235,7 @@ class GetJsonForMkvmergeJob:
                 if self.job.chapter_delay != 0.0:
                     self.chapter_attach_command += add_json_line(
                         "--chapter-sync"
-                    ) + add_json_line(int(1000 * float(self.job.chapter_delay)))
-                    print(1000 * float(self.job.chapter_delay))
+                    ) + add_json_line(normal_round(1000 * float(self.job.chapter_delay)))
                 self.chapter_attach_command += add_json_line(
                     "--chapters"
                 ) + add_json_line(
@@ -399,7 +399,7 @@ class GetJsonForMkvmergeJob:
                         subtitle_command_list.append(add_json_line("--forced-track"))
                         subtitle_command_list.append(add_json_line("0:no"))
                     # add subtitle delay
-                    subtitle_delay_in_millisecond = int(
+                    subtitle_delay_in_millisecond = normal_round(
                         1000 * float(self.job.subtitle_delay[i])
                     )
                     subtitle_command_list.append(add_json_line("--sync"))
@@ -557,7 +557,7 @@ class GetJsonForMkvmergeJob:
                         audio_command_list.append(add_json_line("--forced-track"))
                         audio_command_list.append(add_json_line("0:no"))
                     # add audio delay
-                    audio_delay_in_millisecond = int(
+                    audio_delay_in_millisecond = normal_round(
                         1000 * float(self.job.audio_delay[i])
                     )
                     audio_command_list.append(add_json_line("--sync"))

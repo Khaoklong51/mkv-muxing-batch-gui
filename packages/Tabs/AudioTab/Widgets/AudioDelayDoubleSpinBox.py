@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QDoubleSpinBox
 
+from packages.Common.Math import normal_round
 from packages.Startup.InitializeScreenResolution import screen_size
 from packages.Tabs.GlobalSetting import GlobalSetting
 
@@ -19,7 +20,7 @@ class AudioDelayDoubleSpinBox(QDoubleSpinBox):
         self.editingFinished.connect(self.change_global_audio_delay)
 
     def change_global_audio_delay(self):
-        GlobalSetting.AUDIO_DELAY[self.tab_index] = round(self.value(), 5)
+        GlobalSetting.AUDIO_DELAY[self.tab_index] = normal_round(self.value(), 5)
 
     def setEnabled(self, new_state: bool):
         super().setEnabled(new_state)

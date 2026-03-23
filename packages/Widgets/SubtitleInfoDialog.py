@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
 )
 
+from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
 from packages.Startup.Options import Options
@@ -266,7 +267,7 @@ class SubtitleInfoDialog(MyDialog):
         )
 
     def update_current_subtitle_delay(self):
-        self.current_subtitle_delay[self.current_subtitle_index] = round(
+        self.current_subtitle_delay[self.current_subtitle_index] = normal_round(
             self.subtitle_delay_spin.value(), 5
         )
 

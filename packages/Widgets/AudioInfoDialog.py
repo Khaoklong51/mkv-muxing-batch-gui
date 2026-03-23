@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QFormLayout,
 )
 
+from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
 from packages.Startup import GlobalIcons
 from packages.Startup.Options import Options
@@ -264,7 +265,7 @@ class AudioInfoDialog(MyDialog):
         )
 
     def update_current_audio_delay(self):
-        self.current_audio_delay[self.current_audio_index] = round(
+        self.current_audio_delay[self.current_audio_index] = normal_round(
             self.audio_delay_spin.value(), 5
         )
 
