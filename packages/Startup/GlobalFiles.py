@@ -156,6 +156,15 @@ def get_custom_program_path(program: str, suffix: str) -> Path | None:
     return None
 
 
+def get_nearby_program_path(program: str, suffix: str) -> Path | None:
+    executable_name = f"{program}{suffix}"
+    for folder_path in (script_folder.resolve(), script_folder.resolve().parent):
+        candidate = folder_path / executable_name
+        if candidate.exists():
+            return candidate.resolve()
+    return None
+
+
 def get_program_path(program: str) -> Path:
     # Decide suffix
     suffix = ".exe" if sys.platform == "win32" else ""
@@ -167,6 +176,11 @@ def get_program_path(program: str) -> Path:
             global Use_System_PG
             Use_System_PG = True
             return custom_candidate
+
+        nearby_candidate = get_nearby_program_path(program, suffix)
+        if nearby_candidate:
+            Use_System_PG = True
+            return nearby_candidate
 
     found = which(program)
     if found and not USE_PG_PORTABLE:

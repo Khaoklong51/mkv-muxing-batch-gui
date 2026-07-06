@@ -1,6 +1,6 @@
 [project]
 name = "mkv-muxing-batch-gui"
-version = "3.0.0b0"
+version = "3.0.0b1"
 description = "Batch gui program to mux mkv files"
 readme = "README.md"
 requires-python = ">=3.10"
