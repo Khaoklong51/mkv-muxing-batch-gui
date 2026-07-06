@@ -38,7 +38,9 @@ class MainWindow(MyMainWindow):
 
     def __init__(self, args, parent=None):
         super().__init__(args=args, parent=parent)
-        self.resize(int(width_factor * 1160), int(height_factor * 635))
+        self.apply_saved_window_placement(
+            int(width_factor * 1160), int(height_factor * 635)
+        )
         self.setWindowTitle("MKV Muxing Batch GUI v" + str(VERSION) + str(RELEASE_SUFFIX))
         self.setWindowIcon(GlobalIcons.AppIcon)
         self.tabs = TabsManager()
@@ -77,9 +79,7 @@ class MainWindow(MyMainWindow):
         self.set_dark_mode(Options.Dark_Mode)
 
     def show_window(self):
-        self.showNormal()
-        self.raise_()
-        self.activateWindow()
+        self.show_saved_window()
 
     def setup_tabs_layout(self):
         self.tabs_frame.setContentsMargins(0, 0, 0, 0)

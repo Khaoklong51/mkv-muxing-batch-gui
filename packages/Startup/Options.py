@@ -37,6 +37,8 @@ class Options(QWidget):
     CurrentPreset = SingleDefaultPresetsData()
     FavoritePresetId = 0
     Dark_Mode = False
+    Main_Window_Geometry = {}
+    Main_Window_Maximized = False
     Attachment_Expert_Mode_Info_Message_Show = True
     Choose_Preset_On_Startup = False
 
@@ -94,12 +96,17 @@ def save_options():
         "Presets": default_presets_data,
         "FavoritePresetId": Options.FavoritePresetId,
         "Dark_Mode": Options.Dark_Mode,
+        "Main_Window_Geometry": Options.Main_Window_Geometry,
+        "Main_Window_Maximized": Options.Main_Window_Maximized,
         "Attachment_Expert_Mode_Info_Message_Show": Options.Attachment_Expert_Mode_Info_Message_Show,
         "Choose_Preset_On_Startup": Options.Choose_Preset_On_Startup,
     }
     options_file_path = Path(SettingJsonInfoFilePath)
-    with open(options_file_path, "w+", encoding="UTF-8") as option_file:
-        json.dump(options_data, option_file, indent=4)
+    try:
+        with open(options_file_path, "w+", encoding="UTF-8") as option_file:
+            json.dump(options_data, option_file, indent=4)
+    except OSError as e:
+        logging.warning("Could not save settings file: %s", e)
 
 
 def read_option_file(option_file):
@@ -208,6 +215,18 @@ def read_option_file(option_file):
             )
             Options.Dark_Mode = get_data_from_json(
                 json_data=data, attribute="Dark_Mode", default_value=False
+            )
+            Options.Main_Window_Geometry = get_data_from_json(
+                json_data=data, attribute="Main_Window_Geometry", default_value={}
+            )
+            if not isinstance(Options.Main_Window_Geometry, dict):
+                Options.Main_Window_Geometry = {}
+            Options.Main_Window_Maximized = bool(
+                get_data_from_json(
+                    json_data=data,
+                    attribute="Main_Window_Maximized",
+                    default_value=False,
+                )
             )
             Options.Attachment_Expert_Mode_Info_Message_Show = get_data_from_json(
                 json_data=data,

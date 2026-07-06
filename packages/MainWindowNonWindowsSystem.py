@@ -30,7 +30,9 @@ def check_if_exit_while_selected_one_option():
 class MainWindowNonWindowsSystem(MyMainWindow):
     def __init__(self, args, parent=None):
         super().__init__(args=args, parent=parent)
-        self.resize(int(width_factor * 1100), int(height_factor * 635))
+        self.apply_saved_window_placement(
+            int(width_factor * 1100), int(height_factor * 635)
+        )
         self.setWindowTitle("MKV Muxing Batch GUI v" + str(VERSION) + str(RELEASE_SUFFIX))
         self.setWindowIcon(GlobalIcons.AppIcon)
         self.tabs = TabsManager()
@@ -48,9 +50,7 @@ class MainWindowNonWindowsSystem(MyMainWindow):
         self.tabs.currentChanged.connect(self.update_minimum_size)
 
     def show_window(self):
-        self.showNormal()
-        self.raise_()
-        self.activateWindow()
+        self.show_saved_window()
 
     def setup_tabs_layout(self):
         self.tabs_frame.setContentsMargins(0, 0, 0, 0)
