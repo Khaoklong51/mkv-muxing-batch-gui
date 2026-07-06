@@ -1,3 +1,3 @@
-PySide6
-psutil
-comtypes
+PySide6>=6.9.2
+psutil>=7.0.0
+comtypes>=1.4.11
