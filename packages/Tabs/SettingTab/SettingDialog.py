@@ -18,7 +18,6 @@ from packages.Tabs.SettingTab.Widgets.PresetTabWidget import PresetTabWidget
 from packages.Widgets.MyDialog import MyDialog
 from packages.Widgets.SingleDefaultPresetsData import SingleDefaultPresetsData
 
-
 # faulthandler.enable()
 
 

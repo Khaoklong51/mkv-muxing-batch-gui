@@ -1,3 +1,3 @@
 # file contain debug variable
 USE_PG_PORTABLE = False
-CHAPTER_UND_LANGUAGE = False
+CHAPTER_UND_LANGUAGE = True

@@ -62,7 +62,6 @@ from packages.Widgets.InvalidPathDialog import InvalidPathDialog
 from packages.Widgets.NoSettingToApplyDialog import NoSettingToApplyDialog
 from packages.Startup import GlobalFiles, GlobalIcons
 
-
 # noinspection PyAttributeOutsideInit
 
 
