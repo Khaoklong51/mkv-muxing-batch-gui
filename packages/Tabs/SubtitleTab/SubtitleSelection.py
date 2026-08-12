@@ -1,7 +1,8 @@
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QGridLayout, QWidget
 import os
+
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QMouseEvent, QShowEvent
+from PySide6.QtWidgets import QGridLayout, QGroupBox, QHBoxLayout, QLabel, QWidget
 
 from packages.Startup.Options import Options
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
@@ -37,8 +38,8 @@ from packages.Tabs.SubtitleTab.Widgets.SubtitleSourceLineEdit import (
 from packages.Tabs.SubtitleTab.Widgets.SubtitleTrackNameLineEdit import (
     SubtitleTrackNameLineEdit,
 )
-from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
+from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Widgets.WarningDialog import WarningDialog
 
 
@@ -166,7 +167,6 @@ class SubtitleSelectionSetting(QGroupBox):
         self.subtitle_options_layout.addStretch()
 
     def setup_main_layout(self):
-        pass
         self.main_layout.addWidget(self.subtitle_source_label, 0, 0)
         self.main_layout.addWidget(self.subtitle_source_lineEdit, 0, 1, 1, 1)
         self.main_layout.addWidget(self.subtitle_clear_button, 0, 2, 1, 1)

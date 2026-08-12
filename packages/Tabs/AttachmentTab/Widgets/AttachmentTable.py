@@ -2,11 +2,11 @@ import sys
 
 import PySide6
 from PySide6.QtCore import Signal
-from PySide6.QtGui import Qt, QColor
+from PySide6.QtGui import QColor, Qt
 from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem
 
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Tabs.GlobalSetting import GlobalSetting, sort_names_like_windows
 from packages.Widgets.TableWidget import TableWidget
 

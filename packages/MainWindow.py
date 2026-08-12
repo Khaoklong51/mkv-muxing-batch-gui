@@ -1,10 +1,10 @@
-from PySide6.QtGui import Qt, QCloseEvent
+from PySide6.QtGui import QCloseEvent, Qt
 from PySide6.QtWidgets import QFrame, QVBoxLayout
 
 from packages.Startup import GlobalIcons
+from packages.Startup.InitializeScreenResolution import height_factor, width_factor
 from packages.Startup.Options import Options, get_names_list_of_presets, save_options
-from packages.Startup.InitializeScreenResolution import width_factor, height_factor
-from packages.Startup.Version import VERSION, RELEASE_SUFFIX
+from packages.Startup.Version import RELEASE_SUFFIX, VERSION
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.TabsManager import TabsManager
 from packages.Widgets.ChoosePresetDialog import ChoosePresetDialog

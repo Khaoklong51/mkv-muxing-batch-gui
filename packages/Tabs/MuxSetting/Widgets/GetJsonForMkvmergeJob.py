@@ -5,9 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+from packages.Common.Debug import CHAPTER_UND_LANGUAGE
 from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
-from packages.Common.Debug import CHAPTER_UND_LANGUAGE
 from packages.Startup.PreDefined import ISO_639_2_LANGUAGES
 from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.MuxSetting.Widgets.SingleJobData import SingleJobData

@@ -3,11 +3,11 @@ import time
 from pathlib import Path
 
 from PySide6.QtCore import QThread, Signal
-from PySide6.QtGui import Qt, QFontMetrics
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem, QHeaderView, QLabel
+from PySide6.QtGui import QFontMetrics, Qt
+from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QLabel, QTableWidgetItem
 
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Tabs.GlobalSetting import GlobalSetting, get_readable_filesize
 from packages.Tabs.MuxSetting.Widgets.ConfirmUsingMkvpropedit import (
     ConfirmUsingMkvpropedit,

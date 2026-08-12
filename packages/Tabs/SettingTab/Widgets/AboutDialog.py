@@ -1,16 +1,16 @@
-from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QSize
-from PySide6.QtGui import QPixmap, QFont
-from PySide6.QtWidgets import QLabel, QPushButton, QHBoxLayout, QVBoxLayout
+from PySide6 import QtCore, QtGui
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QFont, QPixmap
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout
 
 from packages.Startup.GlobalFiles import (
-    AppIconPath,
     MKVMERGE_VERSION,
     MKVPROPEDIT_VERSION,
+    AppIconPath,
 )
 from packages.Startup.GlobalIcons import AboutIcon
-from packages.Startup.PreDefined import GitHubRepoUrlTag, GPLV2UrlTag, GitHubIssuesUrlTag
-from packages.Startup.Version import VERSION, RELEASE_SUFFIX
+from packages.Startup.PreDefined import GitHubIssuesUrlTag, GitHubRepoUrlTag, GPLV2UrlTag
+from packages.Startup.Version import RELEASE_SUFFIX, VERSION
 from packages.Widgets.MyDialog import MyDialog
 
 

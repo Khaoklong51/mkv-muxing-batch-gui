@@ -1,4 +1,4 @@
-from PySide6.QtGui import QPixmap, Qt, QResizeEvent
+from PySide6.QtGui import QPixmap, QResizeEvent, Qt
 from PySide6.QtWidgets import QLabel
 
 from packages.Startup import GlobalFiles

@@ -46,7 +46,7 @@ def generate_track_ids(ids_list):
     return res
 
 
-def get_readable_filesize(size_bytes: float | int, suffix="B"):
+def get_readable_filesize(size_bytes: float, suffix="B"):
     for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
         if abs(size_bytes) < 1024.0:
             return "%3.2f %s%s" % (size_bytes, unit, suffix)
@@ -160,7 +160,7 @@ def refresh_old_tracks_info_as_bulk(tracks_info: list[list[SingleOldTrackData]])
     for video_id, tracks_list in enumerate(tracks_info, start=1):
         for track in tracks_list:
             track_id = track.id
-            if track_id not in track_dict.keys():
+            if track_id not in track_dict:
                 track_dict[track_id] = defaultdict(SingleOldTrackData)
             single_old_track_data: SingleOldTrackData = SingleOldTrackData()
             single_old_track_data.id = track_id

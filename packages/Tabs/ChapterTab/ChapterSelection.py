@@ -1,37 +1,37 @@
-from PySide6.QtCore import Signal, Qt
+import os
+
+from PySide6 import QtGui
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
-    QGroupBox,
-    QVBoxLayout,
-    QLabel,
-    QHBoxLayout,
     QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
+    QVBoxLayout,
     QWidget,
 )
 
-from PySide6 import QtGui
-import os
-
 from packages.Startup.Options import Options
 from packages.Tabs.ChapterTab.Widgets.ChapterClearButton import ChapterClearButton
+from packages.Tabs.ChapterTab.Widgets.ChapterDelayDoubleSpinBox import (
+    ChapterDelayDoubleSpinBox,
+)
 from packages.Tabs.ChapterTab.Widgets.ChapterExtensionsCheckableComboBox import (
     ChapterExtensionsCheckableComboBox,
 )
 from packages.Tabs.ChapterTab.Widgets.ChapterSourceButton import ChapterSourceButton
 from packages.Tabs.ChapterTab.Widgets.ChapterSourceLineEdit import ChapterSourceLineEdit
-from packages.Tabs.ChapterTab.Widgets.ChapterDelayDoubleSpinBox import (
-    ChapterDelayDoubleSpinBox,
-)
 from packages.Tabs.ChapterTab.Widgets.DiscardOldChaptersCheckBox import (
     DiscardOldChaptersCheckBox,
 )
 from packages.Tabs.ChapterTab.Widgets.MatchChapterLayout import MatchChapterLayout
-from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,
     get_files_names_absolute_list,
     sort_names_like_windows,
 )
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
+from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Widgets.WarningDialog import WarningDialog
 
 

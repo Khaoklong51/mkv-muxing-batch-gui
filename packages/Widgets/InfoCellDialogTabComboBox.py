@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtWidgets import QComboBox
 
 from packages.Startup.InitializeScreenResolution import screen_size

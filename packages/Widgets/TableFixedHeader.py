@@ -1,11 +1,11 @@
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFontMetrics, QPaintEvent, QResizeEvent
 from PySide6.QtWidgets import (
-    QGridLayout,
-    QTableWidgetItem,
-    QHeaderView,
     QAbstractItemView,
+    QGridLayout,
+    QHeaderView,
     QTableWidget,
+    QTableWidgetItem,
 )
 
 from packages.Widgets.TableNoSelection import TableWidgetNoSelection

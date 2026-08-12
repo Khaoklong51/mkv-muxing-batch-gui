@@ -1,20 +1,19 @@
 from PySide6 import QtGui
 from PySide6.QtGui import Qt
 from PySide6.QtWidgets import (
-    QGridLayout,
-    QLabel,
-    QPushButton,
-    QHBoxLayout,
-    QDoubleSpinBox,
-    QComboBox,
-    QLineEdit,
     QCheckBox,
+    QComboBox,
+    QDoubleSpinBox,
     QFormLayout,
+    QGridLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
 )
 
 from packages.Common.Math import normal_round
-from packages.Startup import GlobalFiles
-from packages.Startup import GlobalIcons
+from packages.Startup import GlobalFiles, GlobalIcons
 from packages.Startup.Options import Options
 from packages.Widgets.InfoCellDialogTabComboBox import InfoCellDialogTabComboBox
 from packages.Widgets.MyDialog import MyDialog

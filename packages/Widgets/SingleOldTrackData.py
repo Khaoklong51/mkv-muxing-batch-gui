@@ -1,5 +1,5 @@
+
 from packages.Widgets.SingleTrackData import SingleTrackData
-import typing as typ
 
 
 class SingleOldTrackData(SingleTrackData):
@@ -8,7 +8,7 @@ class SingleOldTrackData(SingleTrackData):
         self.is_enabled: bool | int = False
         self.order = -1
 
-    def __eq__(self, other: typ.Any):
+    def __eq__(self, other: object):
         if not isinstance(other, SingleOldTrackData):
             # don't attempt to compare against unrelated types
             return NotImplemented

@@ -1,4 +1,5 @@
 from PySide6.QtCore import Qt
+
 from packages.Startup.InitializeScreenResolution import screen_size
 from packages.Startup.PreDefined import AllAudiosTracks
 from packages.Tabs.GlobalSetting import GlobalSetting

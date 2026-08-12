@@ -2,7 +2,7 @@ from pathlib import Path
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFontMetrics, QResizeEvent
-from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem, QLabel
+from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QLabel, QTableWidgetItem
 
 from packages.Tabs.VideoTab.Widgets.ModifyOldTracksWidgtes.TrackInfoTableColumnsID import (
     TrackInfoTableColumnsID,

@@ -1,11 +1,11 @@
 from PySide6 import QtGui
-from PySide6.QtCore import Qt, QSize
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import (
-    QVBoxLayout,
-    QPushButton,
+    QAbstractItemView,
     QHBoxLayout,
     QLabel,
-    QAbstractItemView,
+    QPushButton,
+    QVBoxLayout,
 )
 
 from packages.Startup.GlobalIcons import LeftArrowIcon, RightArrowIcon

@@ -2,9 +2,9 @@ import traceback
 import zlib
 from os.path import getsize
 
-from PySide6.QtCore import Signal, QObject, QThread
+from PySide6.QtCore import QObject, QThread, Signal
 
-from packages.Tabs.GlobalSetting import write_to_log_file, GlobalSetting
+from packages.Tabs.GlobalSetting import GlobalSetting, write_to_log_file
 
 
 def get_file_name_with_mkv_extension(file_name):

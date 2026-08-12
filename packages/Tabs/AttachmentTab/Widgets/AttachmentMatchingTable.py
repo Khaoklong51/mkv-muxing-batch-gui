@@ -1,15 +1,14 @@
 import sys
-from typing import List
 
 import PySide6
 from PySide6.QtCore import Signal
-from PySide6.QtGui import Qt, QColor
+from PySide6.QtGui import QColor, Qt
 from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem
 
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
+from packages.Tabs.GlobalSetting import get_readable_filesize, sort_names_like_windows
 from packages.Widgets.PathData import PathData
-from packages.Tabs.GlobalSetting import sort_names_like_windows, get_readable_filesize
 from packages.Widgets.TableWidget import TableWidget
 
 
@@ -115,7 +114,7 @@ class AttachmentMatchingTable(TableWidget):
         super().resizeEvent(event)
         self.resize_2nd_column()
 
-    def show_paths_list(self, path_list: List[PathData]):
+    def show_paths_list(self, path_list: list[PathData]):
         self.checking_row_updates = False
         self.setRowCount(len(path_list))
         self.set_row_height(new_height=screen_size.height() // 27)

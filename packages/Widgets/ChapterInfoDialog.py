@@ -1,16 +1,15 @@
-from PySide6 import QtGui, QtCore
+from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (
+    QDoubleSpinBox,
+    QFormLayout,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QPushButton,
-    QHBoxLayout,
-    QFormLayout,
-    QDoubleSpinBox,
 )
 
 from packages.Common.Math import normal_round
-from packages.Startup import GlobalFiles
-from packages.Startup import GlobalIcons
+from packages.Startup import GlobalFiles, GlobalIcons
 from packages.Widgets.MyDialog import MyDialog
 
 

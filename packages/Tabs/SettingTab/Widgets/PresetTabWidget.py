@@ -1,20 +1,20 @@
 # import faulthandler
 from PySide6.QtWidgets import (
-    QWidget,
-    QGroupBox,
-    QVBoxLayout,
-    QStyleFactory,
     QGridLayout,
+    QGroupBox,
     QLabel,
+    QStyleFactory,
+    QVBoxLayout,
+    QWidget,
 )
 
-from packages.Startup.Options import Options
 from packages.Startup.MainApplication import get_dark_palette, get_light_palette
+from packages.Startup.Options import Options
 from packages.Startup.PreDefined import (
-    AllVideosExtensions,
-    AllSubtitlesExtensions,
     AllAudiosExtensions,
     AllChapterExtensions,
+    AllSubtitlesExtensions,
+    AllVideosExtensions,
 )
 from packages.Tabs.SettingTab.Widgets.DefaultDirectoryLayout import DefaultDirectoryLayout
 from packages.Tabs.SettingTab.Widgets.DefaultExtensionsLayout import (

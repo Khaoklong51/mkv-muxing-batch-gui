@@ -1,10 +1,10 @@
-from PySide6.QtCore import Signal, Qt, QSize, QEvent
+from PySide6.QtCore import QEvent, QSize, Qt, Signal
 from PySide6.QtGui import QFontMetrics
 from PySide6.QtWidgets import QComboBox
 
 from packages.Startup import GlobalIcons
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
 
 

@@ -1,4 +1,4 @@
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
 
 def normal_round(number: float | str, precision=0) -> int | float:
@@ -7,5 +7,5 @@ def normal_round(number: float | str, precision=0) -> int | float:
     if precision == 0:
         return int(value.to_integral_value(rounding=ROUND_HALF_UP))
     else:
-        quant = Decimal("1").scaleb(-precision)
+        quant = Decimal(1).scaleb(-precision)
         return float(value.quantize(quant, rounding=ROUND_HALF_UP))

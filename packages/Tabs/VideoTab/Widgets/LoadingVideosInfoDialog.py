@@ -1,15 +1,15 @@
 import time
+from pathlib import Path
 
-from PySide6.QtCore import Qt, QThread, QSize
+from PySide6.QtCore import QSize, Qt, QThread
 from PySide6.QtGui import QMovie
-from PySide6.QtWidgets import QLabel, QHBoxLayout
+from PySide6.QtWidgets import QHBoxLayout, QLabel
 
 from packages.Startup.GlobalFiles import SpinnerIconPath
 from packages.Tabs.VideoTab.Widgets.GenerateMediaInfoFilesWorker import (
     GenerateMediaInfoFilesWorker,
 )
 from packages.Widgets.MyDialog import MyDialog
-from pathlib import Path
 
 
 class LoadingVideosInfoDialog(MyDialog):

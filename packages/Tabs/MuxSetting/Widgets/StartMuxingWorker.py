@@ -7,10 +7,10 @@ from PySide6.QtCore import QObject, QThread, Signal
 
 from packages.Startup import GlobalFiles
 from packages.Tabs.GlobalSetting import GlobalSetting, write_to_log_file
-from packages.Tabs.MuxSetting.Widgets.CRCData import CRCData
 from packages.Tabs.MuxSetting.Widgets.CalculateCRCProcessWorker import (
     CalculateCRCProcessWorker,
 )
+from packages.Tabs.MuxSetting.Widgets.CRCData import CRCData
 from packages.Tabs.MuxSetting.Widgets.GetJsonForMkvmergeJob import GetJsonForMkvmergeJob
 from packages.Tabs.MuxSetting.Widgets.GetJsonForMkvpropeditJob import (
     GetJsonForMkvpropeditJob,

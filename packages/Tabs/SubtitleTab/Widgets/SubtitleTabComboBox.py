@@ -1,16 +1,16 @@
-from PySide6.QtCore import Signal, Qt, QSize, QEvent
+from PySide6.QtCore import QEvent, QSize, Qt, Signal
 from PySide6.QtWidgets import QComboBox, QStyledItemDelegate
 
 from packages.Startup import GlobalIcons
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
 from packages.Tabs.GlobalSetting import GlobalSetting
 
 
 class AlignDelegate(QStyledItemDelegate):
     def initStyleOption(self, option, index):
-        super(AlignDelegate, self).initStyleOption(option, index)
+        super().initStyleOption(option, index)
         option.displayAlignment = (
             Qt.AlignmentFlag.AlignJustify | Qt.AlignmentFlag.AlignCenter
         )

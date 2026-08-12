@@ -1,11 +1,11 @@
-from PySide6 import QtGui, QtCore
+from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (
-    QHBoxLayout,
-    QSpinBox,
+    QAbstractSpinBox,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QPushButton,
-    QAbstractSpinBox,
+    QSpinBox,
 )
 
 from packages.Widgets.MyDialog import MyDialog
@@ -52,7 +52,6 @@ class MoveToDialog(MyDialog):
     def signal_connect(self):
         self.yesButton.clicked.connect(self.click_yes)
         self.noButton.clicked.connect(self.click_no)
-        pass
 
     def click_yes(self):
         self.result = "Yes"

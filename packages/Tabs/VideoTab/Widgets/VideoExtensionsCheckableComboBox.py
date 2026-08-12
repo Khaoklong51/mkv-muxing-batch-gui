@@ -1,12 +1,12 @@
 import os
 
 from PySide6 import QtCore, QtGui
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtGui import QFontMetrics
-from PySide6.QtWidgets import QStyledItemDelegate, QComboBox
+from PySide6.QtWidgets import QComboBox, QStyledItemDelegate
 
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Startup.PreDefined import AllVideosExtensions
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,

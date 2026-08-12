@@ -1,15 +1,15 @@
-# -*- coding: utf-8 -*-
 # import faulthandler
 import logging
 import signal
 import sys
 from traceback import format_exception
+
 import psutil
-from packages.Startup.MainApplication import MainApplication
-from packages.Startup import GlobalFiles
-from packages.Startup import GlobalIcons
 from PySide6.QtGui import QFont, QFontDatabase
 from PySide6.QtWidgets import QApplication
+
+from packages.Startup import GlobalFiles, GlobalIcons
+from packages.Startup.MainApplication import MainApplication
 from packages.Widgets.WarningDialog import WarningDialog
 
 if sys.platform == "win32":

@@ -5,28 +5,29 @@ from os import makedirs
 from pathlib import Path
 from shutil import copy2
 
-from PySide6.QtCore import Signal, Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QPaintEvent, QResizeEvent
 from PySide6.QtWidgets import (
-    QVBoxLayout,
-    QGridLayout,
-    QLabel,
-    QPushButton,
-    QHBoxLayout,
-    QGroupBox,
-    QFileDialog,
     QCheckBox,
+    QFileDialog,
+    QGridLayout,
+    QGroupBox,
+    QHBoxLayout,
+    QLabel,
     QLineEdit,
+    QPushButton,
     QSizePolicy,
+    QVBoxLayout,
     QWidget,
 )
 
+from packages.Startup import GlobalFiles, GlobalIcons
 from packages.Startup.Options import Options
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,
     get_file_name_absolute_path,
-    write_to_log_file,
     get_readable_filesize,
+    write_to_log_file,
 )
 from packages.Tabs.MuxSetting.Widgets.AudioTracksCheckableComboBox import (
     AudioTracksCheckableComboBox,
@@ -60,7 +61,6 @@ from packages.Widgets.ErrorMuxingDialog import ErrorMuxingDialog
 from packages.Widgets.FileNotFoundDialog import FileNotFoundDialog
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
 from packages.Widgets.NoSettingToApplyDialog import NoSettingToApplyDialog
-from packages.Startup import GlobalFiles, GlobalIcons
 
 # noinspection PyAttributeOutsideInit
 

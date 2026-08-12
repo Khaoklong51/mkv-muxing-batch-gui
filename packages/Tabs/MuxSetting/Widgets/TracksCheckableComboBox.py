@@ -1,7 +1,7 @@
 from PySide6 import QtCore, QtGui
-from PySide6.QtCore import Qt, QEvent
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtGui import QFontMetrics
-from PySide6.QtWidgets import QStyledItemDelegate, QComboBox
+from PySide6.QtWidgets import QComboBox, QStyledItemDelegate
 
 # noinspection SpellCheckingInspection
 from packages.Tabs.GlobalSetting import GlobalSetting
@@ -98,7 +98,7 @@ class TracksCheckableComboBox(QComboBox):
                                 item.checkState() == Qt.CheckState.Checked
                                 or item.checkState() == Qt.CheckState.PartiallyChecked
                             ):
-                                for i in range(0, self.model().rowCount()):
+                                for i in range(self.model().rowCount()):
                                     item = self.model().item(i)
                                     if (
                                         item.text().find("---Track Id---") == -1
@@ -107,7 +107,7 @@ class TracksCheckableComboBox(QComboBox):
                                     ):
                                         item.setCheckState(Qt.CheckState.Unchecked)
                             else:
-                                for i in range(0, self.model().rowCount()):
+                                for i in range(self.model().rowCount()):
                                     item = self.model().item(i)
                                     if (
                                         item.text().find("---Track Id---") == -1

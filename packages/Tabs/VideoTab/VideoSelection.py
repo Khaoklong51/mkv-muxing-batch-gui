@@ -1,20 +1,21 @@
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QLabel, QHBoxLayout, QGridLayout
 from pathlib import Path
+
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLabel
 
 from packages.Startup.Options import Options
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,
-    refresh_tracks,
-    refresh_old_tracks_info,
-)
-from packages.Tabs.GlobalSetting import (
-    sort_names_like_windows,
-    get_readable_filesize,
     get_files_names_absolute_list,
+    get_readable_filesize,
+    refresh_old_tracks_info,
+    refresh_tracks,
+    sort_names_like_windows,
 )
 from packages.Tabs.VideoTab.Widgets.LoadingVideosInfoDialog import LoadingVideosInfoDialog
-from packages.Widgets.RefreshFilesButton import RefreshFilesButton
+from packages.Tabs.VideoTab.Widgets.ModifyOldTracksWidgtes.ModifyOldTracksButton import (
+    ModifyOldTracksButton,
+)
 from packages.Tabs.VideoTab.Widgets.VideoClearButton import VideoClearButton
 from packages.Tabs.VideoTab.Widgets.VideoDefaultDurationFPSComboBox import (
     VideoDefaultDurationFPSComboBox,
@@ -23,14 +24,12 @@ from packages.Tabs.VideoTab.Widgets.VideoExtensionsCheckableComboBox import (
     VideoExtensionsCheckableComboBox,
 )
 from packages.Tabs.VideoTab.Widgets.VideoInfoButton import VideoInfoButton
-from packages.Tabs.VideoTab.Widgets.ModifyOldTracksWidgtes.ModifyOldTracksButton import (
-    ModifyOldTracksButton,
-)
 from packages.Tabs.VideoTab.Widgets.VideoSourceButton import VideoSourceButton
 from packages.Tabs.VideoTab.Widgets.VideoSourceLineEdit import VideoSourceLineEdit
 from packages.Tabs.VideoTab.Widgets.VideoTable import VideoTable
 from packages.Widgets.ErrorDialog import ErrorDialog
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
+from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 
 # noinspection PyAttributeOutsideInit
 from packages.Widgets.WarningDialog import WarningDialog

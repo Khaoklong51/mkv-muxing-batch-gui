@@ -1,13 +1,13 @@
-import typing
-from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QFontMetrics, QColor, QKeySequence, QShortcut
-from PySide6.QtWidgets import QAbstractItemView, QTableWidgetItem, QHeaderView, QComboBox
 
-from packages.Startup.Options import Options
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QColor, QFontMetrics, QKeySequence, QShortcut
+from PySide6.QtWidgets import QAbstractItemView, QComboBox, QHeaderView, QTableWidgetItem
+
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Tabs.GlobalSetting import (
-    convert_string_integer_to_two_digit_string,
     GlobalSetting,
+    convert_string_integer_to_two_digit_string,
 )
 from packages.Tabs.VideoTab.Widgets.ModifyOldTracksWidgtes.CenteredCheckBoxCell import (
     CenteredCheckBoxCell,
@@ -29,8 +29,8 @@ class OldTracksTable(TableWidget):
             "dark": {"activate": "#FFFFFF", "disable": "#878787"},
         }
         self.column_ids = ModifyOldTracksTableColumnsID()
-        self.original_setting: typing.Dict[str, SingleOldTrackData] = original_setting
-        self.current_setting: typing.Dict[str, SingleOldTrackData] = current_setting
+        self.original_setting: dict[str, SingleOldTrackData] = original_setting
+        self.current_setting: dict[str, SingleOldTrackData] = current_setting
         self.all_languages = all_languages
         self.tracks_info = tracks_info
         self.horizontal_header = None

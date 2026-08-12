@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QPushButton, QFileDialog
+from PySide6.QtWidgets import QFileDialog, QPushButton
 
 from packages.Startup import GlobalIcons
 from packages.Tabs.AudioTab.Widgets.ReloadAudioFilesDialog import ReloadAudioFilesDialog

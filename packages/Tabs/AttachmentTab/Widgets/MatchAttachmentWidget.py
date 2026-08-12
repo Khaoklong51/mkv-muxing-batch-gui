@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import List
 
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QHBoxLayout, QWidget
@@ -11,13 +10,13 @@ from packages.Tabs.AttachmentTab.Widgets.AttachmentMatchingTable import (
 from packages.Tabs.AttachmentTab.Widgets.MatchAttachmentToolsLayout import (
     MatchAttachmentToolsLayout,
 )
-from packages.Widgets.PathData import PathData
 from packages.Tabs.AttachmentTab.Widgets.VideoMatchingTable import VideoMatchingTable
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,
     get_readable_filesize,
     sort_names_like_windows,
 )
+from packages.Widgets.PathData import PathData
 
 
 class MatchAttachmentWidget(QWidget):
@@ -29,7 +28,7 @@ class MatchAttachmentWidget(QWidget):
         super().__init__()
         self.video_table = VideoMatchingTable()
         self.attachment_table = AttachmentMatchingTable()
-        self.paths_list: List[PathData] = []
+        self.paths_list: list[PathData] = []
         self.total_size_bytes = 0
         self.match_tools_layout = MatchAttachmentToolsLayout(parent=parent)
         self.sync_slideBar_check = False

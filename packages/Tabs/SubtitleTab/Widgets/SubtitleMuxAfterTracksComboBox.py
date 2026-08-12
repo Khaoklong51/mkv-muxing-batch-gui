@@ -1,4 +1,4 @@
-from PySide6.QtCore import Signal, Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QComboBox
 
 from packages.Tabs.GlobalSetting import GlobalSetting

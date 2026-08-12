@@ -1,5 +1,5 @@
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QHeaderView, QTableWidgetItem, QAbstractItemView
+from PySide6.QtWidgets import QAbstractItemView, QHeaderView, QTableWidgetItem
 
 from packages.Startup.InitializeScreenResolution import screen_size
 from packages.Tabs.GlobalSetting import GlobalSetting

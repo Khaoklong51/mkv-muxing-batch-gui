@@ -1,6 +1,6 @@
-from PySide6.QtCore import Signal, Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QColor
-from PySide6.QtWidgets import QTabWidget, QHBoxLayout, QWidget
+from PySide6.QtWidgets import QHBoxLayout, QTabWidget, QWidget
 
 from packages.Startup import ColorThems
 from packages.Startup.Options import Options

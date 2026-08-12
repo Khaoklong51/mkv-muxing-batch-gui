@@ -1,5 +1,5 @@
-from PySide6 import QtGui, QtCore
-from PySide6.QtWidgets import QHBoxLayout, QGridLayout, QLabel, QPushButton, QLineEdit
+from PySide6 import QtCore, QtGui
+from PySide6.QtWidgets import QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton
 
 from packages.Startup import GlobalIcons
 from packages.Widgets.MyDialog import MyDialog
@@ -40,7 +40,6 @@ class RenamePresetDialog(MyDialog):
     def signal_connect(self):
         self.yes_button.clicked.connect(self.click_yes)
         self.no_button.clicked.connect(self.click_no)
-        pass
 
     def click_yes(self):
         self.result = "Yes"

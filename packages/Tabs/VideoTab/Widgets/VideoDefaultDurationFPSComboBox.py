@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QComboBox
 
-from packages.Startup.Options import Options
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options
 from packages.Startup.PreDefined import AllVideoDefaultDurationFPSLanguages
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
 from packages.Tabs.GlobalSetting import GlobalSetting

@@ -1,7 +1,9 @@
-from packages.Widgets.WindowsTaskBarLib import ITaskbarList3
 import ctypes
+
 import comtypes
 import comtypes.client as cc
+
+from packages.Widgets.WindowsTaskBarLib import ITaskbarList3
 
 TaskBarGUID = "{56FDF344-FD6D-11d0-958A-006097C9A090}"
 comtypes.CoInitializeEx()

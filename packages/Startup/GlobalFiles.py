@@ -1,13 +1,13 @@
 import logging
+import os
 import struct
 import subprocess
 import sys
 from pathlib import Path
-import os
 from shutil import which
 
-from packages.Widgets.MissingFilesMessage import MissingFilesMessage
 from packages.Common.Debug import USE_PG_PORTABLE
+from packages.Widgets.MissingFilesMessage import MissingFilesMessage
 
 
 def create_app_data_folder():

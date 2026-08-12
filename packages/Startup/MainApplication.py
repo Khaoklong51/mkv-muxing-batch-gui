@@ -2,11 +2,11 @@ import os
 import sys
 
 from PySide6 import QtCore
-from PySide6.QtWidgets import QApplication, QToolTip, QStyleFactory
+from PySide6.QtWidgets import QApplication, QStyleFactory, QToolTip
 
-from packages.Startup.Options import Options, read_option_file
 from packages.Startup.GlobalFiles import SettingJsonInfoFilePath
-from packages.Startup.SetupThems import get_light_palette, get_dark_palette
+from packages.Startup.Options import Options, read_option_file
+from packages.Startup.SetupThems import get_dark_palette, get_light_palette
 
 
 def set_application_style():

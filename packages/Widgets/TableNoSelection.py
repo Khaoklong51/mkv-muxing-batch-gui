@@ -1,9 +1,8 @@
-import typing
 
-from PySide6 import QtGui, QtCore
+from PySide6 import QtCore, QtGui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette
-from PySide6.QtWidgets import QStyledItemDelegate, QTableWidget, QStyle
+from PySide6.QtWidgets import QStyle, QStyledItemDelegate, QTableWidget
 
 
 class TableWidgetNoSelection(QTableWidget):
@@ -46,7 +45,7 @@ class TableWidgetNoSelection(QTableWidget):
         self.setItemDelegate(StyleDelegateForQTableWidget(self))
 
     def selectionCommand(
-        self, index: QtCore.QModelIndex, event: typing.Optional[QtCore.QEvent] = ...
+        self, index: QtCore.QModelIndex, event: QtCore.QEvent | None = ...
     ) -> QtCore.QItemSelectionModel.SelectionFlag:
         if not self.preventSelect:
             return super().selectionCommand(index, event)

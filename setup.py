@@ -1,7 +1,9 @@
-import cx_Freeze
-from packages.Startup.Version import VERSION, RELEASE_SUFFIX
 import sys
 from pathlib import Path
+
+import cx_Freeze
+
+from packages.Startup.Version import RELEASE_SUFFIX, VERSION
 
 FINAL_VERSION = f"{VERSION}{RELEASE_SUFFIX}"
 

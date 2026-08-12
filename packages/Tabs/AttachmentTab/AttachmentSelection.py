@@ -1,5 +1,7 @@
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QVBoxLayout, QGroupBox, QLabel, QHBoxLayout, QGridLayout
+import os
+
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QGridLayout, QGroupBox, QHBoxLayout, QLabel, QVBoxLayout
 
 from packages.Startup.Options import Options
 from packages.Tabs.AttachmentTab.Widgets.AllowDuplicateAttachmentsCheckBox import (
@@ -14,10 +16,10 @@ from packages.Tabs.AttachmentTab.Widgets.AttachmentSourceButton import (
 from packages.Tabs.AttachmentTab.Widgets.AttachmentSourceLineEdit import (
     AttachmentSourceLineEdit,
 )
-from packages.Tabs.AttachmentTab.Widgets.AttachmentTable import AttachmentTable
 from packages.Tabs.AttachmentTab.Widgets.AttachmentsTotalSizeValueLabel import (
     AttachmentsTotalSizeValueLabel,
 )
+from packages.Tabs.AttachmentTab.Widgets.AttachmentTable import AttachmentTable
 from packages.Tabs.AttachmentTab.Widgets.DiscardOldAttachmentsCheckBox import (
     DiscardOldAttachmentsCheckBox,
 )
@@ -25,19 +27,18 @@ from packages.Tabs.AttachmentTab.Widgets.ExpertModeCheckBox import ExpertModeChe
 from packages.Tabs.AttachmentTab.Widgets.MatchAttachmentWidget import (
     MatchAttachmentWidget,
 )
-from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Tabs.GlobalSetting import (
-    sort_names_like_windows,
-    get_readable_filesize,
-    get_files_names_absolute_list,
-    get_file_name_absolute_path,
     GlobalSetting,
+    get_file_name_absolute_path,
+    get_files_names_absolute_list,
+    get_readable_filesize,
+    sort_names_like_windows,
 )
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
+from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 
 # noinspection PyAttributeOutsideInit
 from packages.Widgets.WarningDialog import WarningDialog
-import os
 
 
 def get_files_size_list(files_list, folder_path):

@@ -1,9 +1,9 @@
-from PySide6.QtWidgets import QCheckBox, QWidget, QHBoxLayout
+from PySide6.QtWidgets import QCheckBox, QHBoxLayout, QWidget
 
-from packages.Tabs.GlobalSetting import GlobalSetting
 from packages.Tabs.AudioTab.Widgets.AudioMuxAfterTracksComboBox import (
     AudioMuxAfterTracksComboBox,
 )
+from packages.Tabs.GlobalSetting import GlobalSetting
 
 
 class AudioMuxOrderWidget(QWidget):

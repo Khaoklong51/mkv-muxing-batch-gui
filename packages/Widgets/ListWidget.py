@@ -1,7 +1,7 @@
 from PySide6 import QtGui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPalette
-from PySide6.QtWidgets import QListWidget, QStyledItemDelegate, QStyle
+from PySide6.QtWidgets import QListWidget, QStyle, QStyledItemDelegate
 
 
 class ListWidget(QListWidget):

@@ -1,7 +1,8 @@
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QGroupBox, QLabel, QHBoxLayout, QGridLayout, QWidget
-from PySide6 import QtGui
 import os
+
+from PySide6 import QtGui
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import QGridLayout, QGroupBox, QHBoxLayout, QLabel, QWidget
 
 from packages.Startup.Options import Options
 from packages.Startup.SetupThems import get_dark_palette, get_light_palette
@@ -18,13 +19,13 @@ from packages.Tabs.AudioTab.Widgets.AudioSourceButton import AudioSourceButton
 from packages.Tabs.AudioTab.Widgets.AudioSourceLineEdit import AudioSourceLineEdit
 from packages.Tabs.AudioTab.Widgets.AudioTrackNameLineEdit import AudioTrackNameLineEdit
 from packages.Tabs.AudioTab.Widgets.MatchAudioLayout import MatchAudioLayout
-from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Tabs.GlobalSetting import (
     GlobalSetting,
     get_files_names_absolute_list,
     sort_names_like_windows,
 )
 from packages.Widgets.InvalidPathDialog import InvalidPathDialog
+from packages.Widgets.RefreshFilesButton import RefreshFilesButton
 from packages.Widgets.WarningDialog import WarningDialog
 
 
@@ -146,7 +147,6 @@ class AudioSelectionSetting(QGroupBox):
         self.audio_options_layout.addStretch()
 
     def setup_main_layout(self):
-        pass
         self.main_layout.addWidget(self.audio_source_label, 0, 0)
         self.main_layout.addWidget(self.audio_source_lineEdit, 0, 1, 1, 1)
         self.main_layout.addWidget(self.audio_clear_button, 0, 2, 1, 1)

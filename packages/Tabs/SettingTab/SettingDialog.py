@@ -2,11 +2,12 @@
 from PySide6 import QtGui
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QHBoxLayout, QGridLayout, QLabel, QPushButton, QCheckBox
-from packages.Startup.Options import Options, save_options, get_names_list_of_presets
+from PySide6.QtWidgets import QCheckBox, QGridLayout, QHBoxLayout, QLabel, QPushButton
+
 from packages.Startup.GlobalFiles import InfoIconPath
 from packages.Startup.GlobalIcons import SettingIcon
 from packages.Startup.InitializeScreenResolution import screen_size
+from packages.Startup.Options import Options, get_names_list_of_presets, save_options
 from packages.Tabs.SettingTab.Widgets.AboutButton import AboutButton
 from packages.Tabs.SettingTab.Widgets.PresetTabComboBox import PresetTabComboBox
 from packages.Tabs.SettingTab.Widgets.PresetTabDeleteButton import PresetTabDeleteButton

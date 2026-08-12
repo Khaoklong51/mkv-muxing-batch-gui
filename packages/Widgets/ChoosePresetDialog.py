@@ -1,12 +1,12 @@
-from PySide6 import QtGui, QtCore
-from PySide6.QtCore import Qt, QSize
+from PySide6 import QtCore, QtGui
+from PySide6.QtCore import QSize, Qt
 from PySide6.QtWidgets import (
-    QHBoxLayout,
+    QCheckBox,
+    QComboBox,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QPushButton,
-    QComboBox,
-    QCheckBox,
 )
 
 from packages.Startup import GlobalIcons
@@ -94,7 +94,6 @@ class ChoosePresetDialog(MyDialog):
     def signal_connect(self):
         self.choose_button.clicked.connect(self.click_on_choose_preset)
         self.default_preset_button.clicked.connect(self.click_default_start)
-        pass
 
     def click_on_choose_preset(self):
         self.result = "Preset"
