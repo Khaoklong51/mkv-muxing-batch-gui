@@ -144,6 +144,8 @@ def check_if_mkvpropedit_can_be_used():
 
 
 def check_if_mkvpropedit_wanted_to_be_used(window_parent):
+    GlobalSetting.USE_MKVPROPEDIT = False
+    GlobalSetting.OVERWRITE_SOURCE_FILES = False
     if check_if_mkvpropedit_can_be_used():
         confirm_dialog = ConfirmUsingMkvpropedit(parent=window_parent)
         confirm_dialog.execute()

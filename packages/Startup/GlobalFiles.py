@@ -6,6 +6,8 @@ import sys
 from pathlib import Path
 from shutil import which
 
+from PySide6.QtWidgets import QApplication
+
 from packages.Common.Debug import USE_PG_PORTABLE
 from packages.Widgets.MissingFilesMessage import MissingFilesMessage
 
@@ -27,16 +29,14 @@ def create_app_data_folder():
         app_data = home / ".local/share"
     elif sys.platform == "darwin":
         app_data = home / "Library/Application Support"
+    else:
+        app_data = home / ".local/share"
     my_app_data_folder = app_data / "MKV Muxing Batch GUI"
     try:
-        my_app_data_folder.mkdir(exist_ok=True)
+        my_app_data_folder.mkdir(exist_ok=True, parents=True)
     except Exception:
         pass
     return my_app_data_folder
-
-
-def add_double_quotation(string):
-    return '"' + str(string) + '"'
 
 
 def get_file_name_absolute_path(file_name: str, folder_path) -> Path:
@@ -55,7 +55,10 @@ def get_files_names_absolute_list(files_names, folder_path) -> list[Path]:
 def delete_old_media_files():
     only_media_info_files = MediaInfoFolderPath.iterdir()
     for file_name in only_media_info_files:
-        file_name.unlink(missing_ok=True)
+        try:
+            file_name.unlink(missing_ok=True)
+        except OSError as e:
+            logging.warning("Could not delete old media info file %s: %s", file_name, e)
 
 
 script_path = Path(sys.argv[0])  # get path of the this file
@@ -88,24 +91,22 @@ MediaInfoFolderPath.mkdir(exist_ok=True, parents=True)
 delete_old_media_files()
 
 
-def get_program_version(program_path: Path) -> str:
+def get_program_version(program_path: Path, program_name: str) -> str:
     def run_version(path: Path) -> str | None:
-        command = add_double_quotation(path) + " -V"
         try:
             result = subprocess.run(
-                command,
+                [str(path), "-V"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
                 env=ENVIRONMENT,
                 text=True,
                 check=True,
-                shell=True,
             )
             output = result.stdout.strip()
             logging.debug(output)
-            if path.stem in output:
+            if program_name in output:
                 return output
-        except subprocess.CalledProcessError:
+        except (OSError, subprocess.CalledProcessError):
             return None
         return None
 
@@ -130,26 +131,66 @@ def get_program_version(program_path: Path) -> str:
     # If both fail
     msg = f"Cannot use {program_path.stem} from system or portable path"
     logging.error(msg)
-    raise subprocess.CalledProcessError(msg)
+    raise RuntimeError(msg)
+
+
+def get_custom_program_path(program: str, suffix: str) -> Path | None:
+    executable_name = f"{program}{suffix}"
+    for env_var in ("MKVTOOLNIX_PATH", "MKVTOOLNIX_DIR"):
+        custom_path = os.environ.get(env_var)
+        if not custom_path:
+            continue
+        custom_candidate = Path(custom_path).expanduser()
+        if custom_candidate.is_dir():
+            custom_candidate = custom_candidate / executable_name
+        elif custom_candidate.name.lower() != executable_name.lower():
+            logging.warning(
+                "%s points to %s, not %s",
+                env_var,
+                custom_candidate,
+                executable_name,
+            )
+            continue
+        if custom_candidate.exists():
+            return custom_candidate.resolve()
+    return None
+
+
+def get_nearby_program_path(program: str, suffix: str) -> Path | None:
+    executable_name = f"{program}{suffix}"
+    for folder_path in (script_folder.resolve(), script_folder.resolve().parent):
+        candidate = folder_path / executable_name
+        if candidate.exists():
+            return candidate.resolve()
+    return None
 
 
 def get_program_path(program: str) -> Path:
-    found = which(program)
-    if found and not USE_PG_PORTABLE:
-        global Use_System_PG
-        Use_System_PG = True
-        logging.debug(found)
-        return Path(found).resolve()
-
     # Decide suffix
     suffix = ".exe" if sys.platform == "win32" else ""
     candidate = None
 
+    if not USE_PG_PORTABLE:
+        custom_candidate = get_custom_program_path(program, suffix)
+        if custom_candidate:
+            global Use_System_PG
+            Use_System_PG = True
+            return custom_candidate
+
+        nearby_candidate = get_nearby_program_path(program, suffix)
+        if nearby_candidate:
+            Use_System_PG = True
+            return nearby_candidate
+
+    found = which(program)
+    if found and not USE_PG_PORTABLE:
+        Use_System_PG = True
+        logging.debug(found)
+        return Path(found).resolve()
+
     if sys.platform == "win32" and not USE_PG_PORTABLE:
-        system_drive = Path(os.environ.get("SystemDrive", "C:"))
-        pf_candidate = (
-            system_drive / "Program Files" / "MKVToolNix" / f"{program}{suffix}"
-        )
+        program_files = Path(os.environ.get("ProgramFiles", r"C:\Program Files"))
+        pf_candidate = program_files / "MKVToolNix" / f"{program}{suffix}"
         if pf_candidate.exists():
             candidate = pf_candidate
 
@@ -257,9 +298,11 @@ try:
     MKVMERGE_PATH = get_program_path("mkvmerge")
     ENVIRONMENT = os.environ.copy()
     update_enviro_if_not_windows()
-    MKVPROPEDIT_VERSION = get_program_version(MKVPROPEDIT_PATH)
-    MKVMERGE_VERSION = get_program_version(MKVMERGE_PATH)
+    MKVPROPEDIT_VERSION = get_program_version(MKVPROPEDIT_PATH, "mkvpropedit")
+    MKVMERGE_VERSION = get_program_version(MKVMERGE_PATH, "mkvmerge")
 except Exception as e:
     logging.error(e)
-    missing_files_message = MissingFilesMessage(error_message=str(e))
-    missing_files_message.execute()
+    if QApplication.instance() is not None:
+        missing_files_message = MissingFilesMessage(error_message=str(e))
+        missing_files_message.execute()
+    raise SystemExit(1) from e

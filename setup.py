@@ -27,6 +27,10 @@ include_files = [
     ["Resources/Fonts/OpenSans.ttf", "Resources/Fonts/OpenSans.ttf"],
 ]
 
+taskbar_typelib = Path("Resources/DLL/TaskbarLib.tlb")
+if sys.platform == "win32" and taskbar_typelib.exists():
+    include_files.append([str(taskbar_typelib), str(taskbar_typelib)])
+
 for tool in ["mkvmerge", "mkvpropedit"]:
     src = f"Resources/Tools/{system}/{tool}{program_suffix}"
     dst = f"Resources/Tools/{system}/{tool}{program_suffix}"

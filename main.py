@@ -64,7 +64,10 @@ def kill_all_children():
     current_process = psutil.Process()
     children = current_process.children(recursive=True)
     for child in children:
-        child.send_signal(signal.SIGTERM)
+        try:
+            child.send_signal(signal.SIGTERM)
+        except (psutil.AccessDenied, psutil.NoSuchProcess, ProcessLookupError):
+            logging.debug("Could not terminate child process %s", child.pid)
 
 
 def logger_exception(exception_type, exception_value, exception_trace_back):

@@ -9,6 +9,9 @@
 /Testing/test.py
 /Testing/
 *.pyc
+*.egg-info/
+.pip-cache/
+.tmp_pycache/
 test*.*
 .venv
 build
