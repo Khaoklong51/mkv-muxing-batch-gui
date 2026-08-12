@@ -8,8 +8,9 @@ import psutil
 from PySide6.QtGui import QFont, QFontDatabase
 from PySide6.QtWidgets import QApplication
 
-from packages.Startup import GlobalFiles, GlobalIcons
+
 from packages.Startup.MainApplication import MainApplication
+from packages.Startup import GlobalFiles, GlobalIcons
 from packages.Widgets.WarningDialog import WarningDialog
 
 if sys.platform == "win32":
