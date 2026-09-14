@@ -356,6 +356,7 @@ class GlobalSetting(QWidget):
     AUDIO_DELAY = defaultdict(float)
     AUDIO_SET_DEFAULT = defaultdict(bool)
     AUDIO_SET_FORCED = defaultdict(bool)
+    AUDIO_SET_ORIGINAL_LANGUAGE = defaultdict(bool)
     AUDIO_SET_ORDER = defaultdict(int)
     AUDIO_SET_DEFAULT_DISABLED = False
     AUDIO_SET_FORCED_DISABLED = False
@@ -405,6 +406,9 @@ class GlobalSetting(QWidget):
     OVERWRITE_SOURCE_FILES = False
     RANDOM_OUTPUT_SUFFIX = ""
     USE_MKVPROPEDIT = False
+    # "mkv" for a normal Matroska video file or "mks" for a Matroska audio-only
+    # file (useful when muxing audio/subtitle only outputs with no video track)
+    MUX_SETTING_OUTPUT_EXTENSION = "mkv"
 
     JOB_QUEUE_EMPTY = True
     JOB_QUEUE_FINISHED = False

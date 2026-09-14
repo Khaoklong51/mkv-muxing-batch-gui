@@ -1,0 +1,94 @@
+name: Manual Build
+
+# Manual trigger only - this workflow never runs on push/PR/schedule.
+# Kick it off from the "Actions" tab -> "Manual Build" -> "Run workflow".
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Which platform(s) to build"
+        required: true
+        type: choice
+        default: both
+        options:
+          - both
+          - windows
+          - linux
+      python-version:
+        description: "Python version to build with"
+        required: true
+        type: string
+        default: "3.13"
+
+jobs:
+  build-windows:
+    name: Build (Windows64)
+    if: ${{ inputs.target == 'both' || inputs.target == 'windows' }}
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies (incl. cx_Freeze)
+        run: uv sync --group dev
+
+      - name: Build with cx_Freeze
+        run: uv run python setup.py build_exe
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkv-muxing-batch-gui-windows64
+          path: build/
+          if-no-files-found: error
+
+  build-linux:
+    name: Build (Linux)
+    if: ${{ inputs.target == 'both' || inputs.target == 'linux' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system libraries
+        # PySide6/Qt (xcb platform plugin) and MKVToolNix's own dependencies
+        # need to be importable while cx_Freeze traces the module graph.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpugixml-dev \
+            libmatroska-dev \
+            libxcb-cursor0 \
+            libgl1 \
+            libegl1 \
+            libxkbcommon-x11-0 \
+            libxcb-icccm4 \
+            libxcb-image0 \
+            libxcb-keysyms1 \
+            libxcb-randr0 \
+            libxcb-render-util0 \
+            libxcb-xinerama0 \
+            libxcb-xfixes0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install dependencies (incl. cx_Freeze)
+        run: uv sync --group dev
+
+      - name: Build with cx_Freeze
+        run: uv run python setup.py build_exe
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mkv-muxing-batch-gui-linux
+          path: build/
+          if-no-files-found: error
