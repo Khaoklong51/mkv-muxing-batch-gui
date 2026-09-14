@@ -288,6 +288,7 @@ class MuxSettingTab(QWidget):
         self.job_queue_groupBox.setLayout(self.job_queue_layout)
         self.setup_mux_tools_layout_first_row()
         self.setup_mux_tools_layout_second_row()
+        self.setup_mux_tools_layout_third_row()
         self.setup_mux_setting_layout()
         self.setLayout(self.MainLayout)
 
@@ -321,6 +322,7 @@ class MuxSettingTab(QWidget):
         self.clear_job_queue_button = QPushButton()
         self.mux_tools_layout_first_row = QHBoxLayout()
         self.mux_tools_layout_second_row = QHBoxLayout()
+        self.mux_tools_layout_third_row = QHBoxLayout()
         self.job_queue_tools_layout = QHBoxLayout()
 
     def setup_mux_setting_layout(self):
@@ -331,6 +333,7 @@ class MuxSettingTab(QWidget):
         self.mux_setting_layout.addWidget(self.only_keep_those_subtitles_checkBox, 2, 0)
         self.mux_setting_layout.addLayout(self.mux_tools_layout_first_row, 1, 1)
         self.mux_setting_layout.addLayout(self.mux_tools_layout_second_row, 2, 1)
+        self.mux_setting_layout.addLayout(self.mux_tools_layout_third_row, 3, 1)
 
     def setup_mux_tools_layout_first_row(self):
         self.h1 = QHBoxLayout()
@@ -367,8 +370,11 @@ class MuxSettingTab(QWidget):
             self.remove_old_crc_checksum_checkBox, 1
         )
         self.mux_tools_layout_second_row.addWidget(self.keep_log_file_checkBox)
-        self.mux_tools_layout_second_row.addWidget(self.output_as_mks_checkBox)
         self.mux_tools_layout_second_row.addWidget(self.control_queue_button)
+
+    def setup_mux_tools_layout_third_row(self):
+        self.mux_tools_layout_third_row.addWidget(self.output_as_mks_checkBox, 0)
+        self.mux_tools_layout_third_row.addStretch(1)
 
     def setup_clear_job_queue_button(self):
         self.clear_job_queue_button.setText("Clear All")
