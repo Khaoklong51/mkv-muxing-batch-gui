@@ -119,14 +119,7 @@ You can download it from the project's [releases&nbsp;page](https://github.com/K
 
 ### For Linux Users
 
-The deployed app available in downloads only support glibc 2.17 and above.
-Before starting the app, install the following libraries [not always needed as most of them included in the app]:
-
-```bash
-sudo apt-get install -y libpugixml-dev
-sudo apt-get install -y libmatroska-dev
-sudo apt install libxcb-cursor0
-```
+The app will likely not included the mkvtoolnix binary in future release, you need mkvtoolnix from your distro repository or the app to be presented in PATH otherwise the app will not launch. It is recommend you build this app yourself because I cannot guarantee this will work on your distro, I will figure these out in the future but for now this is needed.
 
 ### Using Python Code Version
 
@@ -151,7 +144,7 @@ You can manually update the mkvmerge version for portable version, but do this o
 # Go to Resources\\Tools\\ [your operating system], and replace mkvmerge.exe and mkvpropedit.exe with the newer version you have
 ```
 
-> For linux users it's recommended to install mkvtoolnix from your distro repository and the app will automatically detect it.
+> For linux users, you need to install mkvtoolnix from your distro repository and the app will automatically detect it.
 
 ## 🙏Attribution
 
