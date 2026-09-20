@@ -28,6 +28,8 @@ def create_icon(icon_path):
 class WindowsTaskBar:
     def __init__(self, hwnd):
         super().__init__()
+        self._overlay_icon_handle = None
+        self._overlay_icon_path = None
         self.window_id = hwnd
         self.taskbar = cc.CreateObject(
             TaskBarGUID, interface=ITaskbarList3, clsctx=comtypes.CLSCTX_ALL
