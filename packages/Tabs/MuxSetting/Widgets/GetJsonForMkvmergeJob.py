@@ -44,7 +44,11 @@ def get_attribute(data, attribute, default_value):
 
 def change_file_extension_to_mkv(file_name):
     file_extension_start_index = file_name.rfind(".")
-    new_file_name_with_mkv_extension = file_name[:file_extension_start_index] + ".mkv"
+    new_file_name_with_mkv_extension = (
+        file_name[:file_extension_start_index]
+        + "."
+        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
+    )
     return new_file_name_with_mkv_extension
 
 
@@ -54,7 +58,9 @@ def change_file_extension_to_mkv_with_random_suffix(file_name):
         file_name[:file_extension_start_index]
         + "#"
         + GlobalSetting.RANDOM_OUTPUT_SUFFIX
-        + ".mkv "
+        + "."
+        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
+        + " "
     )
     return new_file_name_with_mkv_extension
 
@@ -131,18 +137,24 @@ class GetJsonForMkvmergeJob:
         self.setup_final_command()
 
     def generate_info_file(self):
-        info_file_path = GlobalFiles.mkvmergeJsonInfoFilePath
-        with open(info_file_path, "w+", encoding="UTF-8") as info_file:
-            command = (
-                add_double_quotation(GlobalFiles.MKVMERGE_PATH)
-                + " -J "
-                + add_double_quotation(self.job.video_name_absolute)
-            )
-            subprocess.run(
-                command, shell=True, stdout=info_file, env=GlobalFiles.ENVIRONMENT
-            )
-        with open(info_file_path, "r", encoding="UTF-8") as info_file:
-            self.json_info = json.load(info_file)
+        if not self.job.has_video:
+            # No source container to inspect for this job (e.g. a
+            # subtitle/attachment-only .mks output) - there is nothing "old"
+            # to keep, reorder, or dedupe attachments against.
+            self.json_info = {"tracks": [], "attachments": [], "chapters": []}
+        else:
+            info_file_path = GlobalFiles.mkvmergeJsonInfoFilePath
+            with open(info_file_path, "w+", encoding="UTF-8") as info_file:
+                command = (
+                    add_double_quotation(GlobalFiles.MKVMERGE_PATH)
+                    + " -J "
+                    + add_double_quotation(self.job.video_name_absolute)
+                )
+                subprocess.run(
+                    command, shell=True, stdout=info_file, env=GlobalFiles.ENVIRONMENT
+                )
+            with open(info_file_path, "r", encoding="UTF-8") as info_file:
+                self.json_info = json.load(info_file)
         self.tracks_json_info = self.json_info["tracks"]
         for track in self.tracks_json_info:
             new_track_info = SingleTrackData()
@@ -555,6 +567,12 @@ class GetJsonForMkvmergeJob:
                         self.make_other_audio_not_forced()
                     else:
                         audio_command_list.append(add_json_line("--forced-track"))
+                        audio_command_list.append(add_json_line("0:no"))
+                    # add audio original language flag
+                    audio_command_list.append(add_json_line("--original-flag"))
+                    if self.job.audio_set_original_language[i]:
+                        audio_command_list.append(add_json_line("0:yes"))
+                    else:
                         audio_command_list.append(add_json_line("0:no"))
                     # add audio delay
                     audio_delay_in_millisecond = normal_round(
@@ -1252,7 +1270,7 @@ class GetJsonForMkvmergeJob:
 
     # noinspection PyListCreation
     def setup_output_video_command(self):
-        if GlobalSetting.OVERWRITE_SOURCE_FILES:
+        if GlobalSetting.OVERWRITE_SOURCE_FILES and self.job.has_video:
             folder_path = os.path.dirname(self.job.video_name_absolute)
             output_video_name = Path(
                 change_file_extension_to_mkv_with_random_suffix(self.job.video_name)
@@ -1272,6 +1290,10 @@ class GetJsonForMkvmergeJob:
 
     # noinspection PyListCreation
     def setup_input_video_command(self):
+        if not self.job.has_video:
+            # No video source file to append for this job.
+            self.input_video_command = ""
+            return
         input_video_commands_list = []
         input_video_commands_list.append(add_json_line("("))
         input_video_commands_list.append(

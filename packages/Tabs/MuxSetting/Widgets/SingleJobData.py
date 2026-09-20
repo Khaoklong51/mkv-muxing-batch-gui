@@ -1,5 +1,6 @@
 class SingleJobData:
     def __init__(self):
+        self.has_video = True
         self.video_name = ""
         self.video_name_with_spaces = "  "
         self.video_name_after_elide = "..."
@@ -24,6 +25,7 @@ class SingleJobData:
         self.audio_delay = []
         self.audio_set_default = []
         self.audio_set_forced = []
+        self.audio_set_original_language = []
         self.audio_set_at_top = []
 
         self.chapter_found = False

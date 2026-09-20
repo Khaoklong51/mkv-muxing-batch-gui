@@ -28,11 +28,13 @@ class AudioInfoDialog(MyDialog):
         audios_track_name,
         audios_set_default,
         audios_set_forced,
+        audios_set_original_language,
         audios_default_value_delay,
         audios_default_value_language,
         audios_default_value_track_name,
         audios_default_value_set_default,
         audios_default_value_set_forced,
+        audios_default_value_set_original_language,
         audio_set_default_disabled=False,
         audio_set_forced_disabled=False,
         disable_edit=False,
@@ -60,12 +62,16 @@ class AudioInfoDialog(MyDialog):
         self.current_audio_track_name = audios_track_name
         self.current_audio_set_default = audios_set_default
         self.current_audio_set_forced = audios_set_forced
+        self.current_audio_set_original_language = audios_set_original_language
 
         self.default_audio_language = audios_default_value_language
         self.default_audio_delay = audios_default_value_delay
         self.default_audio_track_name = audios_default_value_track_name
         self.default_audio_set_default = audios_default_value_set_default
         self.default_audio_set_forced = audios_default_value_set_forced
+        self.default_audio_set_original_language = (
+            audios_default_value_set_original_language
+        )
 
         self.audio_set_default_disabled = audio_set_default_disabled
         self.audio_set_forced_disabled = audio_set_forced_disabled
@@ -103,6 +109,10 @@ class AudioInfoDialog(MyDialog):
         self.audio_set_default_checkBox = QCheckBox()
         self.setup_audio_set_default_checkBox()
 
+        self.audio_set_original_language_label = QLabel("Original Language:")
+        self.audio_set_original_language_checkBox = QCheckBox()
+        self.setup_audio_set_original_language_checkBox()
+
         self.yes_button = QPushButton("OK")
         self.no_button = QPushButton("Cancel")
         self.reset_button = QPushButton("Reset To Default")
@@ -113,6 +123,7 @@ class AudioInfoDialog(MyDialog):
         self.audio_track_name_layout = QHBoxLayout()
         self.audio_set_default_layout = QHBoxLayout()
         self.audio_set_forced_layout = QHBoxLayout()
+        self.audio_set_original_language_layout = QHBoxLayout()
         self.buttons_layout.addStretch(stretch=3)
         self.buttons_layout.addWidget(self.reset_button, stretch=2)
         self.buttons_layout.addWidget(self.yes_button, stretch=2)
@@ -137,6 +148,10 @@ class AudioInfoDialog(MyDialog):
         )
         self.audio_editable_setting_layout.addRow(
             self.audio_set_forced_label, self.audio_set_forced_checkBox
+        )
+        self.audio_editable_setting_layout.addRow(
+            self.audio_set_original_language_label,
+            self.audio_set_original_language_checkBox,
         )
         self.audio_setting_layout.addWidget(self.audio_tab_comboBox, 0, 0)
         self.audio_setting_layout.addLayout(
@@ -172,10 +187,12 @@ class AudioInfoDialog(MyDialog):
             self.audio_delay_spin.setEnabled(False)
             self.audio_set_default_checkBox.setEnabled(False)
             self.audio_set_forced_checkBox.setEnabled(False)
+            self.audio_set_original_language_checkBox.setEnabled(False)
             self.reset_button.setEnabled(False)
 
         self.setup_tool_tip_hint_audio_set_default()
         self.setup_tool_tip_hint_audio_set_forced()
+        self.setup_tool_tip_hint_audio_set_original_language()
 
     def signal_connect(self):
         self.audio_track_name_lineEdit.textEdited.connect(
@@ -190,6 +207,9 @@ class AudioInfoDialog(MyDialog):
         )
         self.audio_set_forced_checkBox.stateChanged.connect(
             self.update_current_audio_set_forced
+        )
+        self.audio_set_original_language_checkBox.stateChanged.connect(
+            self.update_current_audio_set_original_language
         )
         self.yes_button.clicked.connect(self.click_yes)
         self.no_button.clicked.connect(self.click_no)
@@ -258,6 +278,12 @@ class AudioInfoDialog(MyDialog):
             bool(self.current_audio_set_forced[self.current_audio_index])
         )
 
+    def setup_audio_set_original_language_checkBox(self):
+        self.audio_set_original_language_checkBox.setText("Original Language")
+        self.audio_set_original_language_checkBox.setChecked(
+            bool(self.current_audio_set_original_language[self.current_audio_index])
+        )
+
     def update_current_audio_track_name(self):
         self.current_audio_track_name[self.current_audio_index] = str(
             self.audio_track_name_lineEdit.text()
@@ -289,6 +315,13 @@ class AudioInfoDialog(MyDialog):
                 if i != self.current_audio_index:
                     self.current_audio_set_forced[i] = False
 
+    def update_current_audio_set_original_language(self):
+        new_state = (
+            self.audio_set_original_language_checkBox.checkState()
+            == Qt.CheckState.Checked
+        )
+        self.current_audio_set_original_language[self.current_audio_index] = new_state
+
     def reset_audio_setting(self):
         self.current_audio_language[self.current_audio_index] = (
             self.default_audio_language[self.current_audio_index]
@@ -304,6 +337,9 @@ class AudioInfoDialog(MyDialog):
         )
         self.current_audio_set_forced[self.current_audio_index] = (
             self.default_audio_set_forced[self.current_audio_index]
+        )
+        self.current_audio_set_original_language[self.current_audio_index] = (
+            self.default_audio_set_original_language[self.current_audio_index]
         )
 
         self.audio_language_comboBox.setCurrentIndex(
@@ -322,6 +358,9 @@ class AudioInfoDialog(MyDialog):
         )
         self.audio_set_forced_checkBox.setChecked(
             bool(self.current_audio_set_forced[self.current_audio_index])
+        )
+        self.audio_set_original_language_checkBox.setChecked(
+            bool(self.current_audio_set_original_language[self.current_audio_index])
         )
 
     def audio_set_default_disable(self):
@@ -358,6 +397,13 @@ class AudioInfoDialog(MyDialog):
             )
             self.audio_set_forced_checkBox.setToolTipDuration(12000)
 
+    def setup_tool_tip_hint_audio_set_original_language(self):
+        self.audio_set_original_language_checkBox.setToolTip(
+            "<nobr>mark this audio track as being in the content's original "
+            "language<br>(not a translation/dub)"
+        )
+        self.audio_set_original_language_checkBox.setToolTipDuration(12000)
+
     def update_current_audio_index(self, new_index):
         self.current_audio_index = new_index
         self.audio_delay_spin.setValue(
@@ -368,6 +414,9 @@ class AudioInfoDialog(MyDialog):
         )
         self.audio_set_forced_checkBox.setChecked(
             bool(self.current_audio_set_forced[self.current_audio_index])
+        )
+        self.audio_set_original_language_checkBox.setChecked(
+            bool(self.current_audio_set_original_language[self.current_audio_index])
         )
         self.audio_language_comboBox.setCurrentIndex(
             Options.CurrentPreset.Default_Favorite_Audio_Languages.index(

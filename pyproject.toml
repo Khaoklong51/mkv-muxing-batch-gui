@@ -3,6 +3,8 @@ name = "mkv-muxing-batch-gui"
 version = "3.0.1"
 description = "Batch gui program to mux mkv files"
 readme = "README.md"
+license = "GPL-2.0-or-later"
+license-files = ["LICEN[CS]E*"]
 requires-python = ">=3.12"
 dependencies = [
     "comtypes>=1.4.11",
