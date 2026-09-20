@@ -18,7 +18,7 @@ on:
         description: "Python version to build with"
         required: true
         type: string
-        default: "3.13"
+        default: "3.12"
 
 jobs:
   build-windows:
