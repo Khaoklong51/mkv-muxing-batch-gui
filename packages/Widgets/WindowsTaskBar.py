@@ -1,5 +1,5 @@
 import ctypes
-
+from ctypes import wintypes
 import comtypes
 import comtypes.client as cc
 
@@ -8,10 +8,14 @@ from packages.Widgets.WindowsTaskBarLib import ITaskbarList3
 TaskBarGUID = "{56FDF344-FD6D-11d0-958A-006097C9A090}"
 comtypes.CoInitializeEx()
 
+destroy_icon = ctypes.windll.user32.DestroyIcon
+destroy_icon.argtypes = (wintypes.HICON,)
+destroy_icon.restype = wintypes.BOOL
+
 
 def create_icon(icon_path):
     CreateIconFromResourceEx = ctypes.windll.user32.CreateIconFromResourceEx
-    CreateIconFromResourceEx.restype = ctypes.wintypes.HICON
+    CreateIconFromResourceEx.restype = wintypes.HICON
     size_x, size_y = 32, 32
     # LR_DEFAULTCOLOR = 0
     LR_SHARED = 32768
@@ -52,8 +56,21 @@ class WindowsTaskBar:
         self.taskbar.setProgressValue(self.window_id, value, 100)
 
     def setOverlayIcon(self, icon_path):
-        hicon = create_icon(icon_path=icon_path)
-        self.taskbar.SetOverlayIcon(self.window_id, hicon, "some_random_string")
+        if icon_path == self._overlay_icon_path and self._overlay_icon_handle:
+            return
+
+        new_icon_handle = create_icon(icon_path=icon_path)
+        
+        self.taskbar.SetOverlayIcon(self.window_id, new_icon_handle, "")
+
+        old_icon_handle = self._overlay_icon_handle
+        self._overlay_icon_handle = new_icon_handle
+        self._overlay_icon_path = icon_path
+        destroy_icon(old_icon_handle)
 
     def clearOverlayIcon(self):
-        self.taskbar.SetOverlayIcon(self.window_id, 0, "some_random_string")
+        self.taskbar.SetOverlayIcon(self.window_id, 0, "")
+        old_icon_handle = self._overlay_icon_handle
+        self._overlay_icon_handle = None
+        self._overlay_icon_path = None
+        destroy_icon(old_icon_handle)
