@@ -29,11 +29,7 @@ from packages.Tabs.MuxSetting.Widgets.StartMuxingProcessWorker import (
 
 def change_file_extension_to_mkv(file_name):
     file_extension_start_index = file_name.rfind(".")
-    new_file_name_with_mkv_extension = (
-        file_name[:file_extension_start_index]
-        + "."
-        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
-    )
+    new_file_name_with_mkv_extension = file_name[:file_extension_start_index] + ".mkv"
     return new_file_name_with_mkv_extension
 
 
@@ -139,7 +135,7 @@ class StartMuxingWorker(QObject):
             and job.muxing_message.find("There is not enough space") != -1
         ):
             GetJsonForMkvmergeJob(job)
-            if GlobalSetting.VIDEO_SOURCE_MKV_ONLY and job.has_video:
+            if GlobalSetting.VIDEO_SOURCE_MKV_ONLY:
                 GetJsonForMkvpropeditJob(job)
             else:
                 self.always_use_mkvmerge = True
@@ -191,9 +187,9 @@ class StartMuxingWorker(QObject):
 
     def check_if_crc_calculating_needed(self):
         if self.data[self.current_job].is_crc_calculating_required:
-            if self.data[self.current_job].used_mkvpropedit or (
-                GlobalSetting.OVERWRITE_SOURCE_FILES
-                and self.data[self.current_job].has_video
+            if (
+                self.data[self.current_job].used_mkvpropedit
+                or GlobalSetting.OVERWRITE_SOURCE_FILES
             ):
                 folder_path = os.path.dirname(
                     self.data[self.current_job].video_name_absolute

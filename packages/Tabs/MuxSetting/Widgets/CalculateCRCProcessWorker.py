@@ -9,11 +9,7 @@ from packages.Tabs.GlobalSetting import GlobalSetting, write_to_log_file
 
 def get_file_name_with_mkv_extension(file_name):
     file_extension_start_index = file_name.rfind(".")
-    new_file_name_with_mkv_extension = (
-        file_name[:file_extension_start_index]
-        + "."
-        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
-    )
+    new_file_name_with_mkv_extension = file_name[:file_extension_start_index] + ".mkv"
     return new_file_name_with_mkv_extension
 
 
@@ -23,9 +19,7 @@ def get_file_name_extension_to_mkv_with_random_suffix(file_name):
         file_name[:file_extension_start_index]
         + "#"
         + GlobalSetting.RANDOM_OUTPUT_SUFFIX
-        + "."
-        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
-        + " "
+        + ".mkv "
     )
     return new_file_name_with_mkv_extension
 

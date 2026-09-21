@@ -103,7 +103,6 @@ class AudioTabManager(GlobalSetting):
         GlobalSetting.AUDIO_TRACK_NAME.pop(index_to_delete, None)
         GlobalSetting.AUDIO_SET_DEFAULT.pop(index_to_delete, None)
         GlobalSetting.AUDIO_SET_FORCED.pop(index_to_delete, None)
-        GlobalSetting.AUDIO_SET_ORIGINAL_LANGUAGE.pop(index_to_delete, None)
         GlobalSetting.AUDIO_SET_ORDER.pop(index_to_delete, None)
         GlobalSetting.AUDIO_TAB_ENABLED.pop(index_to_delete, None)
         GlobalSetting.AUDIO_LANGUAGE.pop(index_to_delete, None)

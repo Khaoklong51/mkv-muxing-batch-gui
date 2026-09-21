@@ -65,7 +65,6 @@ def generate_tool_tip_for_audio_file(
     audio_track_name="Test",
     audio_set_default=False,
     audio_set_forced=False,
-    audio_set_original_language=False,
     show_full_path=False,
 ):
     if show_full_path:
@@ -85,8 +84,6 @@ def generate_tool_tip_for_audio_file(
             + str(audio_set_default)
             + "\nSet Forced: "
             + str(audio_set_forced)
-            + "\nOriginal Language: "
-            + str(audio_set_original_language)
             + "\nDouble click for more details"
         )
     else:
@@ -104,8 +101,6 @@ def generate_tool_tip_for_audio_file(
             + str(audio_set_default)
             + "\nSet Forced: "
             + str(audio_set_forced)
-            + "\nOriginal Language: "
-            + str(audio_set_original_language)
             + "\nDouble click for more details"
         )
 
@@ -160,11 +155,7 @@ def generate_tool_tip_for_subtitle_file(
 
 def get_file_name_with_mkv_extension(file_name):
     file_extension_start_index = file_name.rfind(".")
-    new_file_name_with_mkv_extension = (
-        file_name[:file_extension_start_index]
-        + "."
-        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
-    )
+    new_file_name_with_mkv_extension = file_name[:file_extension_start_index] + ".mkv"
     return new_file_name_with_mkv_extension
 
 
@@ -175,9 +166,7 @@ def change_file_extension_to_mkv_with_random_suffix(file_name):
         file_name[:file_extension_start_index]
         + "#"
         + GlobalSetting.RANDOM_OUTPUT_SUFFIX
-        + "."
-        + GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION
-        + " "
+        + ".mkv "
     )
     return new_file_name_with_mkv_extension
 
@@ -386,12 +375,7 @@ class JobQueueTable(TableWidget):
         self.setVerticalHeaderItem(new_row_id, vertical_header_item)
 
     def set_row_value_size_before_muxing(self, new_job, new_row_id):
-        if new_job.has_video:
-            new_job.size_before_muxing = (
-                " " + GlobalSetting.VIDEO_FILES_SIZE_LIST[new_row_id]
-            )
-        else:
-            new_job.size_before_muxing = " N/A"
+        new_job.size_before_muxing = " " + GlobalSetting.VIDEO_FILES_SIZE_LIST[new_row_id]
         self.setCellWidget(
             new_row_id, self.column_ids["Size Before"], QLabel(new_job.size_before_muxing)
         )
@@ -504,9 +488,6 @@ class JobQueueTable(TableWidget):
                 new_job.audio_track_name.append(GlobalSetting.AUDIO_TRACK_NAME[i])
                 new_job.audio_set_default.append(GlobalSetting.AUDIO_SET_DEFAULT[i])
                 new_job.audio_set_forced.append(GlobalSetting.AUDIO_SET_FORCED[i])
-                new_job.audio_set_original_language.append(
-                    GlobalSetting.AUDIO_SET_ORIGINAL_LANGUAGE[i]
-                )
                 new_job.audio_set_at_top.append(GlobalSetting.AUDIO_SET_ORDER[i])
                 audios_count += 1
         if audios_count == 1:
@@ -523,9 +504,6 @@ class JobQueueTable(TableWidget):
                         audio_track_name=new_job.audio_track_name[0],
                         audio_set_default=new_job.audio_set_default[0],
                         audio_set_forced=new_job.audio_set_forced[0],
-                        audio_set_original_language=new_job.audio_set_original_language[
-                            0
-                        ],
                         show_full_path=False,
                     )
                 ),
@@ -554,24 +532,10 @@ class JobQueueTable(TableWidget):
         )
 
     def set_row_value_name(self, new_job, new_row_id):
-        if new_row_id < len(GlobalSetting.VIDEO_FILES_LIST):
-            new_job.has_video = True
-            new_job.video_name = GlobalSetting.VIDEO_FILES_LIST[new_row_id]
-            new_job.video_name_absolute = GlobalSetting.VIDEO_FILES_ABSOLUTE_PATH_LIST[
-                new_row_id
-            ]
-        else:
-            # No video for this row (e.g. a subtitle/attachment-only .mks
-            # job). Borrow the matching subtitle file's name purely as an
-            # output-naming template - video_name_absolute is intentionally
-            # left blank so nothing ever mistakes it for a real source file
-            # to read from or delete.
-            new_job.has_video = False
-            if len(GlobalSetting.SUBTITLE_FILES_LIST[0]) > new_row_id:
-                new_job.video_name = GlobalSetting.SUBTITLE_FILES_LIST[0][new_row_id]
-            else:
-                new_job.video_name = f"output_{new_row_id + 1}.mkv"
-            new_job.video_name_absolute = ""
+        new_job.video_name = GlobalSetting.VIDEO_FILES_LIST[new_row_id]
+        new_job.video_name_absolute = GlobalSetting.VIDEO_FILES_ABSOLUTE_PATH_LIST[
+            new_row_id
+        ]
         new_job.video_name_with_spaces = " " + new_job.video_name + "   "
         new_job.video_name_displayed = chr(0x200E) + new_job.video_name_with_spaces
         name_label = QLabel(new_job.video_name_displayed)
@@ -734,7 +698,6 @@ class JobQueueTable(TableWidget):
                 audios_default_value_track_name = []
                 audios_default_value_set_default = []
                 audios_default_value_set_forced = []
-                audios_default_value_set_original_language = []
                 for i in GlobalSetting.AUDIO_FILES_LIST.keys():
                     if len(GlobalSetting.AUDIO_FILES_LIST[i]) > row_index:
                         audios_default_value_delay_list.append(
@@ -752,9 +715,6 @@ class JobQueueTable(TableWidget):
                         audios_default_value_set_forced.append(
                             GlobalSetting.AUDIO_SET_FORCED[i]
                         )
-                        audios_default_value_set_original_language.append(
-                            GlobalSetting.AUDIO_SET_ORIGINAL_LANGUAGE[i]
-                        )
                 audio_info_dialog = AudioInfoDialog(
                     audios_name=self.data[row_index].audio_name.copy(),
                     audios_delay=self.data[row_index].audio_delay.copy(),
@@ -762,15 +722,11 @@ class JobQueueTable(TableWidget):
                     audios_track_name=self.data[row_index].audio_track_name.copy(),
                     audios_set_default=self.data[row_index].audio_set_default.copy(),
                     audios_set_forced=self.data[row_index].audio_set_forced.copy(),
-                    audios_set_original_language=self.data[
-                        row_index
-                    ].audio_set_original_language.copy(),
                     audios_default_value_delay=audios_default_value_delay_list,
                     audios_default_value_language=audios_default_value_language,
                     audios_default_value_track_name=audios_default_value_track_name,
                     audios_default_value_set_default=audios_default_value_set_default,
                     audios_default_value_set_forced=audios_default_value_set_forced,
-                    audios_default_value_set_original_language=audios_default_value_set_original_language,
                     audio_set_default_disabled=GlobalSetting.AUDIO_SET_DEFAULT_DISABLED,
                     audio_set_forced_disabled=GlobalSetting.AUDIO_SET_FORCED_DISABLED,
                     disable_edit=GlobalSetting.MUXING_ON,
@@ -793,9 +749,6 @@ class JobQueueTable(TableWidget):
                     self.data[row_index].audio_set_forced = (
                         audio_info_dialog.current_audio_set_forced
                     )
-                    self.data[row_index].audio_set_original_language = (
-                        audio_info_dialog.current_audio_set_original_language
-                    )
                     current_cell_widget = self.cellWidget(
                         row_index, self.column_ids["Audio"]
                     )
@@ -815,9 +768,6 @@ class JobQueueTable(TableWidget):
                                     0
                                 ],
                                 audio_set_forced=self.data[row_index].audio_set_forced[0],
-                                audio_set_original_language=self.data[
-                                    row_index
-                                ].audio_set_original_language[0],
                                 show_full_path=False,
                             )
                         )
@@ -889,16 +839,8 @@ class JobQueueTable(TableWidget):
     def setup_queue(self):
         self.clear_queue()
         self.hide()
-        # Normally the video list drives how many jobs exist. But an output
-        # can legitimately have no video at all (e.g. a subtitle+attachment
-        # only .mks), so fall back to the primary subtitle tab's file count
-        # when there are more subtitles than videos (or no videos at all).
-        number_of_jobs = max(
-            len(GlobalSetting.VIDEO_FILES_LIST),
-            len(GlobalSetting.SUBTITLE_FILES_LIST[0]),
-        )
-        self.setRowCount(number_of_jobs)
-        for i in range(number_of_jobs):
+        self.setRowCount(len(GlobalSetting.VIDEO_FILES_LIST))
+        for i in range(len(GlobalSetting.VIDEO_FILES_LIST)):
             new_row_id = i
             new_job = SingleJobData()
             self.set_row_value_id(new_row_id)
@@ -1019,9 +961,7 @@ class JobQueueTable(TableWidget):
             return os.path.join(folder_path, output_video_name)
 
     def get_output_file_name_folder_path_absolute(self, job_index):
-        if self.data[job_index].used_mkvpropedit or (
-            GlobalSetting.OVERWRITE_SOURCE_FILES and self.data[job_index].has_video
-        ):
+        if self.data[job_index].used_mkvpropedit or GlobalSetting.OVERWRITE_SOURCE_FILES:
             return os.path.dirname(self.data[job_index].video_name_absolute)
 
         else:
@@ -1045,7 +985,6 @@ class JobQueueTable(TableWidget):
         if (
             GlobalSetting.OVERWRITE_SOURCE_FILES
             and not self.data[job_index].used_mkvpropedit
-            and self.data[job_index].has_video
         ):
             os.remove(self.data[job_index].video_name_absolute)
             folder_path = os.path.dirname(self.data[job_index].video_name_absolute)

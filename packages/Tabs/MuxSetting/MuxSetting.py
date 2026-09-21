@@ -254,7 +254,6 @@ class MuxSettingTab(QWidget):
         )
 
         self.keep_log_file_checkBox.stateChanged.connect(self.keep_log_file_state_changed)
-        self.output_as_mks_checkBox.stateChanged.connect(self.output_as_mks_state_changed)
         self.job_queue_layout.update_task_bar_progress_signal.connect(
             self.update_task_bar_progress
         )
@@ -276,7 +275,6 @@ class MuxSettingTab(QWidget):
         self.setup_keep_log_file_checkBox()
         self.setup_add_crc_checksum_checkBox()
         self.setup_remove_old_crc_checkBox()
-        self.setup_output_as_mks_checkBox()
         self.setup_clear_job_queue_button()
         self.setup_tool_tip_hint()
         self.setup_layouts()
@@ -287,7 +285,6 @@ class MuxSettingTab(QWidget):
         self.job_queue_groupBox.setLayout(self.job_queue_layout)
         self.setup_mux_tools_layout_first_row()
         self.setup_mux_tools_layout_second_row()
-        self.setup_mux_tools_layout_third_row()
         self.setup_mux_setting_layout()
         self.setLayout(self.MainLayout)
 
@@ -316,12 +313,10 @@ class MuxSettingTab(QWidget):
         self.keep_log_file_checkBox = QCheckBox()
         self.add_crc_checksum_checkBox = QCheckBox()
         self.remove_old_crc_checksum_checkBox = QCheckBox()
-        self.output_as_mks_checkBox = QCheckBox()
         self.control_queue_button = ControlQueueButton()
         self.clear_job_queue_button = QPushButton()
         self.mux_tools_layout_first_row = QHBoxLayout()
         self.mux_tools_layout_second_row = QHBoxLayout()
-        self.mux_tools_layout_third_row = QHBoxLayout()
         self.job_queue_tools_layout = QHBoxLayout()
 
     def setup_mux_setting_layout(self):
@@ -332,7 +327,6 @@ class MuxSettingTab(QWidget):
         self.mux_setting_layout.addWidget(self.only_keep_those_subtitles_checkBox, 2, 0)
         self.mux_setting_layout.addLayout(self.mux_tools_layout_first_row, 1, 1)
         self.mux_setting_layout.addLayout(self.mux_tools_layout_second_row, 2, 1)
-        self.mux_setting_layout.addLayout(self.mux_tools_layout_third_row, 3, 1)
 
     def setup_mux_tools_layout_first_row(self):
         self.h1 = QHBoxLayout()
@@ -371,10 +365,6 @@ class MuxSettingTab(QWidget):
         self.mux_tools_layout_second_row.addWidget(self.keep_log_file_checkBox)
         self.mux_tools_layout_second_row.addWidget(self.control_queue_button)
 
-    def setup_mux_tools_layout_third_row(self):
-        self.mux_tools_layout_third_row.addWidget(self.output_as_mks_checkBox, 0)
-        self.mux_tools_layout_third_row.addStretch(1)
-
     def setup_clear_job_queue_button(self):
         self.clear_job_queue_button.setText("Clear All")
         self.clear_job_queue_button.setIcon(GlobalIcons.CleanIcon)
@@ -397,15 +387,6 @@ class MuxSettingTab(QWidget):
         self.keep_log_file_checkBox.setText("Keep Log File")
         self.keep_log_file_checkBox.setToolTip(
             "log file will located in the source folder after finished muxing"
-        )
-
-    def setup_output_as_mks_checkBox(self):
-        self.output_as_mks_checkBox.setText("Output As .mks")
-        self.output_as_mks_checkBox.setToolTip(
-            "<nobr>Save the output file(s) with the <b>.mks</b> extension instead of "
-            "<b>.mkv</b><br>.mks is the conventional Matroska extension used for "
-            "audio/subtitle only files (no video track)<br>the container format "
-            "itself is unchanged, only the file extension is different"
         )
 
     def setup_discard_old_attachments_checkBox(self):
@@ -871,14 +852,12 @@ class MuxSettingTab(QWidget):
         self.destination_path_button.setEnabled(True)
         self.abort_on_errors_checkBox.setEnabled(True)
         self.keep_log_file_checkBox.setEnabled(True)
-        self.output_as_mks_checkBox.setEnabled(True)
 
     def disable_muxing_setting(self):
         self.destination_path_lineEdit.setEnabled(False)
         self.destination_path_button.setEnabled(False)
         self.abort_on_errors_checkBox.setEnabled(False)
         self.keep_log_file_checkBox.setEnabled(False)
-        self.output_as_mks_checkBox.setEnabled(False)
 
     @staticmethod
     def abort_on_errors_state_changed(state):
@@ -903,13 +882,6 @@ class MuxSettingTab(QWidget):
     @staticmethod
     def keep_log_file_state_changed(state):
         GlobalSetting.MUX_SETTING_KEEP_LOG_FILE = bool(state)
-
-    @staticmethod
-    def output_as_mks_state_changed(state):
-        if state:
-            GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION = "mks"
-        else:
-            GlobalSetting.MUX_SETTING_OUTPUT_EXTENSION = "mkv"
 
     def start_multiplexing_button_clicked(self):
         mkvpropedit_wanted_to_be_used = check_if_mkvpropedit_wanted_to_be_used(
