@@ -1,2 +1,3 @@
 New Feature
 1. Metadata tab for remove title and etc.
+2. Mux Options for --stop-after-video-ends
