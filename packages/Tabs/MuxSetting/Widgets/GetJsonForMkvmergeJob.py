@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from packages.Common.Debug import CHAPTER_UND_LANGUAGE
+from packages.Common.Debug import CHAPTER_UND_LANGUAGE, STOP_AFTER_VIDEO_TRACK_END
 from packages.Common.Math import normal_round
 from packages.Startup import GlobalFiles
 from packages.Startup.PreDefined import ISO_639_2_LANGUAGES
@@ -1273,6 +1273,8 @@ class GetJsonForMkvmergeJob:
     # noinspection PyListCreation
     def setup_input_video_command(self):
         input_video_commands_list = []
+        if STOP_AFTER_VIDEO_TRACK_END:
+            input_video_commands_list.append(add_json_line('--stop-after-video-ends'))
         input_video_commands_list.append(add_json_line("("))
         input_video_commands_list.append(
             add_json_line(check_for_system_backslash_path(self.job.video_name_absolute))
